@@ -16,6 +16,8 @@ export const getTeamInfo = async (sport, teamName) => {
             'cs-shooting': {
                 name: 'CS슈팅',
                 logoUrl: getTeamLogoPath('soccer', 'cs-shooting'),
+                collageName:'소프트웨어융합대학',
+                teamRank: {category: '성곡리그', rank:3},
                 recentMatches: [
                     { opponent: 'Real Moment', result: '2-1 승' },
                     { opponent: 'VIPers', result: '3-0 승' },
@@ -32,6 +34,7 @@ export const getTeamInfo = async (sport, teamName) => {
             'fc-bit': {
                 name: 'FC Bit',
                 logoUrl: getTeamLogoPath('soccer', 'fc-bit'),
+                teamRank: {category: 'sg', rank:5},
                 recentMatches: [
                     { opponent: 'Real Moment', result: '2-1 승' },
                     { opponent: 'VIPers', result: '3-0 승' },
@@ -45,6 +48,7 @@ export const getTeamInfo = async (sport, teamName) => {
             'real-moment': {
                 name: 'Real Moment',
                 logoUrl: getTeamLogoPath('soccer', 'real-moment'),
+                teamRank: {category: 'sg', rank:5},
                 recentMatches: [
                     { opponent: 'FC Bit', result: '1-2 패' },
                     { opponent: 'Focus', result: '1-1 무' },
@@ -58,6 +62,7 @@ export const getTeamInfo = async (sport, teamName) => {
             'focus': {
                 name: 'Focus',
                 logoUrl: getTeamLogoPath('soccer', 'focus'),
+                teamRank: {category: 'sg', rank:6},
                 recentMatches: [
                     { opponent: 'Real Moment', result: '1-1 무' },
                     { opponent: 'NS', result: '2-3 패' },
@@ -71,6 +76,7 @@ export const getTeamInfo = async (sport, teamName) => {
             'vipers': {
                 name: 'Vipers',
                 logoUrl: getTeamLogoPath('soccer', 'vipers'),
+                teamRank: {category: 'hg', rank:2},
                 recentMatches: [
                     { opponent: 'Focus', result: '3-1 승' },
                     { opponent: 'FC Bit', result: '0-3 패' },

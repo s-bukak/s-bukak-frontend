@@ -31,31 +31,36 @@ const Team = () => {
 
     return (
 
-        <div className="container mx-auto p-4">
-            <div className="flex items-center space-x-4 mb-6">
-                <img src={teamInfo.logoUrl} alt={teamName} className="w-24 h-auto"/>
-                <h1 className="text-3xl font-bold">{teamName}</h1>
+        <div className="container mx-auto p-4 my-20">
+            <div className="flex items-center space-x-4 mx-52 mb-14 justify-between">
+                <div className="flex">
+                    <img src={teamInfo.logoUrl} alt={teamName} className="w-24 h-auto"/>
+                    <div>
+                        <h1 className="text-4xl font-bold mb-3">{teamInfo.name}</h1>
+                        <h3 className="text-xl font-medium">{teamInfo.collageName} 소속</h3>
+                    </div>
+                </div>
+
+                <div className="bg-gray-500 p-4 px-7 rounded-md text-center text-white">
+                    <div className="text-2x">2024 {teamInfo.teamRank.category}</div>
+                    <div className="text-3xl font-bold">{teamInfo.teamRank.rank}위</div>
+                </div>
             </div>
             {/* 좌우 레이아웃 설정 */}
-            <div className="flex flex-col lg:flex-row lg:space-x-11">
+            <div className="flex flex-col lg:flex-row lg:space-x-11 justify-center">
                 {/* 왼쪽 (최근 경기 전적, 포메이션, 경기 일정) */}
-                <div className="lg:w-1/2 space-y-6 rounded-lg ">
-
-            <div className="flex space-x-15">
-                <div className="flex">
-                {/* 최근 경기 전적 컴포넌트 */}
-                <RecentMatches recentMatches={teamInfo.recentMatches}/>
-
-                {/*/!* 포메이션 컴포넌트 (축구일 경우만 표시) *!/*/}
-                <Formation/>
-            </div>
-            </div>
-
-
-            {/* 경기 일정 컴포넌트 */}
-            <TeamSchedule schedules={teamInfo.upcomingMatches}/>
+                <div className="space-y-6 rounded-lg bg-gray-100 p-8">
+                    <div className="flex space-x-6 justify-center">
+                    {/* 최근 경기 전적 컴포넌트 */}
+                    <RecentMatches recentMatches={teamInfo.recentMatches}/>
+                    {/* 포메이션 컴포넌트 (축구일 경우만 표시) */}<Formation/>
                 </div>
-                {/* 오른쪽 (응원 메시지 댓글창) */}
+
+
+                {/* 경기 일정 컴포넌트 */}
+                <TeamSchedule schedules={teamInfo.upcomingMatches}/>
+                    </div>
+                    {/* 오른쪽 (응원 메시지 댓글창) */}
                 <div className="lg:w-1/3">
             {/* 응원 메시지 남기는 댓글창 컴포넌트 */}
                     <Cheering teamName={teamName}/>
