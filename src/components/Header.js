@@ -55,7 +55,7 @@ const Header = () => {
     const handleTeamClick = () => {
         setShowTeamLogos(true);
         setActiveMenuTab('team');
-        navigate('/team'); // 페이지 이동
+        navigate('/team/cs-shooting'); // 페이지 이동
     };
 
     const handleTabClick = (tab) => {

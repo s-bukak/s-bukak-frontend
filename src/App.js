@@ -39,7 +39,7 @@ function App() {
                             <Route path="/community" element={<Community />} />
                             <Route path="/schedule" element={<Schedule />} />
                             <Route path="/ranking" element={<Ranking />} />
-                            <Route path="/team" element={<Team />} />
+                            <Route path="/team/:teamName" element={<Team />} />
                             <Route path="/signin" element={<SignIn />} />
                             <Route path="/signup" element={<SignUp />} />
                         </Routes>
