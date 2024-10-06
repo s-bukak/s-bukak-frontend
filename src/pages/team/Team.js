@@ -52,13 +52,13 @@ const Team = () => {
                 <div className="space-y-6 rounded-lg bg-gray-100 p-8">
                     <div className="flex space-x-6 justify-center">
                     {/* 최근 경기 전적 컴포넌트 */}
-                    <RecentMatches recentMatches={teamInfo.recentMatches}/>
+                    <RecentMatches owner={teamInfo} recentMatches={teamInfo.recentMatches}/>
                     {/* 포메이션 컴포넌트 (축구일 경우만 표시) */}<Formation/>
                 </div>
 
 
                 {/* 경기 일정 컴포넌트 */}
-                <TeamSchedule schedules={teamInfo.upcomingMatches}/>
+                {/*<TeamSchedule owner={teamInfo} schedules={teamInfo.upcomingMatches}/>*/}
                     </div>
                     {/* 오른쪽 (응원 메시지 댓글창) */}
                 <div className="lg:w-1/3">

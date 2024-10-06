@@ -19,8 +19,22 @@ export const getTeamInfo = async (sport, teamName) => {
                 collageName:'소프트웨어융합대학',
                 teamRank: {category: '성곡리그', rank:3},
                 recentMatches: [
-                    { opponent: 'Real Moment', result: '2-1 승' },
-                    { opponent: 'VIPers', result: '3-0 승' },
+                    {
+                        opponent: 'fc-scale',
+                        opponentName: '스케일',
+                        score: '5 - 0',
+                        league: '북악리그',
+                        round: '6',
+                        date: '2024.06.03 19:00',
+                    },
+                    {
+                        opponent: 'forest',
+                        opponentName: '포레스트',
+                        score: '1 - 0',
+                        league: '북악리그',
+                        round: '5',
+                        date: '2024.05.27 18:00',
+                    }
                 ],
                 formationImageUrl: '/assets/formations/4-3-3.svg',
                 upcomingMatches: [
@@ -41,8 +55,20 @@ export const getTeamInfo = async (sport, teamName) => {
                 ],
                 formationImageUrl: '/assets/formations/4-4-2.svg',
                 upcomingMatches: [
-                    { date: '2024-10-05', opponent: 'Shadow' },
-                    { date: '2024-10-12', opponent: 'Focus' },
+                    {
+                        opponent: '스케일',
+                        score: '5-0',
+                        league: '북악리그',
+                        round: '6',
+                        date: '2024.06.03 19:00',
+                    },
+                    {
+                        opponent: '포레스트',
+                        score: '1-0',
+                        league: '북악리그',
+                        round: '5',
+                        date: '2024.05.27 18:00',
+                    }
                 ],
             },
             'real-moment': {
@@ -50,8 +76,20 @@ export const getTeamInfo = async (sport, teamName) => {
                 logoUrl: getTeamLogoPath('soccer', 'real-moment'),
                 teamRank: {category: 'sg', rank:5},
                 recentMatches: [
-                    { opponent: 'FC Bit', result: '1-2 패' },
-                    { opponent: 'Focus', result: '1-1 무' },
+                    {
+                        opponent: '스케일',
+                        score: '5-0',
+                        league: '북악리그',
+                        round: '6',
+                        date: '2024.06.03 19:00',
+                    },
+                    {
+                        opponent: '포레스트',
+                        score: '1-0',
+                        league: '북악리그',
+                        round: '5',
+                        date: '2024.05.27 18:00',
+                    }
                 ],
                 formationImageUrl: '/assets/formations/3-5-2.svg',
                 upcomingMatches: [
