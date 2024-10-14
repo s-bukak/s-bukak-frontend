@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
+import { GoogleOAuthProvider } from '@react-oauth/google'; // GoogleOAuthProvider 추가
 import Header from './components/Header';
 import Footer from './components/Footer';
 
@@ -27,25 +28,29 @@ const Layout = ({ children }) => {
     );
 };
 
+const ClientID = '구글 클라이언트 ID';
+
 function App() {
     return (
         <RecoilRoot>
-            <Router>
-                <Suspense fallback={<div>Loading...</div>}>
-                    <Layout>
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/home" element={<Home />} />
-                            <Route path="/community" element={<Community />} />
-                            <Route path="/schedule" element={<Schedule />} />
-                            <Route path="/ranking" element={<Ranking />} />
-                            <Route path="/team" element={<Team />} />
-                            <Route path="/signin" element={<SignIn />} />
-                            <Route path="/signup" element={<SignUp />} />
-                        </Routes>
-                    </Layout>
-                </Suspense>
-            </Router>
+            <GoogleOAuthProvider clientId={ClientID}>
+                <Router>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Layout>
+                            <Routes>
+                                <Route path="/" element={<Home />} />
+                                <Route path="/home" element={<Home />} />
+                                <Route path="/community" element={<Community />} />
+                                <Route path="/schedule" element={<Schedule />} />
+                                <Route path="/ranking" element={<Ranking />} />
+                                <Route path="/team" element={<Team />} />
+                                <Route path="/signin" element={<SignIn />} />
+                                <Route path="/signup" element={<SignUp />} />
+                            </Routes>
+                        </Layout>
+                    </Suspense>
+                </Router>
+            </GoogleOAuthProvider>
         </RecoilRoot>
     );
 }
