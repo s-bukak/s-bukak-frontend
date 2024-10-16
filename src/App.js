@@ -28,7 +28,9 @@ const Layout = ({ children }) => {
     );
 };
 
-const ClientID = '구글 클라이언트 ID';
+const ClientID = '876612813769-4lfsesru9gnomuu6am1udlnb1d47hjtq.apps.googleusercontent.com';
+
+export const DOMAIN_NAME = process.env["REACT_APP_BASE_URL"];
 
 function App() {
     return (
