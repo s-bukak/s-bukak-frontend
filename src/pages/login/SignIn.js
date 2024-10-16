@@ -1,35 +1,16 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import axios from 'axios';
 import CommonHeader from "../../components/CommonHeader";
+import { DOMAIN_NAME } from "../../App";
 
 export default function SignIn() {
     const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate();
 
-    const handleGoogleLoginSuccess = async (response) => {
-        try {
-            const token = response.credential;
+    const handleLoginSuccess = (response) => {
+        console.log(response); // 토큰 또는 기타 로그인 성공 정보를 출력
 
-            // 서버에 토큰을 보내고 회원 여부 확인
-            const res = await axios.post('로그인-api-주소', { token });
-
-            if (res.data.success) {
-                if (res.data.isNewUser) {
-                    // 1. 신규 회원일 경우 회원가입 페이지로 리다이렉트
-                    navigate('/signup', { state: { token } });
-                } else {
-                    // 2. 기존 회원일 경우 로그인 성공 후 쿼리 파라미터로 토큰 전달
-                    navigate(`/?token=${token}`);
-                }
-            } else {
-                setErrorMessage('로그인 실패');
-            }
-        } catch (error) {
-            console.error('Error during Google login', error);
-            setErrorMessage('로그인 중 오류 발생');
-        }
+        // 서버로 토큰 전송 후, 서버에서 리다이렉트 처리
+        window.location.href = `${DOMAIN_NAME}/oauth2/authorization/google`;
     };
 
     return (
@@ -41,7 +22,7 @@ export default function SignIn() {
                 <div className="text-center w-full max-w-lg">
                     <h1 className="text-2xl text-white mb-4">반가워요!</h1>
                     <p className="text-2xl text-white mb-4">
-                        국민대학교 북악리그 전용 웹사이트 <br />
+                        국민대학교 북악리그 전용 웹사이트 <br/>
                         <strong>&lt;우리 오늘, 승부 각 : 勝 북악&gt;</strong> 입니다.
                     </p>
 
@@ -57,14 +38,14 @@ export default function SignIn() {
                                 height: 'auto',
                             }}
                         >
-                            <source src="/Intro.webm" type="video/mp4" />
+                            <source src="/Intro.webm" type="video/mp4"/>
                         </video>
                     </div>
 
                     {/* 구글 로그인 버튼 */}
                     <div className="w-full flex justify-center">
                         <GoogleLogin
-                            onSuccess={handleGoogleLoginSuccess}
+                            onSuccess={handleLoginSuccess}
                             onError={() => setErrorMessage('로그인 실패')}
                         />
                     </div>

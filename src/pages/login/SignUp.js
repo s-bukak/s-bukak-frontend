@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import CommonHeader from "../../components/CommonHeader";
+import {DOMAIN_NAME} from "../../App";
 
 export default function SignUp() {
-    const [email, setEmail] = useState('example@gmail.com');  // 구글 로그인에서 가져오는 이메일
-    const [name, setName] = useState('홍길동');  // 구글 로그인에서 가져오는 이름, 수정 가능
+    const [email] = useState('example@kookim.ac.kr');  // 구글 로그인에서 가져오는 이메일
+    const [name, setName] = useState('승부각');  // 구글 로그인에서 가져오는 이름, 수정 가능
     const [isTeamLeader, setIsTeamLeader] = useState(false);
     const [leagueField, setLeagueField] = useState(''); // 북악리그 분야
     const [teamInfo, setTeamInfo] = useState(''); // 소속 정보
@@ -81,20 +82,30 @@ export default function SignUp() {
     const handleSignUp = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('회원가입-api-주소', {
+            const res = await axios.post(`${DOMAIN_NAME}/register`, {
                 email,
                 name,
                 isTeamLeader,
-                leagueField: isTeamLeader ? leagueField : null,
-                teamInfo: isTeamLeader ? teamInfo : null,
-                teamDivision: isTeamLeader ? teamDivision : null,
+                sport: isTeamLeader ? leagueField : null,
+                collage: isTeamLeader ? teamInfo : null,
+                team: isTeamLeader ? teamDivision : null,
             });
 
             if (res.data.success) {
                 console.log('회원가입 성공');
-                const token = res.data.token; // 서버에서 받은 토큰
-                // 로그인 페이지로 토큰을 넘겨 이동 처리
-                window.location.href = `/signin?token=${token}`;
+
+                // 서버에서 받은 Authorization 헤더에서 토큰 추출
+                const token = res.headers['authorization'];
+
+                // Authorization 헤더 형식이 'Bearer <token>'일 경우 토큰만 추출
+                const bearerToken = token && token.split(' ')[1]; // 'Bearer ' 다음의 실제 토큰 부분만 가져옴
+
+                if (bearerToken) {
+                    // 로그인 페이지로 토큰을 넘겨 이동 처리
+                    window.location.href = `/signin?token=${bearerToken}`;
+                } else {
+                    console.log('토큰 추출 실패');
+                }
             } else {
                 console.log('회원가입 실패');
             }
