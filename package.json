@@ -38,7 +38,8 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ]
+    ],
+    "proxy" : "http://10.223.119.115:8080"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.1",
