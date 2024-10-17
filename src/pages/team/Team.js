@@ -65,7 +65,7 @@ const Team = () => {
           </div>
 
           {/* 경기 일정 컴포넌트 */}
-          {/*<TeamSchedule owner={teamInfo} schedules={teamInfo.upcomingMatches}/>*/}
+          <TeamSchedule owner={teamInfo} schedules={teamInfo.upcomingMatches} />
         </div>
         {/* 오른쪽 (응원 메시지 댓글창) */}
         <div className="lg:w-1/3">

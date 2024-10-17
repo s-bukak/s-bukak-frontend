@@ -42,7 +42,7 @@ const basketballTeams = [
   "kuba",
   "man-q",
   "mbl",
-  "step",
+  "steb",
   "tab",
   "warning",
 ];

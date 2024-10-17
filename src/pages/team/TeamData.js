@@ -27,13 +27,49 @@ export const getTeamInfo = async (sport, teamName) => {
             date: "2024.05.27 18:00",
           },
         ],
-        formationImageUrl: "/assets/formations/4-3-3.svg",
         upcomingMatches: [
-          { date: "2024-03-22", opponent: "KESA", result: "2-2" },
-          { date: "2024-04-03", opponent: "COLSC", result: "2-3" },
-          { date: "2024-04-09", opponent: "한밭", result: "1-3" },
-          { date: "2024-04-19", opponent: "NS", result: "0-1" },
-          { date: "2024-04-30", opponent: "이아스", result: "4-0" },
+          {
+            date: "2024.03.22 20:00",
+            opponent: "kesa",
+            opponentName: "KESA",
+            result: "2-2",
+          },
+          {
+            date: "2024.03.29 19:00",
+            opponent: "colsc",
+            opponentName: "COLSC",
+            result: "2-3",
+          },
+          {
+            date: "2024.04.05 18:00",
+            opponent: "one-mind",
+            opponentName: "한마음",
+            result: "1-3",
+          },
+          {
+            date: "2024.04.19 19:00",
+            opponent: "ns",
+            opponentName: "NS",
+            result: "2-0",
+          },
+          {
+            date: "2024.05.27 18:00",
+            opponent: "forest",
+            opponentName: "포레스트",
+            result: "1-0",
+          },
+          {
+            date: "2024.05.20 19:00",
+            opponent: "ares",
+            opponentName: "아레스",
+            result: "4-0",
+          },
+          {
+            date: "2024.06.03 19:00",
+            opponent: "fc-scale",
+            opponentName: "스케일",
+            result: "-",
+          },
         ],
       },
       "fc-bit": {
@@ -143,12 +179,42 @@ export const getTeamInfo = async (sport, teamName) => {
           },
         ],
         upcomingMatches: [
-          { date: "2024.03.18 18:00", opponent: "TAB", result: "19-45" },
-          { date: "2024.04.05 19:00", opponent: "FM", result: "34-31" },
-          { date: "2024.04.08 18:00", opponent: "FWD", result: "28-30" },
-          { date: "2024.04.29 18:00", opponent: "STEB", result: "23-17" },
-          { date: "2024.05.20 18:00", opponent: "MBL", result: "35-28" },
-          { date: "2024.05.31 18:00", opponent: "MBL", result: "34-13 " },
+          {
+            date: "2024.03.18 18:00",
+            opponent: "tab",
+            opponentName: "TAB",
+            result: "19-45",
+          },
+          {
+            date: "2024.04.05 19:00",
+            opponent: "fm",
+            opponentName: "FM",
+            result: "34-31",
+          },
+          {
+            date: "2024.04.08 18:00",
+            opponent: "fwd",
+            opponentName: "FWD",
+            result: "28-30",
+          },
+          {
+            date: "2024.04.29 18:00",
+            opponent: "steb",
+            opponentName: "STEB",
+            result: "23-17",
+          },
+          {
+            date: "2024.05.20 18:00",
+            opponent: "mbl",
+            opponentName: "MBL",
+            result: "35-28",
+          },
+          {
+            date: "2024.05.31 18:00",
+            opponent: "mbl",
+            opponentName: "MBL",
+            result: "34-13",
+          },
         ],
       },
       "man-q": {
@@ -156,7 +222,7 @@ export const getTeamInfo = async (sport, teamName) => {
         logoUrl: getTeamLogoPath("basketball", "man-q"),
         recentMatches: [
           { opponent: "KUBA", result: "80-68 승" },
-          { opponent: "Step", result: "75-74 승" },
+          { opponent: "steb", result: "75-74 승" },
         ],
         upcomingMatches: [
           { date: "2024-10-07", opponent: "Warning" },
