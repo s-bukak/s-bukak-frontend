@@ -60,7 +60,7 @@ const Team = () => {
               owner={teamInfo}
               recentMatches={teamInfo.recentMatches}
             />
-            {/* 포메이션 컴포넌트 (축구일 경우만 표시) */}
+            {/* 포메이션 컴포넌트 */}
             <Formation />
           </div>
 
