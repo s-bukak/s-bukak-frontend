@@ -8,14 +8,14 @@ export default function SignIn() {
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleLoginSuccess = (response) => {
-        const credential = response.credential;
-
-        // JWT 토큰을 디코딩하여 사용자 정보 추출
-        const userInfo = jwtDecode(credential);
-
-        // 이메일과 이름을 localStorage에 저장하여 회원가입 시 활용
-        localStorage.setItem('userEmail', userInfo.email);
-        localStorage.setItem('userName', userInfo.name);
+        // const credential = response.credential;
+        //
+        // // JWT 토큰을 디코딩하여 사용자 정보 추출
+        // const userInfo = jwtDecode(credential);
+        //
+        // // 이메일과 이름을 localStorage에 저장하여 회원가입 시 활용
+        // localStorage.setItem('userEmail', userInfo.email);
+        // localStorage.setItem('userName', userInfo.name);
 
         // 서버로 토큰 전송 후, 서버에서 리다이렉트 처리
         window.location.href = `${DOMAIN_NAME}/oauth2/authorization/google`;

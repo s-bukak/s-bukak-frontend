@@ -15,13 +15,13 @@ export default function SignUp() {
     const [isPrivacyPolicyAccepted, setIsPrivacyPolicyAccepted] = useState(false);
     const [isAllAccepted, setIsAllAccepted] = useState(false); // 전체 동의 체크박스 상태
 
-    // localStorage에서 이메일과 이름 가져오기
-    useEffect(() => {
-        const storedEmail = localStorage.getItem('userEmail');
-        const storedName = localStorage.getItem('userName');
-        if (storedEmail) setEmail(storedEmail);
-        if (storedName) setName(storedName);
-    }, []);
+    // // localStorage에서 이메일과 이름 가져오기
+    // useEffect(() => {
+    //     const storedEmail = localStorage.getItem('userEmail');
+    //     const storedName = localStorage.getItem('userName');
+    //     if (storedEmail) setEmail(storedEmail);
+    //     if (storedName) setName(storedName);
+    // }, []);
 
     // 전체 동의 체크박스 처리
     const handleAllAcceptedChange = (e) => {
@@ -46,9 +46,14 @@ export default function SignUp() {
             if (res.data.success) {
                 console.log('회원가입 성공');
 
+                // 서버에서 받은 Authorization 헤더에서 토큰 추출
                 const token = res.headers['authorization'];
-                const bearerToken = token && token.split(' ')[1];
+
+                // Authorization 헤더 형식이 'Bearer <token>'일 경우 토큰만 추출
+                const bearerToken = token && token.split(' ')[1]; // 'Bearer ' 다음의 실제 토큰 부분만 가져옴
+
                 if (bearerToken) {
+                    // 로그인 페이지로 토큰을 넘겨 이동 처리
                     window.location.href = `/signin?token=${bearerToken}`;
                 } else {
                     console.log('토큰 추출 실패');
@@ -65,7 +70,7 @@ export default function SignUp() {
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-800">
-            <CommonHeader />
+            <CommonHeader/>
 
             <div className="flex flex-1 justify-center items-center">
                 <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
