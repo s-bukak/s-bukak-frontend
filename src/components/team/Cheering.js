@@ -5,7 +5,7 @@ import {
   teamMessageSubtitle,
 } from "../../utils/MessageUtils";
 
-const Cheering = ({ teamName }) => {
+const Cheering = ({ teamInfo }) => {
   return (
     <div className="mt-6 ">
       <h2 className="text-3xl font-bold mb-1.5">응원 메시지 남기기</h2>
@@ -13,9 +13,9 @@ const Cheering = ({ teamName }) => {
         className="text-sm text-gray-500 mb-2"
         style={{ whiteSpace: "pre-line" }}
       >
-        {teamName ? teamMessageSubtitle : homeMessageSubtitle}
+        {teamInfo ? teamMessageSubtitle : homeMessageSubtitle}
       </h3>
-      <MessageList className="w-full md:w-1/2 p-4" />
+      <MessageList className="w-full md:w-1/2" teamInfo={teamInfo} />
     </div>
   );
 };

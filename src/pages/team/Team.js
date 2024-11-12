@@ -70,7 +70,7 @@ const Team = () => {
         {/* 오른쪽 (응원 메시지 댓글창) */}
         <div className="lg:w-1/3">
           {/* 응원 메시지 남기는 댓글창 컴포넌트 */}
-          <Cheering teamName={teamName} />
+          <Cheering teamInfo={teamInfo} />
         </div>
       </div>
     </div>
