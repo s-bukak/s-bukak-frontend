@@ -74,3 +74,9 @@ export const initialChatList = [
     isHidden: false,
   },
 ];
+
+export const homeMessageSubtitle =
+  "앞서 진행된 북악리그 축구 경기에 대한 다양한 리뷰와\n추후 진행될 북악리그 축구 경기에 대해 기대하는 마음을 담아 응원메세지를 남겨보세요!\n\n선후배 및 동기들에게 전하지 못했던 애정어린 마음을 '익명' 기능을 통해 남길 수 있어요.";
+
+export const teamMessageSubtitle =
+  "매 경기에 최선을 다하는 선수들을 위해 응원메세지를 남겨보세요!";
