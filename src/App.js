@@ -9,6 +9,8 @@ const SignIn = React.lazy(() => import('./pages/login/SignIn'));
 const SignUp = React.lazy(() => import('./pages/login/SignUp'));
 const Home = React.lazy(() => import('./pages/home/Home'));
 const Community = React.lazy(() => import('./pages/community/Community'));
+const WriteCommunity = React.lazy(() => import('./pages/writeCommunity/WriteCommunity'));
+const CommunityDetail = React.lazy(() => import('./pages/communityDetail/CommunityDetail'));
 const Schedule = React.lazy(() => import('./pages/schedule/Schedule'));
 const Ranking = React.lazy(() => import('./pages/ranking/Ranking'));
 const Team = React.lazy(() => import('./pages/team/Team'));
@@ -37,6 +39,8 @@ function App() {
                             <Route path="/" element={<Home />} />
                             <Route path="/home" element={<Home />} />
                             <Route path="/community" element={<Community />} />
+                            <Route path="/write-community" element={<WriteCommunity />} />
+                            <Route path="/community-detail" element={<CommunityDetail />} />
                             <Route path="/schedule" element={<Schedule />} />
                             <Route path="/ranking" element={<Ranking />} />
                             <Route path="/team" element={<Team />} />
