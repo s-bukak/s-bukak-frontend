@@ -5,13 +5,18 @@ import { getTeamLogoPath } from "../../utils/LogoUtils"; // 경로에 맞게 수
 
 const RecentMatch = ({ owner, recentMatches }) => {
   const activeSportTab = useRecoilValue(activeSportTabState);
+  const leagueBg = [
+    "bg-green-500 text-white",
+    "bg-blue-500 text-white",
+    "bg-red-400 text-white",
+  ];
 
   return (
-    <div className="mb-6">
-      <h2 className="text-base font-bold">최근 경기 전적</h2>
+    <div className="mb-0">
+      <h2 className="text-xl font-bold">최근 경기 전적</h2>
       <div className="mt-4">
         {recentMatches.map((match, index) => (
-          <div key={index} className="mb-4">
+          <div key={index} className="mb-6">
             <div className="flex justify-between items-center bg-white py-3 px-16 rounded-lg shadow-sm">
               <div className="flex flex-col items-center text-center">
                 <img
@@ -40,7 +45,7 @@ const RecentMatch = ({ owner, recentMatches }) => {
               </div>
             </div>
             <div
-              className={`p-2 text-sm text-center rounded-b-lg ${index === 0 ? "bg-green-500 text-white" : "bg-blue-500 text-white"}`}
+              className={`p-2 text-sm text-center rounded-b-lg ${leagueBg[index]}`}
             >
               {match.league} {match.round} ROUND
               <div>{match.date}</div>
