@@ -27,6 +27,8 @@ const Layout = ({ children }) => {
     );
 };
 
+export const DOMAIN_NAME = process.env["REACT_APP_BASE_URL"];
+
 function App() {
     return (
         <RecoilRoot>
