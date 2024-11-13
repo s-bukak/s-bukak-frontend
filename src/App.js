@@ -8,9 +8,16 @@ import Footer from './components/Footer';
 const SignIn = React.lazy(() => import('./pages/login/SignIn'));
 const SignUp = React.lazy(() => import('./pages/login/SignUp'));
 const Home = React.lazy(() => import('./pages/home/Home'));
-const Community = React.lazy(() => import('./pages/community/Community'));
-const WriteCommunity = React.lazy(() => import('./pages/writeCommunity/WriteCommunity'));
-const CommunityDetail = React.lazy(() => import('./pages/communityDetail/CommunityDetail'));
+
+const FreeCommunity = React.lazy(() => import('./pages/community/FreeCommunity'));
+const MatchCommunity = React.lazy(() => import('./pages/community/MatchCommunity'));
+const WriteCommunity = React.lazy(() => import('./pages/community/writeCommunity/WriteCommunity'));
+const CommunityDetail = React.lazy(() => import('./pages/community/communityDetail/CommunityDetail'));
+
+const MyWrote = React.lazy(() => import('./pages/activity/MyWrote'));
+const MyComment = React.lazy(() => import('./pages/activity/MyComment'));
+
+
 const Schedule = React.lazy(() => import('./pages/schedule/Schedule'));
 const Ranking = React.lazy(() => import('./pages/ranking/Ranking'));
 const Team = React.lazy(() => import('./pages/team/Team'));
@@ -38,9 +45,14 @@ function App() {
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/home" element={<Home />} />
-                            <Route path="/community" element={<Community />} />
+                            <Route path="/free-community" element={<FreeCommunity />} />
+                            <Route path="/match-community" element={<MatchCommunity />} />
                             <Route path="/write-community" element={<WriteCommunity />} />
                             <Route path="/community-detail" element={<CommunityDetail />} />
+
+                            <Route path="/my-wrote" element={<MyWrote />} />
+                            <Route path="/my-comment" element={<MyComment />} />
+
                             <Route path="/schedule" element={<Schedule />} />
                             <Route path="/ranking" element={<Ranking />} />
                             <Route path="/team" element={<Team />} />
