@@ -23,7 +23,7 @@ export default function WriteCommunity() {
 
       <div className="w-3/5 p-4">
         <div className="w-full border border-gray-300 rounded-lg overflow-hidden relative">
-          <div className="flex justify-between items-center p-8">
+          <div className="flex justify-between px-8 pt-8 items-center">
             <div className="w-[20%] border-b pl-3 flex items-center relative justify-between">
               {selectedBoard}
               <img
@@ -40,14 +40,14 @@ export default function WriteCommunity() {
 
           {/* 드롭다운 메뉴 */}
           {isDropdownOpen && (
-            <div className="absolute bg-white border border-gray-300 w-[20%] pl-2 shadow-lg z-10 ml-9 rounded-lg">
+            <div className="absolute bg-white border border-gray-300 w-[20%] pl-1 shadow-lg z-10 rounded-lg ml-8 ">
               <div className="p-2 cursor-pointer hover:bg-gray-100" onClick={() => handleBoardSelection('자유 게시판')}>자유 게시판</div>
               <div className="p-2 cursor-pointer hover:bg-gray-100" onClick={() => handleBoardSelection('연습상대 게시판')}>연습상대 게시판</div>
             </div>
           )}
 
           <div className="flex justify-center px-8">
-            <div className="w-full relative mb-4">
+            <div className="w-full relative my-4">
               <input
                 type="text"
                 placeholder="제목"
