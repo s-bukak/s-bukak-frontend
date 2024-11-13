@@ -9,6 +9,7 @@ import { IoIosSend } from "react-icons/io";
 
 const MessageList = ({ teamInfo }) => {
   const [input, setInput] = useState("");
+  const [isAnonymous, setIsAnonymous] = useState(false); // 익명 여부 상태 추가
   const messageEndRef = useRef(null);
   const [chatList, setChatList] = useState(initialChatList);
 
@@ -16,6 +17,10 @@ const MessageList = ({ teamInfo }) => {
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") submitComment();
+  };
+
+  const handleCheckboxChange = (event) => {
+    setIsAnonymous(event.target.checked);
   };
 
   const submitComment = () => {
@@ -27,14 +32,17 @@ const MessageList = ({ teamInfo }) => {
       username: user.userName,
       userImage: user.userImage,
       content: input,
-      createdAt: new Date().toLocaleString("ko-KR", {
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      }),
-      isAnonymous: false,
+      createdAt: new Date()
+        .toLocaleString("ko-KR", {
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })
+        .replace(/\./g, "/")
+        .slice(0, 11),
+      isAnonymous: isAnonymous, // 체크박스 상태 반영
       isHidden: false,
     };
     setChatList((prevChatList) => [...prevChatList, newComment]);
@@ -43,6 +51,8 @@ const MessageList = ({ teamInfo }) => {
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ block: "nearest" });
+
+    window.scrollTo(0, 0);
   }, [chatList]);
 
   return (
@@ -57,7 +67,6 @@ const MessageList = ({ teamInfo }) => {
               <div
                 className={`flex ${comment.userId === user.userId ? "justify-end" : "justify-start"} mb-1`}
               >
-                {/* Render based on user */}
                 {comment.userId === user.userId ? (
                   <>
                     <div className="flex flex-col items-end max-w-xs">
@@ -127,7 +136,7 @@ const MessageList = ({ teamInfo }) => {
               )}
             </div>
           ))}
-          <div ref={messageEndRef}></div>
+          <div ref={messageEndRef}></div> {/* 하단 참조 */}
         </div>
 
         <div className="flex items-center w-full p-1 pl-2.5 rounded-xl bg-gray-100 mt-4 border border-gray-400">
@@ -135,7 +144,8 @@ const MessageList = ({ teamInfo }) => {
             <input
               id="checked-checkbox"
               type="checkbox"
-              value=""
+              checked={isAnonymous}
+              onChange={handleCheckboxChange}
               className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-400 rounded checked:bg-gray-500 focus:ring-0 dark:bg-gray-500 dark:border-gray-500"
             />
             <label
