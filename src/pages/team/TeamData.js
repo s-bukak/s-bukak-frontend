@@ -26,6 +26,14 @@ export const getTeamInfo = async (sport, teamName) => {
             round: "5",
             date: "2024.05.27 18:00",
           },
+          {
+            opponent: "fc-scale",
+            opponentName: "스케일",
+            score: "5 - 0",
+            league: "북악리그",
+            round: "6",
+            date: "2024.06.03 19:00",
+          },
         ],
         upcomingMatches: [
           {
@@ -88,6 +96,13 @@ export const getTeamInfo = async (sport, teamName) => {
             league: "북악리그",
             round: "6",
             date: "2024.06.03 19:00",
+          },
+          {
+            opponent: "포레스트",
+            score: "1-0",
+            league: "북악리그",
+            round: "5",
+            date: "2024.05.27 18:00",
           },
           {
             opponent: "포레스트",
@@ -168,6 +183,14 @@ export const getTeamInfo = async (sport, teamName) => {
             league: "북악리그",
             round: "6",
             date: "2024.05.31 21:00",
+          },
+          {
+            opponent: "mbl",
+            opponentName: "MBL",
+            score: "35 - 28",
+            league: "북악리그",
+            round: "5",
+            date: "2024.05.20 18:00",
           },
           {
             opponent: "mbl",
