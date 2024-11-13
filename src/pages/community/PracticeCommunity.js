@@ -29,7 +29,7 @@ const contentData = [
 
 const ITEMS_PER_PAGE = 10;
 
-export default function MatchCommunity() {
+export default function PracticeCommunity() {
     const [currentPage, setCurrentPage] = useState(1);
     const [startPage, setStartPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
