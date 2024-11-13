@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
+import { useRecoilValue } from 'recoil'; // 상태를 읽기 위한 useRecoilValue 사용
 import CommunityButton from "../../../components/CommunityButton";
 import underArrow from "../../../assets/icons/underArrow.svg";
+import axios from 'axios'
+import { DOMAIN_NAME } from "../../../App";
+import { activeSportTabState } from '../../../state/sportTabState';
 
 export default function WriteCommunity() {
   const [selectedBoard, setSelectedBoard] = useState('게시판을 선택해 주세요');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const token = process.env.REACT_APP_TEMP_TOKEN;
+  const activeSportTab = useRecoilValue(activeSportTabState); // Recoil 상태를 통해 스포츠 탭 값 읽기
 
   const handleUnderArrowClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -13,6 +21,27 @@ export default function WriteCommunity() {
   const handleBoardSelection = (board) => {
     setSelectedBoard(board);
     setIsDropdownOpen(false);
+  };
+
+  const handleRegister = async () => {
+    try {
+      const boardType = selectedBoard === '자유 게시판' ? 'FREE' : "PRACTICE";
+      const sportType = activeSportTab === 'soccer' ? 'SOCCER' : 'BASKETBALL'; // activeSportTab 상태에 따라 설정
+      const data = {
+        title,
+        content,
+        boardType,
+        sportType,
+      };
+      const res = await axios.post(`${DOMAIN_NAME}/board`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("등록 성공:", res);
+    } catch (error) {
+      console.error("등록 실패:", error);
+    }
   };
 
   return (
@@ -33,12 +62,14 @@ export default function WriteCommunity() {
                 className="cursor-pointer"
               />
             </div>
-            <button className="w-28 h-8 text-white font-bold bg-gray-800 rounded-lg md:w-28 md:h-8">
+            <button
+              className="w-28 h-8 text-white font-bold bg-gray-800 rounded-lg md:w-28 md:h-8"
+              onClick={handleRegister}
+            >
               등록
             </button>
           </div>
 
-          {/* 드롭다운 메뉴 */}
           {isDropdownOpen && (
             <div className="absolute bg-white border border-gray-300 w-[20%] pl-1 shadow-lg z-10 rounded-lg ml-8 ">
               <div className="p-2 cursor-pointer hover:bg-gray-100" onClick={() => handleBoardSelection('자유 게시판')}>자유 게시판</div>
@@ -51,6 +82,8 @@ export default function WriteCommunity() {
               <input
                 type="text"
                 placeholder="제목"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 className="none-border bg-gray-100 rounded-lg p-2 w-full pl-4 pr-10"
               />
             </div>
@@ -60,6 +93,8 @@ export default function WriteCommunity() {
             <div className="h-96  w-full  mb-4 ">
               <textarea
                 placeholder="내용을 입력해주세요."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
                 className="border border-gray-400 rounded-lg p-4 w-full h-40 sm:h-60 md:h-72 lg:h-96"
               />
             </div>
