@@ -15,9 +15,9 @@ const TeamSchedule = ({ owner, schedules = [] }) => {
   );
 
   return (
-    <div className="w-full p-4">
-      <h2 className="text-lg font-bold mb-4">경기 일정</h2>
-      <div className="border-b-2 border-gray-200 pb-4 mb-4">
+    <div className="w-full p-0">
+      <h2 className="text-xl font-bold mb-4">경기 일정</h2>
+      <div className="border-b-2 border-gray-200 mb-4">
         <ul className="flex space-x-4">
           {/* 연도 탭 */}
           {["2024", "2023", "2022", "2021", "2020"].map((year) => (
@@ -26,8 +26,8 @@ const TeamSchedule = ({ owner, schedules = [] }) => {
               onClick={() => setSelectedYear(year)} // 연도를 클릭하면 상태 업데이트
               className={`cursor-pointer px-4 ${
                 selectedYear === year
-                  ? "text-purple-500 border-b-4 border-purple-500"
-                  : ""
+                  ? "font-bold border-b-4 border-gray-700 text-gray-700"
+                  : "text-gray-400"
               }`}
             >
               {year}
@@ -56,7 +56,7 @@ const TeamSchedule = ({ owner, schedules = [] }) => {
             </div>
             {/* 경기 결과 */}
             <div className="text-center w-28">
-              <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full">
+              <span className="px-3 py-1 bg-gray-200 text-gray-700 rounded-full">
                 {match.result || "-"}
               </span>
             </div>

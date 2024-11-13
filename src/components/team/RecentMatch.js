@@ -5,11 +5,8 @@ import { getTeamLogoPath } from "../../utils/LogoUtils"; // 경로에 맞게 수
 
 const RecentMatch = ({ owner, recentMatches }) => {
   const activeSportTab = useRecoilValue(activeSportTabState);
-  const leagueBg = [
-    "bg-green-500 text-white",
-    "bg-blue-500 text-white",
-    "bg-red-400 text-white",
-  ];
+  const leagueSCBg = ["bg-green-500", "bg-sky-600", "bg-red-400"];
+  const leagueBBBg = ["bg-emerald-800", "bg-sky-700", "bg-yellow-700"];
 
   return (
     <div className="mb-0">
@@ -45,7 +42,7 @@ const RecentMatch = ({ owner, recentMatches }) => {
               </div>
             </div>
             <div
-              className={`p-2 text-sm text-center rounded-b-lg ${leagueBg[index]}`}
+              className={`p-2 text-sm text-center rounded-b-lg text-white ${activeSportTab == "soccer" ? leagueSCBg[index] : leagueBBBg[index]}`}
             >
               {match.league} {match.round} ROUND
               <div>{match.date}</div>
