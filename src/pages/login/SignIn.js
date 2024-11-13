@@ -1,23 +1,14 @@
 import React, { useState } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import CommonHeader from "../../components/CommonHeader";
-import { jwtDecode } from 'jwt-decode';
 import { DOMAIN_NAME } from "../../App";
 
 export default function SignIn() {
     const [errorMessage, setErrorMessage] = useState('');
 
-    const handleLoginSuccess = (response) => {
-        // const credential = response.credential;
-        //
-        // // JWT 토큰을 디코딩하여 사용자 정보 추출
-        // const userInfo = jwtDecode(credential);
-        //
-        // // 이메일과 이름을 localStorage에 저장하여 회원가입 시 활용
-        // localStorage.setItem('userEmail', userInfo.email);
-        // localStorage.setItem('userName', userInfo.name);
-
-        // 서버로 토큰 전송 후, 서버에서 리다이렉트 처리
+    const handleLoginSuccess = () => {
+        setErrorMessage(''); // 로그인 성공 시 오류 메시지 초기화
+        // 서버의 OAuth 엔드포인트로 리다이렉트
         window.location.href = `${DOMAIN_NAME}/oauth2/authorization/google`;
     };
 
@@ -25,7 +16,6 @@ export default function SignIn() {
         <div className="min-h-screen flex flex-col bg-gray-800">
             <CommonHeader />
 
-            {/* 가운데 컨텐츠 */}
             <div className="flex flex-col justify-center items-center flex-grow">
                 <div className="text-center w-full max-w-lg">
                     <h1 className="text-2xl text-white mb-4">반가워요!</h1>
@@ -34,7 +24,6 @@ export default function SignIn() {
                         <strong className="!text-white">&lt;우리 오늘, 승부 각 : 勝 북악&gt;</strong> 입니다.
                     </p>
 
-                    {/* 비디오 가운데 정렬 및 크기 조절 */}
                     <div className="mb-6 flex justify-center">
                         <video
                             className="custom-video"
@@ -50,7 +39,6 @@ export default function SignIn() {
                         </video>
                     </div>
 
-                    {/* 구글 로그인 버튼 */}
                     <div className="w-full flex justify-center">
                         <GoogleLogin
                             onSuccess={handleLoginSuccess}
@@ -58,7 +46,6 @@ export default function SignIn() {
                         />
                     </div>
 
-                    {/* 에러 메시지 */}
                     {errorMessage && <p className="text-gray-400 text-xs mt-4">{errorMessage}</p>}
                 </div>
             </div>

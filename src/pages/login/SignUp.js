@@ -5,23 +5,25 @@ import { DOMAIN_NAME } from "../../App";
 import { leagueFields, teamInfoOptions, soccerTeamDivisionOptions, basketballTeamDivisionOptions } from "../../data/login";
 
 export default function SignUp() {
-    const [email, setEmail] = useState('');  // 구글 로그인에서 가져오는 이메일
-    const [name, setName] = useState('');  // 구글 로그인에서 가져오는 이름, 수정 가능
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [isTeamLeader, setIsTeamLeader] = useState(false);
-    const [leagueField, setLeagueField] = useState(''); // 북악리그 분야
-    const [teamInfo, setTeamInfo] = useState(''); // 소속 정보
-    const [teamDivision, setTeamDivision] = useState(''); // 소속 팀명
+    const [leagueField, setLeagueField] = useState('');
+    const [teamInfo, setTeamInfo] = useState('');
+    const [teamDivision, setTeamDivision] = useState('');
     const [isTermsAccepted, setIsTermsAccepted] = useState(false);
     const [isPrivacyPolicyAccepted, setIsPrivacyPolicyAccepted] = useState(false);
-    const [isAllAccepted, setIsAllAccepted] = useState(false); // 전체 동의 체크박스 상태
+    const [isAllAccepted, setIsAllAccepted] = useState(false);
 
-    // // localStorage에서 이메일과 이름 가져오기
-    // useEffect(() => {
-    //     const storedEmail = localStorage.getItem('userEmail');
-    //     const storedName = localStorage.getItem('userName');
-    //     if (storedEmail) setEmail(storedEmail);
-    //     if (storedName) setName(storedName);
-    // }, []);
+    // URL 쿼리 파라미터에서 email과 name을 추출하여 상태에 설정
+    useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const emailParam = queryParams.get('email');
+        const nameParam = queryParams.get('name');
+
+        if (emailParam) setEmail(emailParam);
+        if (nameParam) setName(nameParam);
+    }, []);
 
     // 전체 동의 체크박스 처리
     const handleAllAcceptedChange = (e) => {
@@ -46,14 +48,10 @@ export default function SignUp() {
             if (res.data.success) {
                 console.log('회원가입 성공');
 
-                // 서버에서 받은 Authorization 헤더에서 토큰 추출
                 const token = res.headers['authorization'];
-
-                // Authorization 헤더 형식이 'Bearer <token>'일 경우 토큰만 추출
-                const bearerToken = token && token.split(' ')[1]; // 'Bearer ' 다음의 실제 토큰 부분만 가져옴
+                const bearerToken = token && token.split(' ')[1];
 
                 if (bearerToken) {
-                    // 로그인 페이지로 토큰을 넘겨 이동 처리
                     window.location.href = `/signin?token=${bearerToken}`;
                 } else {
                     console.log('토큰 추출 실패');
@@ -70,7 +68,7 @@ export default function SignUp() {
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-800">
-            <CommonHeader/>
+            <CommonHeader />
 
             <div className="flex flex-1 justify-center items-center">
                 <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -90,7 +88,7 @@ export default function SignUp() {
                             <input
                                 type="text"
                                 value={name}
-                                onChange={(e) => setName(e.target.value)}  // 이름 수정 가능하게 변경
+                                onChange={(e) => setName(e.target.value)}
                                 className="w-full px-3 py-2 border rounded shadow-sm text-gray-700"
                             />
                         </div>
@@ -106,10 +104,8 @@ export default function SignUp() {
                             <label className="text-gray-800 text-sm font-bold">팀 대표자 계정인 경우</label>
                         </div>
 
-                        {/* 구분선 */}
                         <hr className="my-2 border-gray-300"/>
 
-                        {/* 팀 대표자 체크박스가 선택되었을 경우 추가 필드 렌더링 */}
                         {isTeamLeader && (
                             <>
                                 <div className="text-xs my-3 text-gray-400">
@@ -121,7 +117,6 @@ export default function SignUp() {
                                     신중하게 선택하고 검토하신 후 회원가입을 진행해 주세요.
                                 </div>
                                 <div className="flex justify-between mb-2 space-x-2">
-                                    {/* 북악리그 분야 */}
                                     <div className="w-1/3">
                                         <select
                                             value={leagueField}
@@ -142,7 +137,6 @@ export default function SignUp() {
                                         </select>
                                     </div>
 
-                                    {/* 소속 정보 */}
                                     <div className="w-1/3">
                                         <select
                                             value={teamInfo}
@@ -164,7 +158,6 @@ export default function SignUp() {
                                         </select>
                                     </div>
 
-                                    {/* 소속 팀명 */}
                                     <div className="w-1/3">
                                         <select
                                             value={teamDivision}
@@ -186,7 +179,6 @@ export default function SignUp() {
                             </>
                         )}
 
-                        {/* 전체 동의 */}
                         <div className="mb-2">
                             <input
                                 type="checkbox"
@@ -197,10 +189,8 @@ export default function SignUp() {
                             <label className="text-sm text-gray-700">전체 동의</label>
                         </div>
 
-                        {/* 구분선 */}
                         <hr className="my-2 border-gray-300"/>
 
-                        {/* 약관 동의 */}
                         <div className="mb-2">
                             <input
                                 type="checkbox"
@@ -217,7 +207,6 @@ export default function SignUp() {
                             </label>
                         </div>
 
-                        {/* 개인정보 수집 동의 */}
                         <div className="mb-4">
                             <input
                                 type="checkbox"
@@ -234,7 +223,6 @@ export default function SignUp() {
                             </label>
                         </div>
 
-                        {/* 회원가입 버튼 */}
                         <button
                             type="submit"
                             disabled={!isTermsAccepted || !isPrivacyPolicyAccepted}
