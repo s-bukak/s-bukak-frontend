@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { activeSportTabState } from '../state/sportTabState'; // Recoil 상태 불러오기
-import { useNavigate } from 'react-router-dom'; // useNavigate 훅 추가
+import { activeSportTabState } from '../state/sportTabState';
+import { useNavigate } from 'react-router-dom';
 
 // 팀명 배열
 const soccerTeams = ['aigu', 'ares', 'bas', 'colsc', 'cs-shooting', 'fc-bit', 'fc-scale', 'fiav',
     'focus', 'forest', 'forty-one', 'gongsalang', 'iasc', 'kafa', 'kesa', 'kkyamelleon', 'loniz', 'nepist',
     'ns', 'one-mind', 'pantasista', 'real-moment', 'shadow', 'vipers'];
 const basketballTeams = ['a-tempo', 'ceo', 'courtist', 'cs-jumping', 'fm', 'fwd', 'gg', 'kuba',
-    'man-q', 'mbl', 'step', 'tab', 'warning'];
+    'man-q', 'mbl', 'steb', 'tab', 'warning'];
 
 // 애니메이션 정의
 const bounce = keyframes`
     0% {
-        transform: translateY(0);
+        transform: translateY(-5px);
         opacity: 0;
     }
     60% {
-        transform: translateY(-1px);
+        transform: translateY(5px);
         opacity: 1;
     }
     100% {
@@ -26,36 +26,22 @@ const bounce = keyframes`
     }
 `;
 
-// 스크롤바 숨기기 위한 스타일 컴포넌트
-const ScrollContainer = styled.div`
-    background-color: #e5e7eb;
-    width: 100%;
-    overflow-x: auto;
-    display: flex;
-    justify-content: center;
-    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+// 애니메이션이 적용된 컨테이너
+const AnimatedContainer = styled.div`
     animation: ${bounce} 0.5s ease-in-out;
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
-
-    & {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
 `;
 
 const Header = () => {
-    const [activeSportTab, setActiveSportTab] = useRecoilState(activeSportTabState); // Recoil 상태 사용
+    const [activeSportTab, setActiveSportTab] = useRecoilState(activeSportTabState);
     const [activeMenuTab, setActiveMenuTab] = useState('home');
     const [showTeamLogos, setShowTeamLogos] = useState(false);
-    const navigate = useNavigate(); // useNavigate 훅 사용
+    const navigate = useNavigate();
+    const scrollRef = useRef(null);
 
     const handleTeamClick = () => {
         setShowTeamLogos(true);
         setActiveMenuTab('team');
-        navigate('/team'); // 페이지 이동
+        navigate('/team');
     };
 
     const handleTabClick = (tab) => {
@@ -63,8 +49,17 @@ const Header = () => {
             setShowTeamLogos(false);
         }
         setActiveMenuTab(tab);
-        navigate(`/${tab}`); // 페이지 이동
+        navigate(`/${tab}`);
     };
+
+    // showTeamLogos가 true로 설정될 때 스크롤을 중앙으로 이동
+    useEffect(() => {
+        if (showTeamLogos && scrollRef.current) {
+            const scrollWidth = scrollRef.current.scrollWidth;
+            const clientWidth = scrollRef.current.clientWidth;
+            scrollRef.current.scrollLeft = (scrollWidth - clientWidth) / 2;
+        }
+    }, [showTeamLogos]);
 
     // 팀명 배열을 기반으로 로고 가져오기
     const getTeamLogo = (team) => {
@@ -96,7 +91,7 @@ const Header = () => {
                             className={`${activeSportTab === 'soccer' ? 'text-white' : ''} hover:text-white`}
                             onClick={() => {
                                 setActiveSportTab('soccer');
-                                handleTabClick('home'); // 홈으로 리셋
+                                handleTabClick('home');
                             }}
                         >
                             축구
@@ -105,7 +100,7 @@ const Header = () => {
                             className={`${activeSportTab === 'basketball' ? 'text-white' : ''} hover:text-white`}
                             onClick={() => {
                                 setActiveSportTab('basketball');
-                                handleTabClick('home'); // 홈으로 리셋
+                                handleTabClick('home');
                             }}
                         >
                             농구
@@ -152,28 +147,32 @@ const Header = () => {
 
             {/* 팀 로고 표시 영역 */}
             {showTeamLogos && (
-                <ScrollContainer
-                    style={{
-                        transform: showTeamLogos ? 'translateY(0)' : 'translateY(-10px)',
-                        opacity: showTeamLogos ? 1 : 0,
-                    }}
+                <AnimatedContainer
+                    className="bg-gray-200 flex overflow-x-auto min-w-0 py-4 scrollbar-hide items-center justify-center"
+                    ref={scrollRef} // 스크롤 컨테이너 참조 연결
                 >
-                    <div className={`flex space-x-3 ${activeSportTab === 'basketball' ? 'py-4' : 'py-3'} min-w-[max-content]`}>
+                    <div className="flex space-x-3">
+                        {/* 왼쪽 여백 */}
+                        <div className="flex-shrink-0 w-10"></div>
+
                         {teamNames.map((team, index) => (
                             <button
                                 key={index}
-                                onClick={() => navigate(`/team/${team}`)} // navigate로 페이지 이동
-                                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }} // 스타일 적용
+                                onClick={() => navigate(`/team/${team}`)}
+                                className="flex items-center justify-center flex-shrink-0"
                             >
                                 <img
                                     src={getTeamLogo(team)}
                                     alt={team}
-                                    style={{ height: activeSportTab === 'soccer' ? '60px' : '52px', width: 'auto' }}
+                                    className="h-14 w-14 flex-shrink-0"
                                 />
                             </button>
                         ))}
+
+                        {/* 오른쪽 여백 */}
+                        <div className="flex-shrink-0 w-10"></div>
                     </div>
-                </ScrollContainer>
+                </AnimatedContainer>
             )}
         </div>
     );
