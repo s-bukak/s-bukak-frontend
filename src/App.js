@@ -10,7 +10,7 @@ const SignUp = React.lazy(() => import('./pages/login/SignUp'));
 const Home = React.lazy(() => import('./pages/home/Home'));
 
 const FreeCommunity = React.lazy(() => import('./pages/community/FreeCommunity'));
-const MatchCommunity = React.lazy(() => import('./pages/community/MatchCommunity'));
+const PracticeCommunity = React.lazy(() => import('./pages/community/PracticeCommunity'));
 const WriteCommunity = React.lazy(() => import('./pages/community/writeCommunity/WriteCommunity'));
 const CommunityDetail = React.lazy(() => import('./pages/community/communityDetail/CommunityDetail'));
 
@@ -48,7 +48,7 @@ function App() {
                             <Route path="/" element={<Home />} />
                             <Route path="/home" element={<Home />} />
                             <Route path="/free-community" element={<FreeCommunity />} />
-                            <Route path="/match-community" element={<MatchCommunity />} />
+                            <Route path="/practice-community" element={<PracticeCommunity />} />
                             <Route path="/write-community" element={<WriteCommunity />} />
                             <Route path="/community-detail" element={<CommunityDetail />} />
 
