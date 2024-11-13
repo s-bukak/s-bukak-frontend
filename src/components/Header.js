@@ -124,7 +124,7 @@ const Header = () => {
                         </button>
                         <button
                             className={`${activeMenuTab === 'community' ? 'text-white' : ''} hover:text-white`}
-                            onClick={() => handleTabClick('community')}
+                            onClick={() => handleTabClick('free-community')}
                         >
                             커뮤니티
                         </button>
