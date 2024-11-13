@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import CommunityButton from "../../components/CommunityButton";
-import underArrow from "../../assets/icons/underArrow.svg";
+import CommunityButton from "../../../components/CommunityButton";
+import underArrow from "../../../assets/icons/underArrow.svg";
 
 export default function WriteCommunity() {
   const [selectedBoard, setSelectedBoard] = useState('게시판을 선택해 주세요');
@@ -23,7 +23,7 @@ export default function WriteCommunity() {
 
       <div className="w-3/5 p-4">
         <div className="w-full border border-gray-300 rounded-lg overflow-hidden relative">
-          <div className="flex justify-between items-center p-7">
+          <div className="flex justify-between items-center p-8">
             <div className="w-[20%] border-b pl-3 flex items-center relative justify-between">
               {selectedBoard}
               <img

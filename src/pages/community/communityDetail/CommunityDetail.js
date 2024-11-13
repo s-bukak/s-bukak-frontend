@@ -1,7 +1,7 @@
 import React from 'react';
-import CommunityButton from "../../components/CommunityButton";
-import Profile from "../../assets/icons/profile.svg";
-import Send from "../../assets/icons/send.svg";
+import CommunityButton from "../../../components/CommunityButton";
+import Profile from "../../../assets/icons/profile.svg";
+import Send from "../../../assets/icons/send.svg";
 
 export default function CommunityDetail() {
   // 예시 댓글 데이터
