@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Aigu from '../../assets/logos/soccer/aigu.svg';
-import Shooting from '../../assets/logos/soccer/cs-shooting.svg';
 
 export default function Schedule() {
   const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
