@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useRecoilValue } from 'recoil'; // 상태를 읽기 위한 useRecoilValue 사용
+import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 import CommunityButton from "../../../components/CommunityButton";
 import underArrow from "../../../assets/icons/underArrow.svg";
-import axios from 'axios'
+import axios from 'axios';
 import { DOMAIN_NAME } from "../../../App";
 import { activeSportTabState } from '../../../state/sportTabState';
 
@@ -12,7 +13,8 @@ export default function WriteCommunity() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const token = process.env.REACT_APP_TEMP_TOKEN;
-  const activeSportTab = useRecoilValue(activeSportTabState); // Recoil 상태를 통해 스포츠 탭 값 읽기
+  const activeSportTab = useRecoilValue(activeSportTabState);
+  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅 사용
 
   const handleUnderArrowClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -25,8 +27,8 @@ export default function WriteCommunity() {
 
   const handleRegister = async () => {
     try {
-      const boardType = selectedBoard === '자유 게시판' ? 'FREE' : "PRACTICE";
-      const sportType = activeSportTab === 'soccer' ? 'SOCCER' : 'BASKETBALL'; // activeSportTab 상태에 따라 설정
+      const boardType = selectedBoard === '자유 게시판' ? 'FREE' : 'PRACTICE';
+      const sportType = activeSportTab === 'soccer' ? 'SOCCER' : 'BASKETBALL';
       const data = {
         title,
         content,
@@ -38,9 +40,11 @@ export default function WriteCommunity() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("등록 성공:", res);
+      alert("등록 성공!");
+      navigate('/free-community'); // 게시판 페이지로 이동
     } catch (error) {
       console.error("등록 실패:", error);
+      alert("등록에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -90,7 +94,7 @@ export default function WriteCommunity() {
           </div>
 
           <div className="flex justify-center items-center px-8">
-            <div className="h-96  w-full  mb-4 ">
+            <div className="h-96 w-full mb-4">
               <textarea
                 placeholder="내용을 입력해주세요."
                 value={content}
