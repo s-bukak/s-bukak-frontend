@@ -20,13 +20,13 @@ const PlayerManagementPanel = ({
     setPlayers((prevPlayers) => [
       ...prevPlayers,
       {
-        id: Date.now(),
         name: "",
         number: prevPlayers.length + 1,
         position: randomPosition,
         isSelected: false,
       },
     ]);
+    console.log(players);
   };
 
   const deletePlayer = (id) => {
@@ -38,6 +38,7 @@ const PlayerManagementPanel = ({
       player.id === id ? { ...player, [field]: value } : player,
     );
     setPlayers(updatedPlayers);
+    console.log(players);
   };
 
   return (
@@ -112,14 +113,12 @@ const Formation = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [players, setPlayers] = useState([
     {
-      id: 1,
       name: "박수연",
       number: 9,
       position: { top: 50, left: 50 },
       isSelected: false,
     },
     {
-      id: 2,
       name: "김영희",
       number: 10,
       position: { top: 150, left: 150 },
