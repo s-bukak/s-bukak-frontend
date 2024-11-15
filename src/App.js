@@ -35,6 +35,7 @@ const Layout = ({ children }) => {
 };
 
 export const DOMAIN_NAME = process.env["REACT_APP_BASE_URL"];
+export const TOKEN_NAME = process.env["REACT_TOKEN_TEMP_URL"];
 
 function App() {
   return (
