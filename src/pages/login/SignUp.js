@@ -3,6 +3,7 @@ import axios from 'axios';
 import CommonHeader from "../../components/CommonHeader";
 import { DOMAIN_NAME, TOKEN_NAME } from "../../App";
 import { leagueFields, teamInfoOptions, soccerTeamDivisionOptions, basketballTeamDivisionOptions } from "../../data/login";
+import { MdOutlineMail, MdOutlinePerson } from "react-icons/md";
 
 export default function SignUp() {
     const [email, setEmail] = useState('');
@@ -44,14 +45,6 @@ export default function SignUp() {
     const handleSignUp = async (e) => {
         e.preventDefault();
         try {
-            // App.js에서 선언된 TOKEN_NAME 가져오기
-            // const token = localStorage.getItem(TOKEN_NAME); // 로컬 스토리지에서 Bearer 토큰 가져오기
-            //
-            // if (!token) {
-            //     console.error('토큰이 없습니다. 로그인 후 다시 시도해주세요.');
-            //     return;
-            // }
-
             const res = await axios.post(
                 `${DOMAIN_NAME}/register`,
                 {
@@ -59,32 +52,30 @@ export default function SignUp() {
                     name,
                     isTeamLeader,
                     sport: isTeamLeader ? leagueField : "",
-                    collage: isTeamLeader ? teamInfo : "",
+                    college: isTeamLeader ? teamInfo : "",
                     team: isTeamLeader ? teamDivision : "",
                 },
                 {
-                    headers: {
-                        Authorization: `Bearer ${TOKEN_NAME}`,
-                    },
+                    headers: { Authorization: `Bearer ${TOKEN_NAME}` },
                 }
             );
 
-            if (res.data.success) {
-                console.log('회원가입 성공');
+            // 백엔드가 반환한 토큰 추출
+            const token = res.headers['authorization']?.split(' ')[1]; // "Bearer token"에서 토큰만 추출
 
-                const newToken = res.headers['authorization']; // 새 토큰이 응답 헤더에 있을 경우
-                const bearerToken = newToken && newToken.split(' ')[1];
+            if (token) {
+                // 토큰을 localStorage에 저장
+                localStorage.setItem('access_token', token);
 
-                if (bearerToken) {
-                    window.location.href = `/signin?token=${bearerToken}`;
-                } else {
-                    console.log('토큰 추출 실패');
-                }
+                console.log('회원가입 성공 및 로그인 상태 반영');
+
+                // 홈으로 리다이렉트
+                window.location.href = '/';
             } else {
-                console.log('회원가입 실패');
+                console.error('토큰 없음');
             }
         } catch (error) {
-            console.error('회원가입 중 오류 발생', error);
+            console.error('회원가입 중 오류 발생:', error.response?.data || error);
         }
     };
 
@@ -100,21 +91,28 @@ export default function SignUp() {
                     <form onSubmit={handleSignUp}>
                         <div className="mb-4">
                             <label className="block text-gray-800 text-sm font-bold mb-2">이메일</label>
-                            <input
-                                type="email"
-                                value={email}
-                                disabled
-                                className="w-full px-3 py-2 border rounded shadow-sm bg-zinc-100 text-gray-700 cursor-not-allowed"
-                            />
+                            <div
+                                className="flex items-center w-full px-3 py-2 border rounded shadow-sm bg-zinc-100 text-gray-700">
+                                <MdOutlineMail className="text-gray-400 mr-2"/>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    disabled
+                                    className="flex-1 bg-transparent outline-none cursor-not-allowed text-gray-400"
+                                />
+                            </div>
                         </div>
                         <div className="mb-8">
                             <label className="block text-gray-800 text-sm font-bold mb-2">이름</label>
-                            <input
-                                type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                className="w-full px-3 py-2 border rounded shadow-sm text-gray-700"
-                            />
+                            <div className="flex items-center w-full px-3 py-2 border rounded shadow-sm text-gray-700">
+                                <MdOutlinePerson className="text-gray-400 mr-2"/>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    className="flex-1 bg-transparent outline-none"
+                                />
+                            </div>
                         </div>
 
                         {/* 팀 대표자 계정 여부 */}
