@@ -4,7 +4,7 @@ import CalendarRight from "../assets/icons/calendar-right.svg";
 import axios from "axios";
 import { DOMAIN_NAME, TOKEN_NAME } from "../App";
 
-export default function Calendar({ events = [] }) {
+export default function Calendar() {
   const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
