@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@react-oauth/google": "^0.12.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -42,7 +41,7 @@
       "last 1 firefox version",
       "last 1 safari version"
     ],
-    "proxy": "http://10.223.119.115:8080"
+    "proxy" : "http://sbukak.o-r.kr:8080"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.1",
