@@ -79,8 +79,12 @@ const Header = () => {
 
                     {/* 로그인 & 회원가입 */}
                     <div className="space-x-4 text-white text-sm">
-                        <button onClick={() => handleTabClick('signin')}> 로그인 </button>
-                        <button onClick={() => handleTabClick('signup')}> 회원가입 </button>
+                        <button onClick={() => handleTabClick('signin')}
+                                className="hover:underline"
+                        > 로그인 </button>
+                        <button onClick={() => handleTabClick('signup')}
+                                className="hover:underline"
+                        > 회원가입 </button>
                     </div>
                 </div>
 
@@ -158,7 +162,7 @@ const Header = () => {
                         {teamNames.map((team, index) => (
                             <button
                                 key={index}
-                                onClick={() => navigate(`/team/${team}`)}
+                                onClick={() => navigate(`/team/${index + 1}`)}
                                 className="flex items-center justify-center flex-shrink-0"
                             >
                                 <img
