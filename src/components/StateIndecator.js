@@ -14,7 +14,7 @@ const StatusIndicator = ({ status }) => {
             textColor = "text-lime-700";
             borderColor = "border-lime-700";
             break;
-        case "진행예정":
+        case "진행예정" || "예측예정":
             bgColor = "bg-sky-100";
             textColor = "text-sky-600";
             borderColor = "border-sky-600";
