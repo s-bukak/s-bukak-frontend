@@ -1,26 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { activeSportTabState } from '../../state/sportTabState';
-import { soccerRankingData_S, soccerRankingData_H, basketballRankingData_S, basketballRankingData_H } from '../../data/ranking';
-import { soccerTeamLogos, basketballTeamLogos } from '../../data/teamLogos';
-import { getTeamLogoPath } from '../../utils/getTeamLogoPath';
+import axios from 'axios';
+import { DOMAIN_NAME, TOKEN_NAME } from "../../App";
 import { FaRankingStar } from "react-icons/fa6";
 
 const Ranking = () => {
     const activeSportTab = useRecoilValue(activeSportTabState);
     const [selectedLeague, setSelectedLeague] = useState('성곡리그');
-
-    // Determine the correct data set based on sport type and league selection
-    const rankingData = activeSportTab === 'soccer'
-        ? (selectedLeague === '성곡리그' ? soccerRankingData_S : soccerRankingData_H)
-        : (selectedLeague === '성곡리그' ? basketballRankingData_S : basketballRankingData_H);
-
-    // Determine which logo set to use based on the sport tab
-    const teamLogos = activeSportTab === 'soccer' ? soccerTeamLogos : basketballTeamLogos;
+    const [rankingData, setRankingData] = useState([]);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const handleLeagueChange = () => {
         setSelectedLeague((prevLeague) => (prevLeague === '성곡리그' ? '해공리그' : '성곡리그'));
     };
+
+    useEffect(() => {
+        const fetchRankingData = async () => {
+            try {
+                const sportType = activeSportTab === 'soccer' ? 'SOCCER' : 'BASKETBALL';
+                const response = await axios.get(`${DOMAIN_NAME}/ranking?sportType=${sportType}`, {
+                    headers: {
+                        Authorization: `Bearer ${TOKEN_NAME}`,
+                    },
+                });
+                const fetchedData = response.data.teams;
+
+                // 선택한 리그에 해당하는 데이터 필터링
+                const leagueData = fetchedData.find(
+                    league => league.leagueName === selectedLeague
+                );
+
+                if (leagueData && leagueData.teams.length > 0) {
+                    setRankingData(leagueData.teams); // 해당 리그의 teams 배열 설정
+                    setErrorMessage(null);
+                } else {
+                    setRankingData([]);
+                    setErrorMessage("데이터가 없습니다.");
+                }
+            } catch (error) {
+                console.error("Error fetching ranking data:", error);
+                setErrorMessage("데이터를 불러오는 중 오류가 발생했습니다.");
+            }
+        };
+
+        fetchRankingData();
+    }, [selectedLeague, activeSportTab]);
+
 
     return (
         <div className="bg-gradient-to-b from-teal-100 to-gray-200 px-6 pt-8 pb-10 rounded-xl shadow-md relative">
@@ -44,22 +70,29 @@ const Ranking = () => {
             </div>
 
             {/* Team Rows */}
-            {rankingData.map((team, index) => {
-                const logoData = teamLogos.find((logo) => logo.name === team.teamName);
-                const logoSrc = logoData ? getTeamLogoPath(activeSportTab, logoData.fileName) : null;
-
-                return (
-                    <div key={team.rank}
-                         className="grid grid-cols-3 items-center text-center py-2 border-b border-gray-400 text-sm">
-                        <div>{team.rank}</div>
+            {errorMessage ? (
+                <div className="text-center text-red-500 mt-4">{errorMessage}</div>
+            ) : (
+                rankingData.map((team) => (
+                    <div
+                        key={team.id}
+                        className="grid grid-cols-3 items-center text-center py-2 border-b border-gray-400 text-sm"
+                    >
+                        <div>{team.ranking}</div>
                         <div className="flex items-center justify-center space-x-2">
-                            {logoSrc && <img src={logoSrc} alt={`${team.teamName} 로고`} className="w-6 h-6"/>}
+                            {team.iconImageUrl && (
+                                <img
+                                    src={team.iconImageUrl}
+                                    alt={`${team.teamName} 로고`}
+                                    className="w-6 h-6"
+                                />
+                            )}
                             <span>{team.teamName}</span>
                         </div>
                         <div className="font-bold">{team.points}</div>
                     </div>
-                );
-            })}
+                ))
+            )}
         </div>
     );
 };
