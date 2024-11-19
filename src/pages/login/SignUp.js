@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CommonHeader from "../../components/CommonHeader";
-import { DOMAIN_NAME } from "../../App";
+import { DOMAIN_NAME, TOKEN_NAME } from "../../App";
 import { leagueFields, teamInfoOptions, soccerTeamDivisionOptions, basketballTeamDivisionOptions } from "../../data/login";
 
 export default function SignUp() {
@@ -15,14 +15,22 @@ export default function SignUp() {
     const [isPrivacyPolicyAccepted, setIsPrivacyPolicyAccepted] = useState(false);
     const [isAllAccepted, setIsAllAccepted] = useState(false);
 
-    // URL 쿼리 파라미터에서 email과 name을 추출하여 상태에 설정
+    // Base64로 인코딩된 데이터 디코딩
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
-        const emailParam = queryParams.get('email');
-        const nameParam = queryParams.get('name');
+        const dataParam = queryParams.get('data');
 
-        if (emailParam) setEmail(emailParam);
-        if (nameParam) setName(nameParam);
+        if (dataParam) {
+            try {
+                // Base64 디코딩 후 UTF-8로 변환
+                const decodedString = decodeURIComponent(escape(atob(dataParam)));
+                const decodedData = JSON.parse(decodedString);
+                setEmail(decodedData.email || '');
+                setName(decodedData.name || '');
+            } catch (error) {
+                console.error('Base64 디코딩 오류:', error);
+            }
+        }
     }, []);
 
     // 전체 동의 체크박스 처리
@@ -36,20 +44,36 @@ export default function SignUp() {
     const handleSignUp = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(`${DOMAIN_NAME}/register`, {
-                email,
-                name,
-                isTeamLeader,
-                sport: isTeamLeader ? leagueField : null,
-                collage: isTeamLeader ? teamInfo : null,
-                team: isTeamLeader ? teamDivision : null,
-            });
+            // App.js에서 선언된 TOKEN_NAME 가져오기
+            // const token = localStorage.getItem(TOKEN_NAME); // 로컬 스토리지에서 Bearer 토큰 가져오기
+            //
+            // if (!token) {
+            //     console.error('토큰이 없습니다. 로그인 후 다시 시도해주세요.');
+            //     return;
+            // }
+
+            const res = await axios.post(
+                `${DOMAIN_NAME}/register`,
+                {
+                    email,
+                    name,
+                    isTeamLeader,
+                    sport: isTeamLeader ? leagueField : "",
+                    collage: isTeamLeader ? teamInfo : "",
+                    team: isTeamLeader ? teamDivision : "",
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${TOKEN_NAME}`,
+                    },
+                }
+            );
 
             if (res.data.success) {
                 console.log('회원가입 성공');
 
-                const token = res.headers['authorization'];
-                const bearerToken = token && token.split(' ')[1];
+                const newToken = res.headers['authorization']; // 새 토큰이 응답 헤더에 있을 경우
+                const bearerToken = newToken && newToken.split(' ')[1];
 
                 if (bearerToken) {
                     window.location.href = `/signin?token=${bearerToken}`;
