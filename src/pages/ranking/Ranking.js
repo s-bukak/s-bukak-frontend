@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Row from "../../components/ranking/Row";
 import { useRecoilValue } from "recoil";
 import { activeSportTabState } from "../../state/sportTabState";
-import { soccerRankingData_S, soccerRankingData_H, basketballRankingData_S, basketballRankingData_H } from "../../data/ranking";
+import { DOMAIN_NAME, TOKEN_NAME } from "../../App";
 
 function Header({ isSoccer }) {
     return (
@@ -27,17 +28,49 @@ function Header({ isSoccer }) {
     );
 }
 
-
 export default function Ranking() {
     const activeSportTab = useRecoilValue(activeSportTabState);
     const [selectedLeague, setSelectedLeague] = useState('성곡리그');
+    const [rankingData, setRankingData] = useState([]);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const handleSelectChange = (event) => {
         setSelectedLeague(event.target.value);
     };
 
+    useEffect(() => {
+        const fetchRankingData = async () => {
+            try {
+                const sportType = activeSportTab === 'soccer' ? 'SOCCER' : 'BASKETBALL';
+                const response = await axios.get(`${DOMAIN_NAME}/ranking?sportType=${sportType}`, {
+                    headers: {
+                        Authorization: `Bearer ${TOKEN_NAME}`,
+                    },
+                });
+                const fetchedData = response.data.teams;
+
+                // 선택한 리그에 해당하는 데이터 필터링
+                const leagueData = fetchedData.find(
+                    league => league.leagueName === selectedLeague
+                );
+
+                if (leagueData && leagueData.teams.length > 0) {
+                    setRankingData(leagueData.teams); // 해당 리그의 teams 배열 설정
+                    setErrorMessage(null);
+                } else {
+                    setRankingData([]);
+                    setErrorMessage("데이터가 없습니다.");
+                }
+            } catch (error) {
+                console.error("Error fetching ranking data:", error);
+                setErrorMessage("데이터를 불러오는 중 오류가 발생했습니다.");
+            }
+        };
+
+        fetchRankingData();
+    }, [selectedLeague, activeSportTab]);
+
     const isSoccerTab = activeSportTab === 'soccer';
-    const isSungGokLeague = selectedLeague === '성곡리그';
 
     return (
         <div className="px-52 py-20">
@@ -54,14 +87,10 @@ export default function Ranking() {
 
             <Header isSoccer={isSoccerTab} />
 
-            {isSoccerTab ? (
-                (isSungGokLeague ? soccerRankingData_S : soccerRankingData_H).map((team, index) => (
-                    <div className="my-2" key={index}>
-                        <Row teamData={team} activeTab={activeSportTab} />
-                    </div>
-                ))
+            {errorMessage ? (
+                <div className="text-center text-red-500 mt-4">{errorMessage}</div>
             ) : (
-                (isSungGokLeague ? basketballRankingData_S : basketballRankingData_H).map((team, index) => (
+                rankingData.map((team, index) => (
                     <div className="my-2" key={index}>
                         <Row teamData={team} activeTab={activeSportTab} />
                     </div>
