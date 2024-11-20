@@ -74,7 +74,7 @@ export default function Ranking() {
 
     return (
         <div className="px-52 py-20">
-            <div className="text-3xl font-bold">🏆 2024 북악리그 순위</div>
+            <div className="text-3xl font-bold">2024 북악리그 순위</div>
             <select
                 value={selectedLeague}
                 onChange={handleSelectChange}
