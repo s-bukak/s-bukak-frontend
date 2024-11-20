@@ -4,7 +4,7 @@ import { RecoilRoot } from 'recoil';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { jwtDecode } from 'jwt-decode'; // named export 사용
+import { jwtDecode } from 'jwt-decode';
 
 // 페이지 컴포넌트 동적 임포트
 const SignIn = React.lazy(() => import('./pages/login/SignIn'));
@@ -16,6 +16,9 @@ const Ranking = React.lazy(() => import('./pages/ranking/Ranking'));
 const Team = React.lazy(() => import('./pages/team/Team'));
 const Terms = React.lazy(() => import('./pages/login/Terms'));
 const PrivacyPolicy = React.lazy(() => import('./pages/login/PrivacyPolicy'));
+const AboutUs = React.lazy(() => import('./pages/home/AboutUs'));
+const ContactUs = React.lazy(() => import('./pages/home/ContactUs'));
+const Notice = React.lazy(() => import('./pages/home/Notice'));
 
 // Layout 컴포넌트: Header와 Footer를 조건부로 렌더링
 const Layout = ({ children }) => {
@@ -77,6 +80,9 @@ function AppRoutes() {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/about-us" element={<AboutUs />} />
+                <Route path="/contact-us" element={<ContactUs />} />
+                <Route path="/notice" element={<Notice />} />
             </Routes>
         </Layout>
     );
