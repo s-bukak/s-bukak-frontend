@@ -114,10 +114,10 @@ function Betting() {
                                 <img
                                     src={game.homeTeamIconImageUrl}
                                     alt={game.homeTeamName}
-                                    className="w-20 h-20"
+                                    className="w-12 h-12"
                                 />
                                 <div className="flex flex-col items-start">
-                                    <p className="text-sm text-gray-300">{game.homeTeamDepartment}</p>
+                                    <p className="text-sm">{game.homeTeamDepartment}</p>
                                     <p className="font-semibold">{game.homeTeamName}</p>
                                     <p className="font-bold text-xl">{game.homeTeamPrediction}</p>
                                 </div>
@@ -149,14 +149,14 @@ function Betting() {
                             {/* Away Team */}
                             <div className="flex items-center space-x-4 w-1/2 justify-end">
                                 <div className="flex flex-col items-end">
-                                    <p className="text-sm text-gray-300">{game.awayTeamDepartment}</p>
+                                    <p className="text-sm">{game.awayTeamDepartment}</p>
                                     <p className="font-semibold">{game.awayTeamName}</p>
                                     <p className="font-bold text-xl">{game.awayTeamPrediction}</p>
                                 </div>
                                 <img
                                     src={game.awayTeamIconImageUrl}
                                     alt={game.awayTeamName}
-                                    className="w-20 h-20"
+                                    className="w-12 h-12"
                                 />
                             </div>
                         </div>

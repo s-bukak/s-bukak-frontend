@@ -14,7 +14,7 @@ function Row({ teamData, activeTab }) {
         <div className="bg-gray-100 flex flex-row items-center min-h-[60px] text-gray-700 text-sm py-2 rounded-xl">
             <Cell width="w-[5%]">{teamData.ranking}</Cell>
             <Cell width="w-[30%]">
-                <img src={teamData.iconImageUrl} alt={`${teamData.teamName} 로고`} className="w-12"/>
+                <img src={teamData.iconImageUrl} alt={`${teamData.teamName} 로고`} className="w-8 mr-2"/>
                 <span>{teamData.teamName}</span>
             </Cell>
             <Cell width="w-[10%]">{teamData.points}</Cell>
