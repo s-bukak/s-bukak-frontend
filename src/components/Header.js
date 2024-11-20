@@ -54,6 +54,10 @@ const Header = () => {
     const navigate = useNavigate();
     const scrollRef = useRef(null);
 
+    const handleLogoClick = () => {
+        navigate('/'); // 로고 클릭 시 루트 경로로 이동
+    };
+
     useEffect(() => {
         const token = localStorage.getItem('access_token');
         if (token) {
@@ -100,7 +104,7 @@ const Header = () => {
         }
     }, [showTeamLogos]);
 
-// 팀명 배열을 기반으로 로고 가져오기
+    // 팀명 배열을 기반으로 로고 가져오기
     const getTeamLogo = (team) => {
         return require(`../assets/logos/${activeSportTab}/${team}.svg`);
     };
@@ -113,7 +117,7 @@ const Header = () => {
                 <div className="container mx-auto flex justify-between items-center">
                     {/* 로고 */}
                     <div className="flex items-center space-x-4">
-                        <img src="/logo.svg" alt="Logo" className="w-40" />
+                        <img src="/logo.svg" alt="Logo" className="w-40 cursor-pointer" onClick={handleLogoClick}/>
                     </div>
 
                     {/* 사용자 드롭다운 메뉴 */}
