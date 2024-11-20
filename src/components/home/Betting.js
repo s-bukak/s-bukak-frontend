@@ -19,12 +19,12 @@ function Betting() {
                     },
                 });
 
-                // Flattening the schedulesYear structure into a single array of games
                 const games = response.data.schedulesYear.flatMap((year) =>
                     year.schedulesMonth.flatMap((month) =>
                         month.schedules.map((schedule) => ({
                             sportType: schedule.sportType,
                             startDate: schedule.startDate,
+                            startAt: schedule.startAt, // ISO 8601 형식의 날짜
                             betType: schedule.betType,
                             betTimeType: schedule.betTimeType,
                             homeTeamName: schedule.homeTeamName,
@@ -56,29 +56,59 @@ function Betting() {
         fetchBettingData();
     }, []);
 
-    // sportType에 따라 데이터 필터링
-    const filteredData = bettingData.filter((game) =>
+    const now = new Date(); // 현재 시각
+
+    // 데이터를 sportType에 따라 필터링
+    const sportFilteredData = bettingData.filter((game) =>
         activeSportTab === "soccer"
             ? game.sportType === "축구"
             : game.sportType === "농구"
     );
+
+    // 경기를 시간 순서로 정렬
+    const sortedData = sportFilteredData.sort((a, b) =>
+        new Date(a.startAt) - new Date(b.startAt)
+    );
+
+    // 이전 2개와 이후 4개 필터링
+    const limitedData = (() => {
+        const pastGames = [];
+        const futureGames = [];
+
+        for (const game of sortedData) {
+            const gameTime = new Date(game.startAt);
+
+            if (gameTime < now) {
+                pastGames.push(game);
+            } else {
+                futureGames.push(game);
+            }
+        }
+
+        // 이전 2개와 이후 4개만 선택
+        const pastGamesToShow = pastGames.slice(-2); // 과거 경기에서 2개 선택
+        const futureGamesToShow = futureGames.slice(0, 4); // 미래 경기에서 4개 선택
+
+        return [...pastGamesToShow, ...futureGamesToShow];
+    })();
 
     return (
         <div>
             {errorMessage ? (
                 <div className="text-center text-red-500 mt-4">{errorMessage}</div>
             ) : (
-                filteredData.map((game, index) => (
+                limitedData.map((game, index) => (
                     <div key={index} className="mb-6">
                         <div className="flex flex-row mb-4 items-center justify-start">
                             <div className="text-xl font-bold mr-4">
                                 {game.startDate}
                             </div>
-                            <StatusIndicator status={game.betType}/>
+                            <StatusIndicator status={game.betType} />
                         </div>
 
                         <div
-                            className="bg-gradient-to-b from-gray-600 to-gray-800 text-white rounded-xl shadow-md p-4 flex items-center relative">
+                            className="bg-gradient-to-b from-gray-600 to-gray-800 text-white rounded-xl shadow-md p-4 flex items-center relative"
+                        >
                             {/* Home Team */}
                             <div className="flex items-center space-x-4 w-1/2 justify-start">
                                 <img
@@ -102,9 +132,7 @@ function Betting() {
                             ></div>
 
                             {/* Score or VS */}
-                            <div
-                                className="text-xl font-bold text-center w-[250px]"
-                            >
+                            <div className="text-xl font-bold text-center w-[250px]">
                                 {game.betTimeType === "예측종료"
                                     ? `${game.homeTeamScore} - ${game.awayTeamScore}`
                                     : "VS"}
@@ -132,7 +160,6 @@ function Betting() {
                                 />
                             </div>
                         </div>
-
                     </div>
                 ))
             )}
