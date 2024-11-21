@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { unstable_usePrompt, useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { activeSportTabState, teamIdState } from "../../state/sportTabState";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { teamIdState } from "../../state/sportTabState";
 
 // 분리된 컴포넌트들
 import RecentMatches from "../../components/team/RecentMatch";
@@ -21,10 +21,6 @@ const Team = () => {
   const { teamInfo, isLoading } = useTeamInfo(teamId, isModified);
 
   console.log(teamInfo);
-
-  const handleModified = () => {
-    setIsModified((prev) => !prev); // 상태를 변경하여 useEffect 트리거
-  };
 
   if (!teamInfo) {
     return <div>팀 정보가 없습니다...</div>;
