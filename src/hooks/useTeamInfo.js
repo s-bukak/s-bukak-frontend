@@ -61,6 +61,7 @@ export default function useTeamInfo(teamId, isModified = false) {
     if (cachedData && !isModified) {
       console.log("Loaded data from cache");
       setTeamInfo(JSON.parse(cachedData));
+      clearCache();
     } else {
       console.log("Fetching fresh data");
       if (isModified) {
