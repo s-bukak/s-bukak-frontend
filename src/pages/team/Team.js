@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { activeSportTabState } from "../../state/sportTabState";
+import { unstable_usePrompt, useParams } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { activeSportTabState, teamIdState } from "../../state/sportTabState";
 import { getTeamInfo } from "./TeamData";
 
 // 분리된 컴포넌트들
@@ -10,22 +10,28 @@ import Formation from "../../components/team/Formation";
 import TeamSchedule from "../../components/team/TeamSchedule";
 import Cheering from "../../components/team/Cheering";
 
-const Team = () => {
-  const { teamName } = useParams(); // URL에서 팀 이름 가져오기
-  const activeSportTab = useRecoilValue(activeSportTabState); // 현재 스포츠 탭 (축구/농구) 상태 가져오기
-  const [teamInfo, setTeamInfo] = useState(null);
+import useTeamInfo from "../../hooks/useTeamInfo";
 
-  useEffect(() => {
-    // 팀 정보를 가져오는 로직 (getTeamInfo 함수는 가상으로 구현해둔 상태입니다)
-    const fetchTeamInfo = async () => {
-      const info = await getTeamInfo(activeSportTab, teamName);
-      setTeamInfo(info);
-    };
-    fetchTeamInfo();
-  }, [activeSportTab, teamName]);
+const Team = () => {
+  const [teamId, setTeamId] = useRecoilState(teamIdState);
+  if (!teamId) {
+    setTeamId(useParams);
+  }
+  console.log(teamId);
+  const [isModified, setIsModified] = useState(false); // 수정 상태 관리
+  const { teamInfo, isLoading } = useTeamInfo(teamId, isModified);
+
+  console.log(teamInfo);
+
+  const handleModified = () => {
+    setIsModified((prev) => !prev); // 상태를 변경하여 useEffect 트리거
+  };
 
   if (!teamInfo) {
-    return <div>팀 정보를 불러오는 중...</div>;
+    return <div>팀 정보가 없습니다...</div>;
+  }
+  if (isLoading) {
+    return <p>팀 정보 불러오는 중...</p>;
   }
 
   return (
@@ -34,7 +40,7 @@ const Team = () => {
         <div className="flex items-center justify-center">
           <img
             src={teamInfo.logoUrl}
-            alt={teamName}
+            alt={teamInfo.name}
             className="w-24 h-auto mr-3"
           />
           <div>
@@ -70,7 +76,7 @@ const Team = () => {
         {/* 오른쪽 (응원 메시지 댓글창) */}
         <div className="lg:w-1/3">
           {/* 응원 메시지 남기는 댓글창 컴포넌트 */}
-          <Cheering teamInfo={teamInfo} />
+          <Cheering owner={teamInfo} />
         </div>
       </div>
     </div>

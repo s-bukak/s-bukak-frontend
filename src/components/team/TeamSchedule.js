@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { getTeamLogoPath } from "../../utils/LogoUtils";
 import { activeSportTabState } from "../../state/sportTabState";
 import { useRecoilValue } from "recoil";
+import useTeamInfo from "../../hooks/useTeamInfo";
 
 const TeamSchedule = ({ owner, schedules = [] }) => {
   const activeSportTab = useRecoilValue(activeSportTabState);
+  const teamInfo = useTeamInfo();
 
   // 연도 필터를 위한 상태 관리
   const [selectedYear, setSelectedYear] = useState("2024"); // 기본값은 2024
@@ -43,7 +45,7 @@ const TeamSchedule = ({ owner, schedules = [] }) => {
               index % 2 === 0 ? "bg-white" : "bg-transparent" // 짝수 타일은 흰색 배경, 홀수 타일은 배경색 제거
             }`}
           >
-            <div className="w-20 flex items-center text-left space-x-2">
+            <div className="w-28 flex items-center text-left space-x-2">
               {/* 팀 로고 */}
               <img
                 src={owner.logoUrl}
@@ -66,17 +68,17 @@ const TeamSchedule = ({ owner, schedules = [] }) => {
                 className="text-end
               "
               >
-                <span className="text-sm">{match.opponentName}</span>
+                <span className="text-sm">{match.opponent}</span>
               </div>
               {/* 상대 팀 로고 */}
               <img
-                src={getTeamLogoPath(activeSportTab, match.opponent)}
-                alt={match.opponentName}
+                src={match.opponentName}
+                alt={match.opponent}
                 className="w-7 h-7 object-cover rounded-full text-right right-0"
               />
             </div>
             {/* 경기 날짜 */}
-            <div className="text-right">
+            <div className="px-4 text-right">
               <span className="text-sm text-gray-700 font-light">
                 {match.date}
               </span>

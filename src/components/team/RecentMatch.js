@@ -31,12 +31,12 @@ const RecentMatch = ({ owner, recentMatches }) => {
               </span>
               <div className="flex flex-col items-center text-center">
                 <img
-                  src={getTeamLogoPath(activeSportTab, match.opponent)}
+                  src={match.opponentLogoUrl}
                   alt={match.opponent}
                   className="m-1 w-7 h-7 object-cover"
                 />
                 <span className="font-medium text-sm text-center">
-                  {match.opponentName}
+                  {match.opponent}
                 </span>{" "}
                 {/* mt-1로 간격 조절 */}
               </div>
