@@ -21,7 +21,7 @@ const PlayerManagementPanel = ({
     setPlayers((prevPlayers) => [
       ...prevPlayers,
       {
-        id: Date.now(), // 고유 ID 생성
+        id: String(Date.now()), // 고유 ID 생성
         name: "",
         number: String(prevPlayers.length + 1),
         position: randomPosition,
@@ -118,14 +118,14 @@ const Formation = ({ owner }) => {
   const activeSportTab = useRecoilValue(activeSportTabState);
   const { postPlayers, isLoading, error } = usePostPlayers(); // 최상위에서 훅 호출
   const [isEditing, setIsEditing] = useState(false);
-  const [players, setPlayers] = useState(owner.players || []); // owner.players가 없으면 빈 배열 사용
 
   const containerRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [dragStartTime, setDragStartTime] = useState(0);
   const [currentPlayerId, setCurrentPlayerId] = useState(null);
+  const [players, setPlayers] = useState(owner.players || []); // owner.players가 없으면 빈 배열 사용
 
-  console.log(owner.players);
+  console.log(players);
 
   const handleEditClick = async () => {
     if (isEditing) {

@@ -34,8 +34,8 @@ const Team = () => {
   }
 
   return (
-    <div className="container mx-auto p-4 my-20">
-      <div className="flex items-center space-x-4 mx-52 mb-14 justify-between">
+    <div className=" w-full container mx-auto p-4 my-20">
+      <div className="flex items-center space-x-4 mb-14 justify-between max-w-[67rem] mx-auto">
         <div className="flex items-center justify-center">
           <img
             src={teamInfo.logoUrl}
