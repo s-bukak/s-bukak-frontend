@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { unstable_usePrompt, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { activeSportTabState, teamIdState } from "../../state/sportTabState";
-import { getTeamInfo } from "./TeamData";
 
 // 분리된 컴포넌트들
 import RecentMatches from "../../components/team/RecentMatch";
@@ -67,7 +66,7 @@ const Team = () => {
               recentMatches={teamInfo.recentMatches}
             />
             {/* 포메이션 컴포넌트 */}
-            <Formation />
+            <Formation owner={teamInfo} />
           </div>
 
           {/* 경기 일정 컴포넌트 */}

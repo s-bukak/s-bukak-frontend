@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import { getTeamLogoPath } from "../../utils/LogoUtils";
 import { activeSportTabState } from "../../state/sportTabState";
 import { useRecoilValue } from "recoil";
-import useTeamInfo from "../../hooks/useTeamInfo";
 
 const TeamSchedule = ({ owner, schedules = [] }) => {
   const activeSportTab = useRecoilValue(activeSportTabState);
-  const teamInfo = useTeamInfo();
 
   // 연도 필터를 위한 상태 관리
   const [selectedYear, setSelectedYear] = useState("2024"); // 기본값은 2024
