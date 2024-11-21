@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CommunityButton from "../../components/CommunityButton";
-import Glasses from "../../assets/icons/glasses.svg";
 import PageNumber from "../../components/PageNumber";
-import { DOMAIN_NAME } from "../../App";
+import Glasses from "../../assets/icons/glasses.svg";
+import { DOMAIN_NAME, TOKEN_NAME } from "../../App";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -12,35 +13,38 @@ export default function FreeCommunity() {
   const [startPage, setStartPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태
   const [filteredData, setFilteredData] = useState([]); // API에서 받아온 데이터 상태
+  const navigate = useNavigate();
 
-  const token = process.env.REACT_APP_TEMP_TOKEN;
-
+  // 상세 페이지로 이동
+  const handleRowClick = (boardId) => {
+    navigate(`/community-detail/${boardId}`);
+  };
   // fetchBoards 함수를 useCallback으로 감싸기
   const fetchBoards = useCallback(async () => {
     try {
       const response = await axios.get(`${DOMAIN_NAME}/boards`, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${TOKEN_NAME}`
         },
         params: {
-          sportType: "SOCCER", // 스포츠 종류를 SOCCER로 고정
           boardType: "FREE",   // 게시판 타입을 FREE로 고정
           query: searchTerm,   // 검색어를 API 요청의 파라미터로 전달
-          myBoardsOnly: true   // 사용자의 게시글만 보기 옵션 활성화
+          myBoardsOnly: false   // 사용자의 게시글만 보기 옵션 활성화
         }
       });
 
       const formattedData = response.data.boards.map(board => ({
+        boardId : board.boardId,
         title: board.title,
         author: board.username,
-        date: board.createAt,
+        createAt: board.createAt,
         comments: board.comments.length
       }));
       setFilteredData(formattedData);
     } catch (error) {
       console.error("Error fetching boards:", error);
     }
-  }, [searchTerm, token]);  // searchTerm과 token을 종속성 배열에 포함
+  }, [searchTerm]);  // searchTerm과 token을 종속성 배열에 포함
 
   useEffect(() => {
     fetchBoards();
@@ -92,10 +96,13 @@ export default function FreeCommunity() {
             </thead>
             <tbody>
             {filteredData.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((item, index) => (
-              <tr key={index} className="border-b">
+              <tr
+                key={index}
+                className="border-b cursor-pointer hover:bg-gray-100"
+                onClick={() => handleRowClick(item.boardId)}>
                 <td className="p-3">{item.title}</td>
                 <td className="p-3">{item.author}</td>
-                <td className="p-3">{item.date}</td>
+                <td className="p-3">{item.createAt}</td>
                 <td className="p-3 text-center">{item.comments}</td>
               </tr>
             ))}
