@@ -30,6 +30,7 @@ const Layout = ({ children }) => {
     const location = useLocation();
     const hideHeaderFooter = location.pathname === '/signin' || location.pathname === '/signup';
 
+
     return (
         <div className="min-h-screen flex flex-col">
             {!hideHeaderFooter && <Header />}

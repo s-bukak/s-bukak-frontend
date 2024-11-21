@@ -3,6 +3,7 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { activeSportTabState } from '../../state/sportTabState'; // 1. Recoil 상태 불러오기
+import Calendar from '../../components/Calendar';
 
 const Home = () => {
     const activeSportTab = useRecoilValue(activeSportTabState); // 2. 현재 활성화된 탭 확인
@@ -14,6 +15,7 @@ const Home = () => {
             ) : (
                 <div>농구 관련 컴포넌트</div>
             )}
+            <Calendar/>
         </div>
     );
 };
