@@ -4,6 +4,7 @@ import { activeSportTabState } from "../../state/sportTabState";
 import formationSC from "../../assets/images/formationSC.svg";
 import formationBB from "../../assets/images/formationBB.svg";
 import { MdCancel } from "react-icons/md";
+import usePostPlayers from "../../hooks/usePostPlayers";
 
 const PlayerManagementPanel = ({
   players,
@@ -20,13 +21,13 @@ const PlayerManagementPanel = ({
     setPlayers((prevPlayers) => [
       ...prevPlayers,
       {
+        id: Date.now(), // 고유 ID 생성
         name: "",
-        number: prevPlayers.length + 1,
+        number: String(prevPlayers.length + 1),
         position: randomPosition,
         isSelected: false,
       },
     ]);
-    console.log(players);
   };
 
   const deletePlayer = (id) => {
@@ -35,10 +36,14 @@ const PlayerManagementPanel = ({
 
   const updatePlayer = (id, field, value) => {
     const updatedPlayers = players.map((player) =>
-      player.id === id ? { ...player, [field]: value } : player,
+      player.id === id
+        ? {
+            ...player,
+            [field]: field === "number" ? String(value) : value, // number 필드는 항상 문자열로 변환
+          }
+        : player,
     );
     setPlayers(updatedPlayers);
-    console.log(players);
   };
 
   return (
@@ -57,10 +62,12 @@ const PlayerManagementPanel = ({
 
       <div className="flex overflow-x-auto space-x-1">
         {players.map((player) => (
-          <div className="w-20 flex flex-col space-y-1 items-center">
+          <div
+            className="w-20 flex flex-col space-y-1 items-center"
+            key={player.id}
+          >
             <div
-              key={player.id}
-              className={`w-16 h-20 rounded-full flex flex-col items-center justify-center cursor-pointer  p-1  ${
+              className={`w-16 h-20 rounded-full flex flex-col items-center justify-center cursor-pointer p-1 ${
                 player.isSelected
                   ? activeSportTab === "soccer"
                     ? "text-white bg-gradient-to-b from-emerald-800 to-gray-800"
@@ -80,7 +87,6 @@ const PlayerManagementPanel = ({
                 }
                 className="w-14 text-center bg-transparent outline-none font-bold text-3xl"
                 disabled={!isEditing}
-                style={{ textAlign: "center" }} // 추가된 스타일
               />
               <input
                 value={player.name}
@@ -107,18 +113,21 @@ const PlayerManagementPanel = ({
   );
 };
 
-const Formation = () => {
+const Formation = ({ owner }) => {
   const userType = "팀대표";
   const activeSportTab = useRecoilValue(activeSportTabState);
+  const { postPlayers, isLoading, error } = usePostPlayers(); // 최상위에서 훅 호출
   const [isEditing, setIsEditing] = useState(false);
   const [players, setPlayers] = useState([
     {
+      id: 1,
       name: "박수연",
-      number: 9,
+      number: "9",
       position: { top: 50, left: 50 },
       isSelected: false,
     },
     {
+      id: 2,
       name: "김영희",
       number: 10,
       position: { top: 150, left: 150 },
@@ -128,21 +137,33 @@ const Formation = () => {
   const containerRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [dragStartTime, setDragStartTime] = useState(0);
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(null);
+  const [currentPlayerId, setCurrentPlayerId] = useState(null);
 
-  const handleEditClick = () => {
-    setIsEditing(!isEditing);
+  const handleEditClick = async () => {
+    if (isEditing) {
+      try {
+        const result = await postPlayers(owner.teamId, players); // POST 요청
+        console.log("API 응답:", result);
+        alert("선수 정보가 성공적으로 업데이트되었습니다.");
+      } catch (err) {
+        console.error("POST 요청 실패:", err);
+        alert("선수 정보를 업데이트하는 동안 오류가 발생했습니다.");
+      }
+    }
+
+    console.log("현재 players 상태:", players);
+    setIsEditing(!isEditing); // 편집 모드 토글
   };
 
-  const handleMouseDown = (e, index) => {
+  const handleMouseDown = (e, id) => {
     if (!isEditing) return;
-    setCurrentPlayerIndex(index);
+    setCurrentPlayerId(id);
     setDragStartTime(Date.now());
     setDragging(true);
   };
 
   const handleMouseMove = (e) => {
-    if (!dragging || currentPlayerIndex === null) return;
+    if (!dragging || currentPlayerId === null) return;
 
     const containerRect = containerRef.current.getBoundingClientRect();
     const newLeft = e.clientX - containerRect.left - 25;
@@ -154,24 +175,17 @@ const Formation = () => {
     );
     const boundedTop = Math.max(0, Math.min(newTop, containerRect.height - 50));
 
-    const updatedPlayers = [...players];
-    updatedPlayers[currentPlayerIndex].position = {
-      left: boundedLeft,
-      top: boundedTop,
-    };
+    const updatedPlayers = players.map((player) =>
+      player.id === currentPlayerId
+        ? { ...player, position: { left: boundedLeft, top: boundedTop } }
+        : player,
+    );
     setPlayers(updatedPlayers);
   };
 
   const handleMouseUp = () => {
-    const clickDuration = Date.now() - dragStartTime;
-    if (clickDuration < 200) {
-      // 클릭 이벤트로 간주, 텍스트 편집
-      setDragging(false);
-      setCurrentPlayerIndex(null);
-    } else {
-      // 드래그 완료
-      setDragging(false);
-    }
+    setDragging(false);
+    setCurrentPlayerId(null);
   };
 
   const togglePlayerSelection = (id) => {
@@ -179,15 +193,12 @@ const Formation = () => {
     const selectedCount = players.filter((player) => player.isSelected).length;
 
     setPlayers((prevPlayers) =>
-      prevPlayers.map((player) => {
-        if (player.id === id) {
-          // 현재 선수가 선택 해제되는 경우 또는 선택 가능한 최대 수를 넘지 않을 때만 상태를 변경
-          if (player.isSelected || selectedCount < maxSelectablePlayers) {
-            return { ...player, isSelected: !player.isSelected };
-          }
-        }
-        return player;
-      }),
+      prevPlayers.map((player) =>
+        player.id === id &&
+        (player.isSelected || selectedCount < maxSelectablePlayers)
+          ? { ...player, isSelected: !player.isSelected }
+          : player,
+      ),
     );
   };
 
@@ -204,12 +215,11 @@ const Formation = () => {
             onClick={handleEditClick}
             className="text-sm font-semibold bg-gray-300 rounded-full px-3 py-1"
           >
-            {isEditing ? "완료" : "편집"}
+            {isLoading ? "업데이트 중..." : isEditing ? "완료" : "편집"}
           </button>
         )}
       </div>
 
-      {/* 선수 관리 패널 */}
       <PlayerManagementPanel
         players={players}
         setPlayers={setPlayers}
@@ -226,10 +236,9 @@ const Formation = () => {
           alt="Formation"
           className="h-auto rounded-md"
         />
-
         {players
           .filter((player) => player.isSelected)
-          .map((player, index) => (
+          .map((player) => (
             <div
               key={player.id}
               className="absolute flex flex-col items-center cursor-pointer"
@@ -238,12 +247,12 @@ const Formation = () => {
                 left: `${player.position.left}px`,
                 cursor: isEditing ? "move" : "default",
               }}
-              onMouseDown={(e) => handleMouseDown(e, index)}
+              onMouseDown={(e) => handleMouseDown(e, player.id)}
             >
               <div
                 className={`w-6 h-6 border-2 rounded-full flex items-center justify-center ${
                   activeSportTab === "soccer"
-                    ? "bg-emerald-500 border-green-400 "
+                    ? "bg-emerald-500 border-green-400"
                     : "bg-gray-700 border-gray-400"
                 }`}
               >
@@ -253,7 +262,7 @@ const Formation = () => {
               </div>
               <div
                 className={`text-center mt-0.5 text-sm text-white rounded px-2 font-semibold ${
-                  activeSportTab === "soccer" ? "bg-green-700  " : "bg-gray-800"
+                  activeSportTab === "soccer" ? "bg-green-700" : "bg-gray-800"
                 }`}
               >
                 {player.name}
