@@ -118,26 +118,14 @@ const Formation = ({ owner }) => {
   const activeSportTab = useRecoilValue(activeSportTabState);
   const { postPlayers, isLoading, error } = usePostPlayers(); // 최상위에서 훅 호출
   const [isEditing, setIsEditing] = useState(false);
-  const [players, setPlayers] = useState([
-    {
-      id: 1,
-      name: "박수연",
-      number: "9",
-      position: { top: 50, left: 50 },
-      isSelected: false,
-    },
-    {
-      id: 2,
-      name: "김영희",
-      number: 10,
-      position: { top: 150, left: 150 },
-      isSelected: false,
-    },
-  ]);
+  const [players, setPlayers] = useState(owner.players || []); // owner.players가 없으면 빈 배열 사용
+
   const containerRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [dragStartTime, setDragStartTime] = useState(0);
   const [currentPlayerId, setCurrentPlayerId] = useState(null);
+
+  console.log(owner.players);
 
   const handleEditClick = async () => {
     if (isEditing) {
