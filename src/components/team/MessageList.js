@@ -32,28 +32,27 @@ const MessageList = ({ teamInfo }) => {
       username: user.userName,
       userImage: user.userImage,
       content: input,
-      createdAt: new Date()
-        .toLocaleString("ko-KR", {
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        })
-        .replace(/\./g, "/")
-        .slice(0, 11),
+      createdAt: (() => {
+        const now = new Date();
+        const month = String(now.getMonth() + 1).padStart(2, "0"); // 월: 0부터 시작하므로 +1
+        const day = String(now.getDate()).padStart(2, "0"); // 일
+        const hours = String(now.getHours()).padStart(2, "0"); // 시
+        const minutes = String(now.getMinutes()).padStart(2, "0"); // 분
+        return `${month}/${day} ${hours}:${minutes}`;
+      })(),
       isAnonymous: isAnonymous, // 체크박스 상태 반영
       isHidden: false,
     };
     setChatList((prevChatList) => [...prevChatList, newComment]);
     setInput("");
   };
-
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ block: "nearest" });
-
-    window.scrollTo(0, 0);
   }, [chatList]);
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ block: "nearest" });
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="flex flex-col items-center w-full h-full mt-2">
