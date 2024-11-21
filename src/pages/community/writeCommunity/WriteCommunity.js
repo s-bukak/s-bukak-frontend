@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import CommunityButton from "../../../components/CommunityButton";
 import underArrow from "../../../assets/icons/underArrow.svg";
 import axios from 'axios';
-import { DOMAIN_NAME } from "../../../App";
-import { activeSportTabState } from '../../../state/sportTabState';
+import { DOMAIN_NAME, TOKEN_NAME} from "../../../App";
 
 export default function WriteCommunity() {
   const [selectedBoard, setSelectedBoard] = useState('게시판을 선택해 주세요');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const token = process.env.REACT_APP_TEMP_TOKEN;
-  const activeSportTab = useRecoilValue(activeSportTabState);
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅 사용
 
   const handleUnderArrowClick = () => {
@@ -28,16 +24,14 @@ export default function WriteCommunity() {
   const handleRegister = async () => {
     try {
       const boardType = selectedBoard === '자유 게시판' ? 'FREE' : 'PRACTICE';
-      const sportType = activeSportTab === 'soccer' ? 'SOCCER' : 'BASKETBALL';
       const data = {
         title,
         content,
         boardType,
-        sportType,
       };
-      const res = await axios.post(`${DOMAIN_NAME}/board`, data, {
+      await axios.post(`${DOMAIN_NAME}/board`, data, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${TOKEN_NAME}`,
         },
       });
       alert("등록 성공!");
