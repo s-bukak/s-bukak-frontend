@@ -22,6 +22,9 @@ const Schedule = React.lazy(() => import('./pages/schedule/Schedule'));
 const Ranking = React.lazy(() => import('./pages/ranking/Ranking'));
 const Team = React.lazy(() => import('./pages/team/Team'));
 
+export const DOMAIN_NAME = process.env["REACT_APP_BASE_URL"];
+export const TOKEN_NAME = process.env["REACT_APP_TOKEN_TEMP_URL"];
+
 // Layout 컴포넌트: Header와 Footer를 조건부로 렌더링
 const Layout = ({ children }) => {
     const location = useLocation();
@@ -36,8 +39,6 @@ const Layout = ({ children }) => {
     );
 };
 
-export const DOMAIN_NAME = process.env["REACT_APP_BASE_URL"];
-
 function App() {
     return (
         <RecoilRoot>
@@ -50,7 +51,7 @@ function App() {
                             <Route path="/free-community" element={<FreeCommunity />} />
                             <Route path="/practice-community" element={<PracticeCommunity />} />
                             <Route path="/write-community" element={<WriteCommunity />} />
-                            <Route path="/community-detail" element={<CommunityDetail />} />
+                            <Route path="/community-detail/:boardId" element={<CommunityDetail />} />
 
                             <Route path="/my-wrote" element={<MyWrote />} />
                             <Route path="/my-comment" element={<MyComment />} />
