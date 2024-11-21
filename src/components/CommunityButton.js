@@ -29,7 +29,7 @@ function CommunityButton() {
           </div>
           <div
             className="flex justify-between items-center px-4 py-3 cursor-pointer"
-            onClick={() => navigate('/match-community')}
+            onClick={() => navigate('/practice-community')}
           >
             <span className="text-sm font-bold">연습 상대 게시판</span>
             <img src={arrow} alt="Arrow Icon" className="w-4 h-4" />
