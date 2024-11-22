@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { RecoilRoot } from 'recoil';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ChatBot from "./components/ai/ChatBot";
 
 // 페이지 컴포넌트 동적 임포트
 const SignIn = React.lazy(() => import('./pages/login/SignIn'));
@@ -12,6 +13,7 @@ const Community = React.lazy(() => import('./pages/community/Community'));
 const Schedule = React.lazy(() => import('./pages/schedule/Schedule'));
 const Ranking = React.lazy(() => import('./pages/ranking/Ranking'));
 const Team = React.lazy(() => import('./pages/team/Team'));
+
 
 // Layout 컴포넌트: Header와 Footer를 조건부로 렌더링
 const Layout = ({ children }) => {
@@ -46,6 +48,7 @@ function App() {
                             <Route path="/signin" element={<SignIn />} />
                             <Route path="/signup" element={<SignUp />} />
                         </Routes>
+                        <ChatBot />
                     </Layout>
                 </Suspense>
             </Router>
