@@ -150,7 +150,7 @@ export default function Calendar() {
         <button onClick={handlePrevMonth} className="w-6 h-6">
           <img src={CalendarLeft} alt="Previous Month" className="w-full h-full" />
         </button>
-        <div className="text-gray-800 text-2xl font-bold">{months[currentMonth]} {calendarYear}</div>
+        <div className="text-gray-800 text-2xl font-bold">{calendarYear}년 {months[currentMonth]}</div>
         <button onClick={handleNextMonth} className="w-6 h-6">
           <img src={CalendarRight} alt="Next Month" className="w-full h-full" />
         </button>
