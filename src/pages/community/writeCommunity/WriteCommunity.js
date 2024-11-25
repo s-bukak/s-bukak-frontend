@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import CommunityButton from "../../../components/CommunityButton";
 import underArrow from "../../../assets/icons/underArrow.svg";
 import axios from 'axios';
-import { DOMAIN_NAME, TOKEN_NAME} from "../../../App";
+import {DOMAIN_NAME, TOKEN_NAME} from "../../../App";
 
 export default function WriteCommunity() {
   const [selectedBoard, setSelectedBoard] = useState('게시판을 선택해 주세요');
@@ -45,7 +45,7 @@ export default function WriteCommunity() {
   return (
     <div className="flex flex-row w-full gap-[75px]">
       <div className="pl-36 p-4">
-        <CommunityButton />
+        <CommunityButton/>
       </div>
 
       <div className="w-3/5 p-4">
@@ -70,8 +70,12 @@ export default function WriteCommunity() {
 
           {isDropdownOpen && (
             <div className="absolute bg-white border border-gray-300 w-[20%] pl-1 shadow-lg z-10 rounded-lg ml-8 ">
-              <div className="p-2 cursor-pointer hover:bg-gray-100" onClick={() => handleBoardSelection('자유 게시판')}>자유 게시판</div>
-              <div className="p-2 cursor-pointer hover:bg-gray-100" onClick={() => handleBoardSelection('연습상대 게시판')}>연습상대 게시판</div>
+              <div className="p-2 cursor-pointer hover:bg-gray-100" onClick={() => handleBoardSelection('자유 게시판')}>자유
+                게시판
+              </div>
+              <div className="p-2 cursor-pointer hover:bg-gray-100"
+                   onClick={() => handleBoardSelection('연습상대 게시판')}>연습상대 게시판
+              </div>
             </div>
           )}
 
