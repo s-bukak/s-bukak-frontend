@@ -28,7 +28,7 @@ export default function PracticeCommunity() {
                     Authorization: `Bearer ${TOKEN_NAME}`
                 },
                 params: {
-                    boardType: "Practice",   // 게시판 타입을 FREE로 고정
+                    boardType: "PRACTICE",   // 게시판 타입을 PRACTICE로 고정
                     query: searchTerm,   // 검색어를 API 요청의 파라미터로 전달
                     myBoardsOnly: true   // 사용자의 게시글만 보기 옵션 활성화
                 }
@@ -64,7 +64,7 @@ export default function PracticeCommunity() {
 
           <div className="w-3/5 p-4">
               <div className="text-xl font-semibold mb-4 border border-gray-300 rounded-lg p-2 px-8">
-                  자유 게시판
+                  연습 상대 게시판
               </div>
 
               <div className="flex justify-end">
@@ -85,14 +85,14 @@ export default function PracticeCommunity() {
                   </div>
               </div>
 
-              <div className="w-full border border-gray-300 rounded-lg overflow-hidden px-6">
-                  <table className="table-auto w-full text-left">
+              <div className="w-full border border-gray-300 rounded-lg px-6">
+                  <table className="table-fixed w-full text-center">
                       <thead className="border-b-2 border-gray-400 font-bold">
                       <tr>
-                          <th className="p-3">제목</th>
-                          <th className="p-3">작성자</th>
-                          <th className="p-3">작성일</th>
-                          <th className="p-3 text-center">댓글</th>
+                          <th className="p-3 text-start">제목</th>
+                          <th className="p-3 text-end">작성자</th>
+                          <th className="p-3 text-end">작성일</th>
+                          <th className="p-3 text-end">댓글</th>
                       </tr>
                       </thead>
                       <tbody>
@@ -101,10 +101,10 @@ export default function PracticeCommunity() {
                           key={index}
                           className="border-b cursor-pointer hover:bg-gray-100"
                           onClick={() => handleRowClick(item.boardId)}>
-                            <td className="p-3">{item.title}</td>
-                            <td className="p-3">{item.author}</td>
-                            <td className="p-3">{item.createAt}</td>
-                            <td className="p-3 text-center">{item.comments}</td>
+                            <td className="p-3 text-start">{item.title}</td>
+                            <td className="p-3 text-end">{item.author}</td>
+                            <td className="p-3 text-end">{item.createAt}</td>
+                            <td className="p-3 text-end">{item.comments}</td>
                         </tr>
                       ))}
                       </tbody>

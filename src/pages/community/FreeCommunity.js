@@ -84,14 +84,14 @@ export default function FreeCommunity() {
           </div>
         </div>
 
-        <div className="w-full border border-gray-300 rounded-lg overflow-hidden px-6">
-          <table className="table-auto w-full text-left">
+        <div className="w-full border border-gray-300 rounded-lg px-6">
+          <table className="table-fixed w-full text-center">
             <thead className="border-b-2 border-gray-400 font-bold">
             <tr>
-              <th className="p-3">제목</th>
-              <th className="p-3">작성자</th>
-              <th className="p-3">작성일</th>
-              <th className="p-3 text-center">댓글</th>
+              <th className="p-3 text-start">제목</th>
+              <th className="p-3 text-end">작성자</th>
+              <th className="p-3 text-end">작성일</th>
+              <th className="p-3 text-end">댓글</th>
             </tr>
             </thead>
             <tbody>
@@ -100,10 +100,10 @@ export default function FreeCommunity() {
                 key={index}
                 className="border-b cursor-pointer hover:bg-gray-100"
                 onClick={() => handleRowClick(item.boardId)}>
-                <td className="p-3">{item.title}</td>
-                <td className="p-3">{item.author}</td>
-                <td className="p-3">{item.createAt}</td>
-                <td className="p-3 text-center">{item.comments}</td>
+                <td className="p-3 text-start">{item.title}</td>
+                <td className="p-3 text-end">{item.author}</td>
+                <td className="p-3 text-end">{item.createAt}</td>
+                <td className="p-3 text-end">{item.comments}</td>
               </tr>
             ))}
             </tbody>
