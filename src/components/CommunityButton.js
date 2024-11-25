@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import arrow from '../assets/icons/arrow.svg';
 
 function CommunityButton() {
-  const [activeButton, setActiveButton] = useState('게시판 정보');
   const navigate = useNavigate();
+  const location = useLocation(); // 현재 경로를 가져오기
+  const [activeButton, setActiveButton] = useState(); // 초기 상태
+
+  // URL 경로에 따라 activeButton 상태 초기화
+  useEffect(() => {
+    if (location.pathname.includes('/my-wrote') || location.pathname.includes('/my-comment')) {
+      setActiveButton('나의활동');
+    } else {
+      setActiveButton('게시판 정보');
+    }
+  }, [location.pathname]);
 
   const handleClick = (button) => {
     setActiveButton(button);
@@ -40,15 +50,14 @@ function CommunityButton() {
       return (
         <>
           <div
-            className="flex justify-between items-center px-4 py-3 border-b border-gray-200"
+            className="flex justify-between items-center px-4 py-3 border-b border-gray-200 cursor-pointer"
             onClick={() => navigate('/my-wrote')}
           >
             <span className="text-sm font-bold">내가 쓴 글</span>
             <img src={arrow} alt="Arrow Icon" className="w-4 h-4" />
           </div>
-
           <div
-            className="flex justify-between items-center px-4 py-3"
+            className="flex justify-between items-center px-4 py-3 cursor-pointer"
             onClick={() => navigate('/my-comment')}
           >
             <span className="text-sm font-bold">댓글 단 글</span>
@@ -64,7 +73,7 @@ function CommunityButton() {
       {/* 글쓰기 버튼 */}
       <button
         className="w-full h-12 text-white font-bold bg-gray-800 rounded-lg mb-4"
-        onClick={() => window.location.href = '/write-community'}
+        onClick={() => navigate('/write-community')} // navigate 사용
       >
         글쓰기
       </button>
@@ -73,10 +82,16 @@ function CommunityButton() {
       <div className="border border-gray-300 rounded-lg overflow-hidden">
         {/* 탭 영역 */}
         <div className="flex border-b border-gray-300 py-1 px-1">
-          <button className={getButtonClass('게시판 정보')} onClick={() => handleClick('게시판 정보')}>
+          <button
+            className={getButtonClass('게시판 정보')}
+            onClick={() => handleClick('게시판 정보')}
+          >
             게시판 정보
           </button>
-          <button className={getButtonClass('나의활동')} onClick={() => handleClick('나의활동')}>
+          <button
+            className={getButtonClass('나의활동')}
+            onClick={() => handleClick('나의활동')}
+          >
             나의활동
           </button>
         </div>
