@@ -58,7 +58,7 @@ const MessageList = ({ teamInfo, style }) => {
     <div className="flex flex-col items-center w-full h-full mt-2">
       <div className="flex flex-col justify-between w-full h-full bg-white rounded-2xl border border-gray-400 p-4">
         <div
-          className="flex flex-col overflow-y-auto pb-0 mb-0 flex-1 items-end"
+          className="flex flex-col overflow-y-auto pb-0 mb-0 flex-1 justify-center"
           style={{ ...style }}
         >
           {chatList.length > 0 ? (
