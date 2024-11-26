@@ -13,6 +13,8 @@ const PlayerManagementPanel = ({
   togglePlayerSelection,
   isEditing,
 }) => {
+  const scrollContainerRef = useRef(null); // 가로 스크롤 컨테이너 참조
+
   const addPlayer = () => {
     const randomPosition = {
       top: Math.floor(Math.random() * 200),
@@ -28,6 +30,14 @@ const PlayerManagementPanel = ({
         isSelected: false,
       },
     ]);
+
+    // 새로운 선수가 추가된 후 스크롤 이동
+    setTimeout(() => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollLeft =
+          scrollContainerRef.current.scrollWidth;
+      }
+    }, 0); // DOM 업데이트 이후 실행
   };
 
   const deletePlayer = (id) => {
@@ -60,7 +70,7 @@ const PlayerManagementPanel = ({
         )}
       </div>
 
-      <div className="flex overflow-x-auto space-x-1">
+      <div className="flex overflow-x-auto space-x-1" ref={scrollContainerRef}>
         {players.map((player) => (
           <div
             className="w-20 flex flex-col space-y-1 items-center"
@@ -114,7 +124,6 @@ const PlayerManagementPanel = ({
 };
 
 const Formation = ({ owner }) => {
-  const userType = "팀대표";
   const activeSportTab = useRecoilValue(activeSportTabState);
   const { postPlayers, isLoading, error } = usePostPlayers(); // 최상위에서 훅 호출
   const [isEditing, setIsEditing] = useState(false);
@@ -123,9 +132,7 @@ const Formation = ({ owner }) => {
   const [dragging, setDragging] = useState(false);
   const [dragStartTime, setDragStartTime] = useState(0);
   const [currentPlayerId, setCurrentPlayerId] = useState(null);
-  const [players, setPlayers] = useState(owner.players || []); // owner.players가 없으면 빈 배열 사용
-
-  console.log(players);
+  const [players, setPlayers] = useState(owner.players || []);
 
   const handleEditClick = async () => {
     if (isEditing) {
@@ -198,7 +205,7 @@ const Formation = ({ owner }) => {
     >
       <div className="flex items-center">
         <h2 className="text-xl font-bold mr-2">인포메이션</h2>
-        {userType === "팀대표" && (
+        {owner?.canUpdatePlayers && (
           <button
             onClick={handleEditClick}
             className="text-sm font-semibold bg-gray-300 rounded-full px-3 py-1"
