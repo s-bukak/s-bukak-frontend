@@ -2,16 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import {
   user,
   cleanbotMessage,
-  initialChatList,
   homePlaceHolder,
 } from "../../utils/MessageUtils";
 import { IoIosSend } from "react-icons/io";
+import useTeamMsg from "../../hooks/useTeamMsg";
 
-const MessageList = ({ teamInfo }) => {
+const MessageList = ({ teamInfo, style }) => {
   const [input, setInput] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false); // 익명 여부 상태 추가
   const messageEndRef = useRef(null);
-  const [chatList, setChatList] = useState(initialChatList);
+  const { messages: chatList, setMessages: setChatList } = useTeamMsg();
 
   const handleInputChange = (event) => setInput(event.target.value);
 
@@ -58,83 +58,89 @@ const MessageList = ({ teamInfo }) => {
     <div className="flex flex-col items-center w-full h-full mt-2">
       <div className="flex flex-col justify-between w-full h-full bg-white rounded-2xl border border-gray-400 p-4">
         <div
-          className="overflow-y-auto mb-4 flex-1"
-          style={{ maxHeight: "80vh" }}
+          className="flex flex-col overflow-y-auto pb-0 mb-0 flex-1 items-end"
+          style={{ ...style }}
         >
-          {chatList.map((comment, index) => (
-            <div key={comment.id} className="w-full">
-              <div
-                className={`flex ${comment.userId === user.userId ? "justify-end" : "justify-start"} mb-1`}
-              >
-                {comment.userId === user.userId ? (
-                  <>
-                    <div className="flex flex-col items-end max-w-xs">
-                      <div className="flex items-center mb-1">
-                        <span className="text-sm font-semibold">
-                          {user.userName}
+          {chatList.length > 0 ? (
+            chatList.map((comment, index) => (
+              <div key={comment.id} className="w-full">
+                <div
+                  className={`flex ${comment.userId === user.userId ? "justify-end" : "justify-start"} mb-1`}
+                >
+                  {comment.userId === user.userId ? (
+                    <>
+                      <div className="flex flex-col items-end max-w-xs">
+                        <div className="flex items-center mb-1">
+                          <span className="text-sm font-semibold">
+                            {user.userName}
+                          </span>
+                        </div>
+                        <div className="bg-blue-100 text-gray-700 p-2.5 rounded-lg text-sm break-words">
+                          {comment.content}
+                        </div>
+                        <span className="text-xs text-gray-500 mt-1">
+                          {comment.createdAt}
                         </span>
                       </div>
-                      <div className="bg-blue-100 text-gray-700 p-2.5 rounded-lg text-sm break-words">
-                        {comment.content}
+                      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 ml-3">
+                        <img src={comment.userImage} alt="user" />
                       </div>
-                      <span className="text-xs text-gray-500 mt-1">
-                        {comment.createdAt}
-                      </span>
-                    </div>
-                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 ml-3">
-                      <img src={comment.userImage} alt="user" />
-                    </div>
-                  </>
-                ) : (
-                  <>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 mr-3">
+                        <img
+                          src={
+                            comment.isAnonymous
+                              ? "../../images/Anonymous.jpg"
+                              : comment.userImage
+                          }
+                          alt="user"
+                        />
+                      </div>
+                      <div className="flex flex-col items-start max-w-xs">
+                        <div className="flex items-center mb-1">
+                          <span className="text-sm font-semibold">
+                            {comment.isAnonymous ? "익명" : comment.username}
+                          </span>
+                        </div>
+                        <div className="bg-gray-100 text-gray-700 p-2.5 rounded-lg text-sm break-words">
+                          {comment.content}
+                        </div>
+                        <span className="text-xs text-gray-500 mt-1">
+                          {comment.createdAt}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {comment.isHidden && (
+                  <div className="flex justify-start mb-3 w-full">
                     <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 mr-3">
-                      <img
-                        src={
-                          comment.isAnonymous
-                            ? "../../images/Anonymous.jpg"
-                            : comment.userImage
-                        }
-                        alt="user"
-                      />
+                      <img src={cleanbotMessage.userImage} alt="cleanbot" />
                     </div>
                     <div className="flex flex-col items-start max-w-xs">
                       <div className="flex items-center mb-1">
                         <span className="text-sm font-semibold">
-                          {comment.isAnonymous ? "익명" : comment.username}
+                          {cleanbotMessage.username}
                         </span>
                       </div>
-                      <div className="bg-gray-100 text-gray-700 p-2.5 rounded-lg text-sm break-words">
-                        {comment.content}
+                      <div className="flex flex-row">
+                        <div className="bg-gray-100 text-gray-700 p-2.5 rounded-lg text-sm break-words">
+                          {cleanbotMessage.content}
+                        </div>
                       </div>
-                      <span className="text-xs text-gray-500 mt-1">
-                        {comment.createdAt}
-                      </span>
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
-
-              {comment.isHidden && (
-                <div className="flex justify-start mb-3 w-full">
-                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 mr-3">
-                    <img src={cleanbotMessage.userImage} alt="cleanbot" />
-                  </div>
-                  <div className="flex flex-col items-start max-w-xs">
-                    <div className="flex items-center mb-1">
-                      <span className="text-sm font-semibold">
-                        {cleanbotMessage.username}
-                      </span>
-                    </div>
-                    <div className="flex flex-row">
-                      <div className="bg-gray-100 text-gray-700 p-2.5 rounded-lg text-sm break-words">
-                        {cleanbotMessage.content}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+            ))
+          ) : (
+            <div className="flex h-full text-gray-400 text-center justify-center items-center">
+              메시지가 없습니다. 응원 메시지를 남겨보세요!
             </div>
-          ))}
+          )}
           <div ref={messageEndRef}></div> {/* 하단 참조 */}
         </div>
 

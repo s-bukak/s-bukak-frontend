@@ -15,7 +15,15 @@ const Cheering = ({ teamInfo }) => {
       >
         {teamInfo ? teamMessageSubtitle : homeMessageSubtitle}
       </h3>
-      <MessageList className="w-full md:w-1/2" teamInfo={teamInfo} />
+      <MessageList
+        className="w-full md:w-1/2"
+        teamInfo={teamInfo}
+        style={{
+          minHeight: "70vh", // 최소 높이 설정
+          maxHeight: "70vh", // 최대 높이 설정 (스크롤 활성화)
+          overflowY: "auto", // 세로 스크롤 활성화
+        }}
+      />
     </div>
   );
 };
