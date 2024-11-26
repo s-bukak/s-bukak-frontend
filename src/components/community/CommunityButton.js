@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import arrow from '../assets/icons/arrow.svg';
+import React, {useState, useEffect} from 'react';
+import {useNavigate, useLocation} from 'react-router-dom';
+import {IoIosArrowForward} from "react-icons/io";
 
 function CommunityButton() {
   const navigate = useNavigate();
@@ -35,14 +35,14 @@ function CommunityButton() {
             onClick={() => navigate('/free-community')}
           >
             <span className="text-sm font-bold">자유 게시판</span>
-            <img src={arrow} alt="Arrow Icon" className="w-4 h-4" />
+            <IoIosArrowForward/>
           </div>
           <div
             className="flex justify-between items-center px-4 py-3 cursor-pointer"
             onClick={() => navigate('/practice-community')}
           >
             <span className="text-sm font-bold">연습 상대 게시판</span>
-            <img src={arrow} alt="Arrow Icon" className="w-4 h-4" />
+            <IoIosArrowForward/>
           </div>
         </>
       );
@@ -54,14 +54,14 @@ function CommunityButton() {
             onClick={() => navigate('/my-wrote')}
           >
             <span className="text-sm font-bold">내가 쓴 글</span>
-            <img src={arrow} alt="Arrow Icon" className="w-4 h-4" />
+            <IoIosArrowForward/>
           </div>
           <div
             className="flex justify-between items-center px-4 py-3 cursor-pointer"
             onClick={() => navigate('/my-comment')}
           >
             <span className="text-sm font-bold">댓글 단 글</span>
-            <img src={arrow} alt="Arrow Icon" className="w-4 h-4" />
+            <IoIosArrowForward/>
           </div>
         </>
       );

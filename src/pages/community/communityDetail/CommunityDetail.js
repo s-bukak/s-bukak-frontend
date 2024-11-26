@@ -1,18 +1,19 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import CommunityButton from "../../../components/CommunityButton";
-import { useParams } from "react-router-dom";
-import Profile from "../../../assets/icons/profile.svg";
-import Send from "../../../assets/icons/send.svg";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import CommunityButton from "../../../components/community/CommunityButton";
+import {useParams} from "react-router-dom";
 import axios from "axios";
-import { DOMAIN_NAME, TOKEN_NAME } from "../../../App";
+import {CgProfile} from "react-icons/cg";
+import Send from "../../../assets/icons/send.svg";
+import {DOMAIN_NAME, TOKEN_NAME} from "../../../App";
 
 export default function CommunityDetail() {
-  const { boardId } = useParams();
+  const {boardId} = useParams();
   const [board, setBoard] = useState(null); // 게시글 데이터
   const [comments, setComments] = useState([]); // 댓글 데이터
   const [newComment, setNewComment] = useState(""); // 새로운 댓글 내용
   const [isAnonymous, setIsAnonymous] = useState(false); // 익명 여부
   const commentsRef = useRef(null); // 댓글 영역 참조
+  const lastCommentRef = useRef(null); // 최신 댓글 참조
   const [isSubmitting, setIsSubmitting] = useState(false); // 댓글 중복 제출 방지
 
   // 게시글 데이터 가져오기
@@ -35,15 +36,23 @@ export default function CommunityDetail() {
     fetchPostDetail();
   }, [fetchPostDetail]); // fetchPostDetail을 의존성으로 추가
 
-  // 댓글 데이터가 변경될 때 스크롤을 가장 아래로 이동
+  // 페이지 새로 들어가면 최신 댓글로 이동
   useEffect(() => {
+    if (lastCommentRef.current) {
+      lastCommentRef.current.scrollIntoView({block: "nearest"});
+    }
+  }, [comments]);
+
+  // 댓글 작성 후 부드럽게 스크롤
+  const scrollToBottomSmooth = () => {
     if (commentsRef.current) {
       commentsRef.current.scrollTo({
         top: commentsRef.current.scrollHeight,
         behavior: "smooth",
       });
     }
-  }, [comments]);
+  }
+
 
   // 댓글 작성
   const handlePostComment = async () => {
@@ -64,7 +73,8 @@ export default function CommunityDetail() {
         }
       );
       setNewComment(""); // 댓글 입력 창 초기화
-      fetchPostDetail(); // 댓글 새로고침
+      await fetchPostDetail(); // 댓글 새로고침
+      scrollToBottomSmooth(); // 부드럽게 스크롤
     } catch (error) {
       console.error("Error posting comment:", error);
     } finally {
@@ -77,7 +87,7 @@ export default function CommunityDetail() {
   return (
     <div className="flex flex-row w-full gap-[75px]">
       <div className="pl-36 p-4">
-        <CommunityButton />
+        <CommunityButton/>
       </div>
 
       <div className="w-3/5 p-4">
@@ -89,7 +99,7 @@ export default function CommunityDetail() {
             <div className="flex justify-between">
               <div className="flex flex-row items-center gap-2.5">
                 <img
-                  src={board.userProfileImageUrl || Profile}
+                  src={board.userProfileImageUrl || CgProfile}
                   alt="Profile"
                   className="w-14 h-14 rounded-full"
                 />
@@ -110,7 +120,11 @@ export default function CommunityDetail() {
           >
             {/* 댓글 목록 */}
             {comments.map((comment, index) => (
-              <div key={index} className="flex gap-4 mb-4 p-2">
+              <div
+                key={index}
+                ref={index === comments.length - 1 ? lastCommentRef : null} // 최신 댓글에 ref 추가
+                className="flex gap-4 mb-4 p-2"
+              >
                 {/* 사용자 프로필 이미지 */}
                 <div className="flex-shrink-0">
                   <img
@@ -146,7 +160,7 @@ export default function CommunityDetail() {
           </div>
 
           {/* 댓글 작성 영역 */}
-          <div className="flex items-center w-full p-1 pl-2.5 rounded-xl bg-gray-100 mt-4 border border-gray-400">
+          <div className="flex items-center w-full p-1 px-2.5 rounded-xl bg-gray-100 mt-4 border border-gray-400">
             <div className="flex items-center">
               <input
                 id="checked-checkbox"
@@ -178,9 +192,9 @@ export default function CommunityDetail() {
             />
             <button
               onClick={handlePostComment}
-              className="flex items-center justify-center w-8 h-8"
+              className="flex items-center justify-center w-8 h-8 "
             >
-              <img src={Send} alt="Send" className="w-6 h-6" />
+              <img src={Send} alt="send" />
             </button>
           </div>
         </div>

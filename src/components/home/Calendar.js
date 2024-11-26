@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import CalendarLeft from "../assets/icons/calendar-left.svg";
-import CalendarRight from "../assets/icons/calendar-right.svg";
+import React, {useState, useEffect} from "react";
+import {MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos} from "react-icons/md";
+
 import axios from "axios";
-import { DOMAIN_NAME, TOKEN_NAME } from "../App";
+import {DOMAIN_NAME, TOKEN_NAME} from "../../App";
 
 export default function Calendar() {
   const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
@@ -106,12 +106,12 @@ export default function Calendar() {
 
     // 이전 월의 날짜 추가
     for (let i = firstDay - 1; i >= 0; i--) {
-      week.push({ day: prevMonthDays - i, type: "prev", hasEvent: false });
+      week.push({day: prevMonthDays - i, type: "prev", hasEvent: false});
     }
 
     // 현재 월의 날짜 추가
     for (let day = 1; day <= daysInMonth; day++) {
-      week.push({ day, type: "current", hasEvent: checkHasEvent(day, "current") });
+      week.push({day, type: "current", hasEvent: checkHasEvent(day, "current")});
       if (week.length === 7) {
         calendar.push(week);
         week = [];
@@ -120,7 +120,7 @@ export default function Calendar() {
 
     // 다음 월의 날짜 추가
     for (let i = 1; i <= nextMonthDays; i++) {
-      week.push({ day: i, type: "next", hasEvent: false });
+      week.push({day: i, type: "next", hasEvent: false});
       if (week.length === 7) {
         calendar.push(week);
         week = [];
@@ -148,11 +148,11 @@ export default function Calendar() {
       {/* 월 변경 섹션 */}
       <div className="w-full h-full flex items-center justify-between px-5">
         <button onClick={handlePrevMonth} className="w-6 h-6">
-          <img src={CalendarLeft} alt="Previous Month" className="w-full h-full" />
+          <MdOutlineArrowBackIosNew/>
         </button>
         <div className="text-gray-800 text-2xl font-bold">{calendarYear}년 {months[currentMonth]}</div>
         <button onClick={handleNextMonth} className="w-6 h-6">
-          <img src={CalendarRight} alt="Next Month" className="w-full h-full" />
+          <MdOutlineArrowForwardIos/>
         </button>
       </div>
 
@@ -171,7 +171,7 @@ export default function Calendar() {
         ))}
         {/* 달력 날짜 */}
         {calendarViewData.map((week, weekIndex) =>
-          week.map(({ day, type, hasEvent }, dayIndex) => (
+          week.map(({day, type, hasEvent}, dayIndex) => (
             <div className="flex flex-col items-center" key={`${weekIndex}-${dayIndex}`}>
               <div
                 className={`relative h-10 w-10 flex items-center justify-center cursor-pointer rounded-full ${

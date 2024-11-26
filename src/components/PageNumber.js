@@ -1,12 +1,17 @@
 import React from 'react';
-import reverseLink from "../assets/icons/reverseLink.svg";
-import Link from "../assets/icons/link.svg";
+
+import { MdArrowBackIos,MdArrowForwardIos } from "react-icons/md";
+
 
 export default function PageNumber({ currentPage, startPage, totalPages, onPageChange, onNextClick, onPrevClick }) {
   return (
-    <div className="w-full sm:w-3/4 md:w-full p-1 border border-gray-300 rounded-lg flex flex-wrap justify-center space-x-2 mt-12 mb-24">
-      <img src={reverseLink} alt="Reverse Link icon" onClick={onPrevClick} className="cursor-pointer" />
-      {Array.from({ length: Math.min(10, totalPages - startPage + 1) }, (_, i) => startPage + i).map((page) => (
+    <div
+      className="w-full sm:w-3/4 md:w-full p-1 border border-gray-300 rounded-lg flex flex-wrap justify-center space-x-2 mt-12 mb-24">
+      <div onClick={onPrevClick} className="cursor-pointer flex items-center text-gray-500">
+        <MdArrowBackIos/>
+      </div>
+
+      {Array.from({length: Math.min(10, totalPages - startPage + 1)}, (_, i) => startPage + i).map((page) => (
         <button
           key={page}
           onClick={() => onPageChange(page)}
@@ -17,7 +22,9 @@ export default function PageNumber({ currentPage, startPage, totalPages, onPageC
           {page}
         </button>
       ))}
-      <img src={Link} alt="Link icon" onClick={onNextClick} className="cursor-pointer" />
+      <div onClick={onNextClick} className="cursor-pointer flex items-center text-gray-500">
+        <MdArrowForwardIos/>
+      </div>
     </div>
   );
 }

@@ -2,8 +2,8 @@ import React, {useState, useEffect} from "react";
 import {DOMAIN_NAME, TOKEN_NAME} from "../../App";
 import axios from "axios";
 import StatusIndicator from "../../components/StateIndecator"; // StatusIndicator 컴포넌트 임포트
-import CalendarLeft from "../../assets/icons/calendar-left.svg";
-import CalendarRight from "../../assets/icons/calendar-right.svg";
+import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
+
 
 export default function Schedule() {
   const months = [
@@ -84,19 +84,19 @@ export default function Schedule() {
     <div className="w-full px-72 flex flex-col">
       {/* 연도 표시 */}
       <div className="w-full font-bold text-gray-800 text-2xl flex justify-center my-8 gap-32">
-        <img
-          src={CalendarLeft}
-          alt="Calendar left"
+        <div
           onClick={handlePreviousYear}
           className="cursor-pointer"
-        />
+        >
+          <MdOutlineKeyboardArrowLeft/>
+        </div>
         {calendarYear || "연도 불러오는 중..."}
-        <img
-          src={CalendarRight}
-          alt="Calendar right"
+        <div
           onClick={handleNextYear}
           className="cursor-pointer"
-        />
+        >
+          <MdOutlineKeyboardArrowRight/>
+        </div>
       </div>
 
       {/* 월 표시 */}

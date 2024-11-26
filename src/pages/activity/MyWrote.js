@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import CommunityButton from "../../components/CommunityButton";
+import CommunityButton from "../../components/community/CommunityButton";
 import PageNumber from "../../components/PageNumber";
-import Glasses from "../../assets/icons/glasses.svg";
+import {FaMagnifyingGlass} from "react-icons/fa6";
 import {DOMAIN_NAME, TOKEN_NAME} from "../../App";
 
 const ITEMS_PER_PAGE = 10;
@@ -75,10 +75,10 @@ export default function MyWrote() {
               className="border border-gray-300 rounded-lg p-2 w-full pl-4 pr-10"
             />
             <button
-              className="absolute right-3 top-1/2 transform -translate-y-1/2"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-300"
               onClick={handleSearch}
             >
-              <img src={Glasses} alt="Glasses Icon" className="w-5 h-5"/>
+              <FaMagnifyingGlass/>
             </button>
           </div>
         </div>
@@ -115,7 +115,7 @@ export default function MyWrote() {
           totalPages={Math.ceil(filteredData.length / ITEMS_PER_PAGE)}
           onPageChange={setCurrentPage}
           onNextClick={() => setStartPage((prev) => prev + 10)}
-          onPrevClick={() => setStartPage((prev) => prev - 10)}
+          onPrevClick={() => setStartPage((prev) => (prev > 1 ? prev - 10 : 1))} // 조건 추가
         />
       </div>
     </div>

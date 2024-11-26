@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import CommunityButton from "../../../components/CommunityButton";
-import underArrow from "../../../assets/icons/underArrow.svg";
+import CommunityButton from "../../../components/community/CommunityButton";
 import axios from 'axios';
 import {DOMAIN_NAME, TOKEN_NAME} from "../../../App";
+import {IoIosArrowDown} from "react-icons/io";
 
 export default function WriteCommunity() {
   const [selectedBoard, setSelectedBoard] = useState('게시판을 선택해 주세요');
@@ -25,9 +25,7 @@ export default function WriteCommunity() {
     try {
       const boardType = selectedBoard === '자유 게시판' ? 'FREE' : 'PRACTICE';
       const data = {
-        title,
-        content,
-        boardType,
+        title, content, boardType,
       };
       await axios.post(`${DOMAIN_NAME}/board`, data, {
         headers: {
@@ -42,8 +40,7 @@ export default function WriteCommunity() {
     }
   };
 
-  return (
-    <div className="flex flex-row w-full gap-[75px]">
+  return (<div className="flex flex-row w-full gap-[75px]">
       <div className="pl-36 p-4">
         <CommunityButton/>
       </div>
@@ -53,12 +50,12 @@ export default function WriteCommunity() {
           <div className="flex justify-between px-8 pt-8 items-center">
             <div className="w-[20%] border-b pl-3 flex items-center relative justify-between">
               {selectedBoard}
-              <img
-                src={underArrow}
-                alt="Under Arrow"
+              <div
                 onClick={handleUnderArrowClick}
                 className="cursor-pointer"
-              />
+              >
+                <IoIosArrowDown/>
+              </div>
             </div>
             <button
               className="w-28 h-8 text-white font-bold bg-gray-800 rounded-lg md:w-28 md:h-8"
@@ -76,8 +73,7 @@ export default function WriteCommunity() {
               <div className="p-2 cursor-pointer hover:bg-gray-100"
                    onClick={() => handleBoardSelection('연습상대 게시판')}>연습상대 게시판
               </div>
-            </div>
-          )}
+            </div>)}
 
           <div className="flex justify-center px-8">
             <div className="w-full relative my-4">
@@ -103,6 +99,5 @@ export default function WriteCommunity() {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
 }
