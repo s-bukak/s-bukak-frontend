@@ -7,5 +7,5 @@ export const activeSportTabState = atom({
 
 export const teamIdState = atom({
   key: "teamIdState",
-  default: 1,
+  default: 0,
 });

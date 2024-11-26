@@ -6,22 +6,25 @@ import {
 } from "../../utils/MessageUtils";
 import { IoIosSend } from "react-icons/io";
 import useTeamMsg from "../../hooks/useTeamMsg";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { teamIdState } from "../../state/sportTabState";
 import useTeamInfo from "../../hooks/useTeamInfo";
 import { useParams } from "react-router-dom";
+import SockJS from "sockjs-client";
+import { over } from "stompjs";
+import { TOKEN_NAME } from "../../App";
 
 const MessageList = ({ style }) => {
   const [input, setInput] = useState("");
-  const [isAnonymous, setIsAnonymous] = useState(false); // 익명 여부 상태 추가
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const messageEndRef = useRef(null);
-  const { messages: chatList, setMessages: setChatList } = useTeamMsg();
+  const { messages: chatList, setMessages, fetchMessages } = useTeamMsg();
   const [teamId, setTeamId] = useRecoilState(teamIdState);
-  if (!teamId) {
-    setTeamId(useParams);
-  }
-  const [isModified, setIsModified] = useState(false); // 수정 상태 관리
-  const { teamInfo, isLoading } = useTeamInfo(teamId, isModified);
+  const { teamInfo } = useTeamInfo(teamId);
+  const stompClient = useRef(null);
+  const subscriptionRef = useRef(null); // 구독 ID를 추적
+
+  console.log(teamId);
 
   const handleInputChange = (event) => setInput(event.target.value);
 
@@ -33,29 +36,95 @@ const MessageList = ({ style }) => {
     setIsAnonymous(event.target.checked);
   };
 
+  const connectWebSocket = () => {
+    const socket = new SockJS("http://sbukak.o-r.kr:8080/ws-chat");
+    stompClient.current = over(socket);
+
+    stompClient.current.connect(
+      { Authorization: `Bearer ${TOKEN_NAME}` },
+      () => {
+        subscribeToTeam(teamId); // WebSocket 연결 후 팀 메시지 구독
+      },
+      (error) => {
+        console.error("WebSocket connection error:", error);
+      },
+    );
+  };
+
+  const disconnectWebSocket = () => {
+    if (stompClient.current) {
+      if (stompClient.current.connected) {
+        stompClient.current.disconnect(() => {
+          console.log("WebSocket disconnected");
+        });
+      }
+      unsubscribeFromTeam(); // 구독 해제
+    }
+  };
+
+  const subscribeToTeam = (teamId) => {
+    if (stompClient.current && stompClient.current.connected) {
+      // 기존 구독 해제
+      unsubscribeFromTeam();
+
+      // 새로운 팀 메시지 구독
+      subscriptionRef.current = stompClient.current.subscribe(
+        `/topic/cheer-messages-${teamId}`,
+        (message) => {
+          const newMessage = JSON.parse(message.body);
+          setMessages((prevMessages) => [...prevMessages, newMessage]);
+        },
+      );
+    }
+  };
+
+  const unsubscribeFromTeam = () => {
+    if (subscriptionRef.current) {
+      subscriptionRef.current.unsubscribe();
+      subscriptionRef.current = null;
+    }
+  };
+
   const submitComment = () => {
     if (!input.trim()) return;
 
     const newComment = {
-      id: chatList.length + 1,
-      userId: user.userId,
-      username: user.userName,
-      userImage: user.userImage,
+      userId: 1, // 예시 User ID
       content: input,
-      createdAt: (() => {
-        const now = new Date();
-        const month = String(now.getMonth() + 1).padStart(2, "0"); // 월: 0부터 시작하므로 +1
-        const day = String(now.getDate()).padStart(2, "0"); // 일
-        const hours = String(now.getHours()).padStart(2, "0"); // 시
-        const minutes = String(now.getMinutes()).padStart(2, "0"); // 분
-        return `${month}/${day} ${hours}:${minutes}`;
-      })(),
-      isAnonymous: isAnonymous, // 체크박스 상태 반영
-      isHidden: false,
+      teamId: teamId,
+      isAnonymous: isAnonymous,
     };
-    setChatList((prevChatList) => [...prevChatList, newComment]);
-    setInput("");
+
+    if (stompClient.current && stompClient.current.connected) {
+      stompClient.current.send(
+        "/app/send/message",
+        {},
+        JSON.stringify(newComment),
+      );
+      setInput("");
+      setIsAnonymous(false);
+    } else {
+      console.error("WebSocket is not connected");
+    }
   };
+
+  useEffect(() => {
+    // 페이지 로드 시 WebSocket 연결
+    connectWebSocket();
+
+    return () => {
+      // 페이지를 떠날 때 WebSocket 연결 해제
+      disconnectWebSocket();
+    };
+  }, []);
+
+  useEffect(() => {
+    // teamId가 변경될 때 구독을 갱신
+    if (stompClient.current && stompClient.current.connected) {
+      subscribeToTeam(teamId);
+    }
+  }, [teamId]);
+
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ block: "nearest" });
   }, [chatList]);
@@ -71,7 +140,6 @@ const MessageList = ({ style }) => {
           className="flex flex-col overflow-y-auto flex-1"
           style={{ ...style }}
         >
-          {/* 스크롤 영역 */}
           <div
             className={`flex flex-col flex-grow ${
               chatList.length === 0
@@ -80,7 +148,7 @@ const MessageList = ({ style }) => {
             }`}
           >
             {chatList.length > 0 ? (
-              chatList.map((comment, index) => (
+              chatList.map((comment) => (
                 <div key={comment.id} className="w-full">
                   <div
                     className={`flex ${
@@ -143,7 +211,6 @@ const MessageList = ({ style }) => {
                 메시지가 없습니다. 응원 메시지를 남겨보세요!
               </div>
             )}
-            {/* 하단 스크롤 참조 */}
             {chatList.length > 0 && <div ref={messageEndRef}></div>}
           </div>
         </div>
