@@ -6,12 +6,22 @@ import {
 } from "../../utils/MessageUtils";
 import { IoIosSend } from "react-icons/io";
 import useTeamMsg from "../../hooks/useTeamMsg";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { teamIdState } from "../../state/sportTabState";
+import useTeamInfo from "../../hooks/useTeamInfo";
+import { useParams } from "react-router-dom";
 
-const MessageList = ({ teamInfo, style }) => {
+const MessageList = ({ style }) => {
   const [input, setInput] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false); // 익명 여부 상태 추가
   const messageEndRef = useRef(null);
   const { messages: chatList, setMessages: setChatList } = useTeamMsg();
+  const [teamId, setTeamId] = useRecoilState(teamIdState);
+  if (!teamId) {
+    setTeamId(useParams);
+  }
+  const [isModified, setIsModified] = useState(false); // 수정 상태 관리
+  const { teamInfo, isLoading } = useTeamInfo(teamId, isModified);
 
   const handleInputChange = (event) => setInput(event.target.value);
 

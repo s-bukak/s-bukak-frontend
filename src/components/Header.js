@@ -85,6 +85,7 @@ const Header = () => {
   const handleTabClick = (tab) => {
     if (tab !== "team") {
       setShowTeamLogos(false);
+      setTeamId(0); // teamId를 0으로 초기화
     }
     setActiveMenuTab(tab);
     navigate(`/${tab}`);
