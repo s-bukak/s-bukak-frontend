@@ -9,21 +9,25 @@ import { jwtDecode } from 'jwt-decode';
 // 페이지 컴포넌트 동적 임포트
 const SignIn = React.lazy(() => import('./pages/login/SignIn'));
 const SignUp = React.lazy(() => import('./pages/login/SignUp'));
-const Home = React.lazy(() => import('./pages/home/Home'));
-const Community = React.lazy(() => import('./pages/community/Community'));
-const Schedule = React.lazy(() => import('./pages/schedule/Schedule'));
-const Ranking = React.lazy(() => import('./pages/ranking/Ranking'));
-const Team = React.lazy(() => import('./pages/team/Team'));
 const Terms = React.lazy(() => import('./pages/login/Terms'));
 const PrivacyPolicy = React.lazy(() => import('./pages/login/PrivacyPolicy'));
+const Faq = React.lazy(() => import('./pages/login/Faq'));
+
+
+const Home = React.lazy(() => import('./pages/home/Home'));
 const AboutUs = React.lazy(() => import('./pages/home/AboutUs'));
 const ContactUs = React.lazy(() => import('./pages/home/ContactUs'));
 const Notice = React.lazy(() => import('./pages/home/Notice'));
 
+const Community = React.lazy(() => import('./pages/community/Community'));
+const Schedule = React.lazy(() => import('./pages/schedule/Schedule'));
+const Ranking = React.lazy(() => import('./pages/ranking/Ranking'));
+const Team = React.lazy(() => import('./pages/team/Team'));
+
 // Layout 컴포넌트: Header와 Footer를 조건부로 렌더링
 const Layout = ({ children }) => {
     const location = useLocation(); // React Router의 현재 경로 가져오기
-    const hideHeaderFooter = ['/signin', '/signup', '/terms', '/privacy-policy'].some(path =>
+    const hideHeaderFooter = ['/signin', '/signup', '/terms', '/privacy-policy', '/faq'].some(path =>
         location.pathname.startsWith(path)
     );
 
@@ -83,6 +87,7 @@ function AppRoutes() {
                 <Route path="/about-us" element={<AboutUs />} />
                 <Route path="/contact-us" element={<ContactUs />} />
                 <Route path="/notice" element={<Notice />} />
+                <Route path="/faq" element={<Faq />} />
             </Routes>
         </Layout>
     );
