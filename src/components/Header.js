@@ -2,12 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { activeSportTabState } from '../state/sportTabState';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import UpdateInfoModal from './login/UpdateInfoModal'; // 정보 수정 모달 컴포넌트
 import DeleteAccountModal from './login/DeleteAccountModal'; // 회원 탈퇴 모달 컴포넌트
 
-// 팀명 배열
 const soccerTeams = [
     'aigu', 'ares', 'bas', 'colsc', 'cs-shooting', 'fc-bit', 'fc-scale', 'fiav',
     'focus', 'forest', 'forty-one', 'gongsalang', 'iasc', 'kafa', 'kesa', 'kkyamelleon', 'loniz', 'nepist',
@@ -19,7 +18,6 @@ const basketballTeams = [
     'man-q', 'mbl', 'steb', 'tab', 'warning',
 ];
 
-// 애니메이션 정의
 const bounce = keyframes`
     0% {
         transform: translateY(-5px);
@@ -46,17 +44,24 @@ const Header = () => {
     const [userEmail, setUserEmail] = useState(null);
     const [userSport, setUserSport] = useState(null);
     const [userCollege, setUserCollege] = useState(null);
-    const [userTeam, setUserTeam] = useState(null)
-    const [isTeamLeader, setIsTeamLeader] = useState(false); // 팀 대표 여부
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // 드롭다운 메뉴 상태
-    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false); // 정보 수정 모달 상태
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 회원 탈퇴 모달 상태
+    const [userTeam, setUserTeam] = useState(null);
+    const [isTeamLeader, setIsTeamLeader] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation(); // 현재 경로 가져오기
     const scrollRef = useRef(null);
 
     const handleLogoClick = () => {
-        navigate('/'); // 로고 클릭 시 루트 경로로 이동
+        navigate('/');
     };
+
+    // 현재 경로를 기반으로 activeMenuTab 업데이트
+    useEffect(() => {
+        const path = location.pathname.split('/')[1]; // 현재 경로의 첫 번째 부분 가져오기
+        setActiveMenuTab(path || 'home');
+    }, [location]);
 
     useEffect(() => {
         const token = localStorage.getItem('access_token');
@@ -69,8 +74,6 @@ const Header = () => {
                 setUserCollege(decoded.college || '');
                 setUserTeam(decoded.team || '');
                 setIsTeamLeader(decoded.isTeamLeader || false);
-
-                console.log(decoded.name + ', ' + decoded.email + ', ' + decoded.isTeamLeader + ', ' + decoded.sport + ', ' + decoded.college + ', ' + decoded.team)
             } catch (error) {
                 console.error('JWT 디코딩 오류:', error);
                 localStorage.removeItem('access_token');
@@ -104,7 +107,6 @@ const Header = () => {
         }
     }, [showTeamLogos]);
 
-    // 팀명 배열을 기반으로 로고 가져오기
     const getTeamLogo = (team) => {
         return require(`../assets/logos/${activeSportTab}/${team}.svg`);
     };
@@ -115,12 +117,10 @@ const Header = () => {
         <div>
             <header className="bg-gray-800 text-gray-400 p-4 shadow-md font-bold">
                 <div className="container mx-auto flex justify-between items-center">
-                    {/* 로고 */}
                     <div className="flex items-center space-x-4">
-                        <img src="/logo.svg" alt="Logo" className="w-40 cursor-pointer" onClick={handleLogoClick}/>
+                        <img src="/logo.svg" alt="Logo" className="w-40 cursor-pointer" onClick={handleLogoClick} />
                     </div>
 
-                    {/* 사용자 드롭다운 메뉴 */}
                     <div className="space-x-4 text-white text-sm relative">
                         {userName ? (
                             <>
@@ -168,17 +168,13 @@ const Header = () => {
                                 )}
                             </>
                         ) : (
-                            <button
-                                onClick={() => handleTabClick('signin')}
-                                className="hover:underline"
-                            >
+                            <button onClick={() => handleTabClick('signin')} className="hover:underline">
                                 로그인 및 회원가입
                             </button>
                         )}
                     </div>
                 </div>
 
-                {/* 축구 & 농구 탭 */}
                 <div className="container mx-auto mt-2 flex justify-center">
                     <nav className="flex space-x-8 text-lg">
                         <button
@@ -202,7 +198,6 @@ const Header = () => {
                     </nav>
                 </div>
 
-                {/* 하단 메뉴 탭 */}
                 <div className="container mx-auto my-4 flex justify-center">
                     <nav className="flex space-x-8 text-lg">
                         <button
@@ -239,7 +234,6 @@ const Header = () => {
                 </div>
             </header>
 
-            {/* 팀 로고 표시 영역 */}
             {showTeamLogos && (
                 <AnimatedContainer
                     className="bg-gray-200 flex overflow-x-auto min-w-0 py-4 scrollbar-hide items-center justify-center"
@@ -267,13 +261,12 @@ const Header = () => {
                 </AnimatedContainer>
             )}
 
-            {/* 정보 수정 모달 */}
             {isUpdateModalOpen && (
                 <UpdateInfoModal
                     email={userEmail}
                     name={userName}
                     isTeamLeader={isTeamLeader}
-                    teamInfo={userCollege + ' ' + userTeam + ' (' + userSport + ')' }
+                    teamInfo={userCollege + ' ' + userTeam + ' (' + userSport + ')'}
                     onClose={() => setIsUpdateModalOpen(false)}
                     onUpdate={(newName) => {
                         setUserName(newName);
@@ -281,7 +274,6 @@ const Header = () => {
                 />
             )}
 
-            {/* 회원 탈퇴 모달 */}
             {isDeleteModalOpen && (
                 <DeleteAccountModal
                     email={userEmail}
