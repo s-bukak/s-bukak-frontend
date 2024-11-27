@@ -32,7 +32,7 @@ const DeleteAccountModal = ({ email, onClose, onDelete }) => {
                     onClick={() => onDelete()}
                     disabled={!isMatch}
                     className={`mt-2 w-full py-2 rounded text-white font-bold ${
-                        isMatch ? 'bg-red-500' : 'bg-gray-400'
+                        isMatch ? 'bg-red-700' : 'bg-gray-400'
                     }`}
                 >
                     회원 탈퇴
