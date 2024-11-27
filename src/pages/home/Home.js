@@ -4,9 +4,11 @@ import { activeSportTabState } from '../../state/sportTabState';
 import MultiBanner from '../../components/home/MultiBanner';
 import Betting from "../../components/home/Betting";
 import Ranking from "../../components/home/Ranking";
+import {useNavigate} from "react-router-dom";
 
 const Home = () => {
     const activeSportTab = useRecoilValue(activeSportTabState);
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -36,7 +38,7 @@ const Home = () => {
                 {/* 팀 랭킹 Component */}
                 <div className="col-span-1">
                     <div>
-                        <div className="text-3xl font-bold mb-2">팀 랭킹</div>
+                        <div className="text-3xl font-bold mb-2 cursor-pointer" onClick={() => navigate('/ranking')}>팀 랭킹</div>
                         <div className="text-gray-500 mb-14">
                             <p>우측 상단의 랭킹 버튼을 누르면</p>
                             <p>성곡리그 / 해공리그 각각의 팀 랭킹을 볼 수 있어요!</p>
@@ -46,7 +48,7 @@ const Home = () => {
 
                     {/* 캘린더 Component */}
                     <div className="mt-20">
-                        <div className="text-3xl font-bold mb-2">캘린더</div>
+                        <div className="text-3xl font-bold mb-2 cursor-pointer" onClick={() => navigate('/schedule')}>캘린더</div>
                         <div className="text-gray-500 mb-10">
                             <p>북악리그 축구 및 농구 경기 일정을 한 데 모아 볼 수 있어요!</p>
                             <p>실제로 보면 더욱 재밌는 북악리그,</p>
