@@ -45,12 +45,12 @@ const MessageList = ({ teamInfo }) => {
 
   return (
     <div className="flex flex-col items-center w-full h-full mt-2 px-2">
-      {/* 전체 컨테이너 */}
-      <div className="flex flex-col justify-between w-full h-full bg-white rounded-2xl">
+      {/* 최상위 컨테이너 */}
+      <div className="flex flex-col w-full h-full bg-white overflow-hidden">
         {/* 메시지 리스트 */}
         <div
-          className="flex-1 overflow-y-auto min-h-0 scrollbar-hide"
-          style={{ height: 'calc(100% - 4rem)' }} // 높이 계산으로 스크롤 활성화
+          className="flex-1 flex flex-col  overflow-y-auto scrollbar-hide"
+          style={{ minHeight: '0' }}
         >
           {chatList.map((comment, index) => {
             const isLastMessageInTimeGroup =
@@ -63,12 +63,12 @@ const MessageList = ({ teamInfo }) => {
                 <div
                   className={`flex ${
                     comment.userId === user.userId ? 'justify-end' : 'justify-start'
-                  } mb-1`}
+                  } pb-2`}
                 >
                   {comment.userId === user.userId ? (
                     <div className="flex flex-col items-end max-w-xs">
                       <div
-                        className="bg-blue-100 text-gray-700 p-2.5 rounded-lg text-sm break-words"
+                        className="bg-gray-200 text-gray-700 p-2.5 rounded-lg text-sm break-words"
                         style={{
                           wordBreak: 'break-word',
                           whiteSpace: 'pre-wrap',
@@ -81,16 +81,33 @@ const MessageList = ({ teamInfo }) => {
                       )}
                     </div>
                   ) : (
-                    <div className="flex items-start max-w-xs">
-                      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 mr-3">
-                        <img src={aiLogo} alt="user" />
+                    <div className="flex items-start max-w-xs w-full h-full relative">
+                      {/* aiLogo */}
+                      <div
+                        className="w-12 h-12 rounded-full overflow-hidden absolute -bottom-4 z-10"
+                        style={{ width: '48px', height: '48px' }}
+                      >
+                        <img
+                          src={aiLogo}
+                          alt="user"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
                       </div>
-                      <div className="flex flex-col">
-                        <div className="bg-gray-100 text-gray-700 p-2.5 rounded-lg text-sm break-words">
+                      {/* 메시지 콘텐츠 */}
+                      <div className="flex-col relative z-0 left-3.5">
+                        <div
+                          className="flex flex-grow bg-gray-700 text-white p-3 rounded-lg text-sm break-words"
+                          style={{
+                            wordBreak: 'break-word',
+                            whiteSpace: 'pre-wrap',
+                          }}
+                        >
                           {comment.content}
                         </div>
                         {isLastMessageInTimeGroup && (
-                          <span className="text-xs text-gray-500 mt-1">{comment.createdAt}</span>
+                          <div className="text-xs text-gray-500 mt-1 text-right items-end">
+                            {comment.createdAt}
+                          </div>
                         )}
                       </div>
                     </div>
@@ -99,6 +116,7 @@ const MessageList = ({ teamInfo }) => {
               </div>
             );
           })}
+          {/* 자동 스크롤 대상 */}
           <div ref={messageEndRef}></div>
         </div>
 
