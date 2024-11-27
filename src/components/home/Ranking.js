@@ -10,6 +10,7 @@ const Ranking = () => {
     const [selectedLeague, setSelectedLeague] = useState('성곡리그');
     const [rankingData, setRankingData] = useState([]);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [lastUpdate, setLastUpdate] = useState('');
 
     const handleLeagueChange = () => {
         setSelectedLeague((prevLeague) => (prevLeague === '성곡리그' ? '해공리그' : '성곡리그'));
@@ -38,6 +39,18 @@ const Ranking = () => {
                     setRankingData([]);
                     setErrorMessage("데이터가 없습니다.");
                 }
+
+                // lastUpdateDateTime 설정
+                const updateDateTime = response.data.lastUpdateDateTime;
+                if (updateDateTime) {
+                    const dateObj = new Date(updateDateTime);
+                    const formattedDate = `${dateObj.getFullYear()}년 ${
+                        dateObj.getMonth() + 1
+                    }월 ${dateObj.getDate()}일 ${
+                        dateObj.getHours()
+                    }시 기준`;
+                    setLastUpdate(formattedDate);
+                }
             } catch (error) {
                 console.error("Error fetching ranking data:", error);
                 setErrorMessage("데이터를 불러오는 중 오류가 발생했습니다.");
@@ -46,7 +59,6 @@ const Ranking = () => {
 
         fetchRankingData();
     }, [selectedLeague, activeSportTab]);
-
 
     return (
         <div className="bg-gradient-to-b from-teal-100 to-gray-200 px-6 pt-8 pb-10 rounded-xl shadow-md relative">
@@ -59,7 +71,7 @@ const Ranking = () => {
             {/* Header */}
             <div className="flex flex-col justify-center items-center">
                 <h2 className="text-2xl font-bold text-sky-600"># {selectedLeague}</h2>
-                <p className="text-gray-600 text-xs mb-6">* 2024년 4월 30일 기준</p>
+                <p className="text-gray-600 text-xs mb-6">* {lastUpdate}</p>
             </div>
 
             {/* Table Header */}
