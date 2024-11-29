@@ -8,6 +8,7 @@ export const removeToken = () => localStorage.removeItem("access_token");
 
 export const isTokenValid = () => {
     const token = getToken();
+
     if (!token) return false;
 
     try {
