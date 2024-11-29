@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import {DOMAIN_NAME, TOKEN_NAME} from "../../App";
 import axios from "axios";
 import StatusIndicator from "../../components/StateIndecator"; // StatusIndicator 컴포넌트 임포트
-import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
+import {MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight} from "react-icons/md";
 
 
 export default function Schedule() {
@@ -48,8 +48,6 @@ export default function Schedule() {
       if (schedulesYear.length > 0) {
         setCalendarYear(schedulesYear[0].year); // 첫 번째 연도로 설정
       }
-
-      console.log("Formatted Data:", formattedData);
     } catch (error) {
       console.error("Error fetching schedule:", error);
       setFilteredData([]);

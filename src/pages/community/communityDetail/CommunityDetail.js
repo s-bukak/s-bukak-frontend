@@ -194,7 +194,7 @@ export default function CommunityDetail() {
               onClick={handlePostComment}
               className="flex items-center justify-center w-8 h-8 "
             >
-              <img src={Send} alt="send" />
+              <img src={Send} alt="send"/>
             </button>
           </div>
         </div>
