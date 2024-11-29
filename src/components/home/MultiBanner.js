@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
-import axios from 'axios';
-import {DOMAIN_NAME} from "../../App";
+import axiosInstance from "../../utils/axiosInstance";
 
 const MultiBanner = ({ activeSportTab }) => {
     const [images, setImages] = useState([]);
@@ -10,7 +9,7 @@ const MultiBanner = ({ activeSportTab }) => {
     useEffect(() => {
         const fetchImages = async () => {
             try {
-                const response = await axios.get(`${DOMAIN_NAME}/banner`);
+                const response = await axiosInstance.get('banner');
                 const today = new Date();
 
                 // 필터링: 오늘 날짜가 startDate ~ endDate 사이에 포함되고, league가 현재 탭과 일치하는 데이터
