@@ -58,8 +58,6 @@ function AppRoutes() {
 
                 // 디코드하여 클레임 출력
                 const decoded = jwtDecode(token);
-                console.log('이메일:', decoded.email);
-                console.log('이름:', decoded.name);
 
                 // URL 정리
                 window.history.replaceState({}, document.title, window.location.pathname);

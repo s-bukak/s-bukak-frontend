@@ -25,7 +25,6 @@ axiosInstance.interceptors.response.use(
     (error) => {
         if (error.response && error.response.status === 401) {
             removeToken(); // 토큰 제거
-            console.error("인증 오류: 로그아웃 처리");
             window.location.href = "/signin"; // 로그인 페이지로 리다이렉트
         }
         return Promise.reject(error);
