@@ -3,7 +3,7 @@ import axios from 'axios';
 import Row from "../../components/ranking/Row";
 import { useRecoilValue } from "recoil";
 import { activeSportTabState } from "../../state/sportTabState";
-import { DOMAIN_NAME, TOKEN_NAME } from "../../App";
+import { DOMAIN_NAME } from "../../App";
 
 function Header({ isSoccer }) {
     return (
@@ -42,11 +42,7 @@ export default function Ranking() {
         const fetchRankingData = async () => {
             try {
                 const sportType = activeSportTab === 'soccer' ? 'SOCCER' : 'BASKETBALL';
-                const response = await axios.get(`${DOMAIN_NAME}/ranking?sportType=${sportType}`, {
-                    headers: {
-                        Authorization: `Bearer ${TOKEN_NAME}`,
-                    },
-                });
+                const response = await axios.get(`${DOMAIN_NAME}/ranking?sportType=${sportType}`);
                 const fetchedData = response.data.teams;
 
                 // 선택한 리그에 해당하는 데이터 필터링

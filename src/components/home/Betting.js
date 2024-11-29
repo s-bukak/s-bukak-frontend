@@ -1,47 +1,24 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useRecoilValue } from "recoil";
+import axiosInstance from "../../utils/axiosInstance"; // Axios 인스턴스
+import { isTokenValid } from "../../utils/token"; // 토큰 유효성 검사
 import StatusIndicator from "../../components/StateIndecator";
-import { DOMAIN_NAME, TOKEN_NAME } from "../../App";
 import { activeSportTabState } from "../../state/sportTabState";
-import { jwtDecode } from "jwt-decode";
 
 function Betting() {
     const [bettingData, setBettingData] = useState([]);
     const [errorMessage, setErrorMessage] = useState(null);
-    const [selectedBet, setSelectedBet] = useState(null); // 선택된 베팅을 추적
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
+    const [selectedBet, setSelectedBet] = useState(null); // 선택된 베팅 상태
     const activeSportTab = useRecoilValue(activeSportTabState); // 'soccer' 또는 'basketball'
 
-    useEffect(() => {
-        // 로그인 상태 확인
-        const token = localStorage.getItem("access_token");
-        if (token) {
-            try {
-                const decoded = jwtDecode(token);
-                if (decoded && decoded.exp * 1000 > Date.now()) {
-                    setIsLoggedIn(true);
-                } else {
-                    setIsLoggedIn(false);
-                }
-            } catch (error) {
-                console.error("JWT 디코딩 오류:", error);
-                setIsLoggedIn(false);
-            }
-        } else {
-            setIsLoggedIn(false);
-        }
-    }, []);
+    // 로그인 상태 확인
+    const isLoggedIn = isTokenValid();
 
+    // 데이터 요청
     useEffect(() => {
         const fetchBettingData = async () => {
             try {
-                const response = await axios.get(`${DOMAIN_NAME}/schedule`, {
-                    headers: {
-                        Authorization: `Bearer ${TOKEN_NAME}`,
-                    },
-                });
-
+                const response = await axiosInstance.get("/schedule");
                 const games = response.data.schedulesYear.flatMap((year) =>
                     year.schedulesMonth.flatMap((month) =>
                         month.schedules.map((schedule) => ({
@@ -51,6 +28,7 @@ function Betting() {
                             startAt: schedule.startAt,
                             betType: schedule.betType,
                             betTimeType: schedule.betTimeType,
+                            homeCollegeName: schedule.homeCollegeName,
                             homeTeamName: schedule.homeTeamName,
                             homeTeamIconImageUrl: schedule.homeTeamIconImageUrl,
                             homeTeamScore: schedule.homeTeamGoals,
@@ -58,6 +36,7 @@ function Betting() {
                                 schedule.homeTeamBetPercentage !== null
                                     ? `${schedule.homeTeamBetPercentage}%`
                                     : "-%",
+                            awayCollegeName: schedule.awayCollegeName,
                             awayTeamName: schedule.awayTeamName,
                             awayTeamIconImageUrl: schedule.awayTeamIconImageUrl,
                             awayTeamScore: schedule.awayTeamGoals,
@@ -69,7 +48,6 @@ function Betting() {
                         }))
                     )
                 );
-
                 setBettingData(games);
                 setErrorMessage(null);
             } catch (error) {
@@ -79,76 +57,50 @@ function Betting() {
         };
 
         fetchBettingData();
-    }, [selectedBet]);
+    }, [isLoggedIn, selectedBet]);
 
+    // 현재 시간과 비교하여 과거 및 미래 경기 필터링
     const now = new Date();
-
-    const sportFilteredData = bettingData.filter((game) =>
+    const filteredData = bettingData.filter((game) =>
         activeSportTab === "soccer"
             ? game.sportType === "축구"
             : game.sportType === "농구"
     );
-
-    const sortedData = sportFilteredData.sort(
-        (a, b) => new Date(a.startAt) - new Date(b.startAt)
-    );
-
+    const sortedData = filteredData.sort((a, b) => new Date(a.startAt) - new Date(b.startAt));
     const limitedData = (() => {
         const pastGames = [];
         const futureGames = [];
 
         for (const game of sortedData) {
             const gameTime = new Date(game.startAt);
-
-            if (gameTime < now) {
-                pastGames.push(game);
-            } else {
-                futureGames.push(game);
-            }
+            if (gameTime < now) pastGames.push(game);
+            else futureGames.push(game);
         }
 
-        const pastGamesToShow = pastGames.slice(-2);
-        const futureGamesToShow = futureGames.slice(0, 4);
-
-        return [...pastGamesToShow, ...futureGamesToShow];
+        return [...pastGames.slice(-2), ...futureGames.slice(0, 4)];
     })();
 
-    const handleTeamClick = async (scheduleId, isBetHomeTeam, game) => {
+    // 베팅 처리
+    const handleTeamClick = async (scheduleId, isBetHomeTeam) => {
         try {
-            if (!isLoggedIn || (game.homeTeamBetPercentage && game.awayTeamBetPercentage)) {
-                return;
-            }
-
-            await axios.post(
-                `${DOMAIN_NAME}/bet`,
-                { scheduleId, isBetHomeTeam },
-                {
-                    headers: {
-                        Authorization: `Bearer ${TOKEN_NAME}`,
-                    },
-                }
-            );
-
-            console.log("선택한 경기 : " + scheduleId + ", 선택한 팀 (1: 홈팀, 0: 어웨이 팀) : " + isBetHomeTeam);
-
-            setSelectedBet({ scheduleId, isBetHomeTeam });
+            await axiosInstance.post("/bet", { scheduleId, isBetHomeTeam });
+            setSelectedBet({ scheduleId, isBetHomeTeam }); // 선택 상태 갱신
         } catch (error) {
             console.error("Betting error:", error);
             setErrorMessage("베팅 중 오류가 발생했습니다.");
         }
     };
 
+    // 경기 점수 또는 VS 렌더링
     const renderScoreOrVs = (game) => {
-        if (game.betTimeType === "예측종료") {
-            return `${game.homeTeamScore} - ${game.awayTeamScore}`;
-        }
-        return "VS";
+        return game.betTimeType === "예측종료"
+            ? `${game.homeTeamScore} - ${game.awayTeamScore}`
+            : "VS";
     };
 
+    // 예측 확률 렌더링
     const renderPrediction = (game, isHome) => {
-        if (game.betTimeType === "예측예정") {
-            return "-%";
-        }
+        if (game.betTimeType === "예측예정") return "-%";
         return isHome ? game.homeTeamPrediction : game.awayTeamPrediction;
     };
 
@@ -200,6 +152,7 @@ function Betting() {
                                         className="w-12 h-12"
                                     />
                                     <div className="flex flex-col items-start">
+                                        <p className="text-xs">{game.homeCollegeName}</p>
                                         <p className="font-semibold">{game.homeTeamName}</p>
                                         <p className="font-bold text-xl">{renderPrediction(game, true)}</p>
                                     </div>
@@ -238,6 +191,7 @@ function Betting() {
                                     }
                                 >
                                     <div className="flex flex-col items-end">
+                                        <p className="text-xs">{game.awayCollegeName}</p>
                                         <p className="font-semibold">{game.awayTeamName}</p>
                                         <p className="font-bold text-xl">{renderPrediction(game, false)}</p>
                                     </div>

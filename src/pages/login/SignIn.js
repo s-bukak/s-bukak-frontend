@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import CommonHeader from "../../components/CommonHeader";
-import { DOMAIN_NAME } from "../../App";
+import {DOMAIN_NAME} from "../../App";
 
 export default function SignIn() {
-    const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleLoginSuccess = () => {
-        setErrorMessage(''); // 로그인 성공 시 오류 메시지 초기화
-        // 서버의 OAuth 엔드포인트로 리다이렉트
+        setErrorMessage('');
         window.location.href = `${DOMAIN_NAME}/oauth2/authorization/google`;
     };
+
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-800">
