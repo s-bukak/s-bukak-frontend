@@ -4,7 +4,6 @@ import { RecoilRoot } from 'recoil';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { jwtDecode } from 'jwt-decode';
 
 // 페이지 컴포넌트 동적 임포트
 const SignIn = React.lazy(() => import('./pages/login/SignIn'));
@@ -55,9 +54,6 @@ function AppRoutes() {
             try {
                 // JWT를 로컬 스토리지에 저장
                 localStorage.setItem('access_token', token);
-
-                // 디코드하여 클레임 출력
-                const decoded = jwtDecode(token);
 
                 // URL 정리
                 window.history.replaceState({}, document.title, window.location.pathname);
