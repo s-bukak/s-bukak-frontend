@@ -43,7 +43,6 @@ const Layout = ({ children }) => {
 const ClientID = '876612813769-4lfsesru9gnomuu6am1udlnb1d47hjtq.apps.googleusercontent.com';
 
 export const DOMAIN_NAME = process.env.REACT_APP_BASE_URL;
-export const TOKEN_NAME = process.env.REACT_APP_TOKEN_TEMP_URL;
 
 // Router 내부에서 동작하도록 별도 컴포넌트 작성
 function AppRoutes() {
