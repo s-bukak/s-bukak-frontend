@@ -29,7 +29,6 @@ export default function useTeamMsg() {
         throw new Error(`Failed to fetch messages: ${response.statusText}`);
       }
       const data = await response.json();
-      console.log("Fetched data:", data);
 
       setMessages(data); // 가져온 데이터를 상태에 저장
     } catch (err) {

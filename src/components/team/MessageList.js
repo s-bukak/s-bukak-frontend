@@ -10,10 +10,9 @@ import useTeamMsg from "../../hooks/useTeamMsg";
 import { useRecoilState } from "recoil";
 import { teamIdState } from "../../state/sportTabState";
 import useTeamInfo from "../../hooks/useTeamInfo";
-import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import { TOKEN_NAME } from "../../App";
+import { DOMAIN_NAME, TOKEN_NAME } from "../../App";
 import useDeleteMsg from "../../hooks/useDeleteMsg";
 
 const MessageList = ({ style }) => {
@@ -26,7 +25,23 @@ const MessageList = ({ style }) => {
   const stompClient = useRef(null);
   const subscriptionRef = useRef(null); // 구독 ID를 추적
 
-  console.log(teamId);
+  // console.log 오버라이드 (모든 stomp.js 관련 로그 숨기기)
+  useEffect(() => {
+    const originalLog = console.log;
+
+    // 모든 로그를 막고 싶다면, 아래처럼 빈 함수로 덮어 씌운다
+    console.log = (...args) => {
+      if (
+        args[0] &&
+        (args[0].includes("CONNECTED") ||
+          args[0].includes("SUBSCRIBE") ||
+          args[0].includes("DISCONNECT") ||
+          args[0].includes("UNSUBSCRIBE"))
+      ) {
+        return; // WebSocket 관련 로그는 무시
+      }
+    };
+  }, []);
 
   const handleInputChange = (event) => setInput(event.target.value);
 
@@ -39,11 +54,12 @@ const MessageList = ({ style }) => {
   };
 
   const connectWebSocket = () => {
-    const socket = new SockJS("http://sbukak.o-r.kr:8080/ws-chat");
-    stompClient.current = over(socket);
+    const socket = new SockJS(`${DOMAIN_NAME}/ws-chat`);
+    stompClient.current = over(socket, { debug: false });
+    stompClient.debug = null;
 
     stompClient.current.connect(
-      { Authorization: `Bearer ${TOKEN_NAME}` },
+      { Authorization: `Bearer ${TOKEN_NAME}`, debug: (msg) => {} },
       () => {
         subscribeToTeam(teamId); // WebSocket 연결 후 팀 메시지 구독
       },
@@ -149,7 +165,6 @@ const MessageList = ({ style }) => {
         setMessages((prevMessages) =>
           prevMessages.filter((message) => message.id !== messageId),
         );
-        console.log("Message deleted successfully");
       } catch (error) {
         console.error("Failed to delete the message:", error);
       }

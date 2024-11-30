@@ -11,7 +11,6 @@ export default function useTeamInfo(teamId, isModified = false) {
   const clearCache = () => {
     if (teamId && activeSportTab) {
       localStorage.removeItem(`teamInfo-${teamId}-${activeSportTab}`);
-      console.log(`Cache cleared for team ${teamId} and tab ${activeSportTab}`);
     }
   };
 
@@ -59,11 +58,9 @@ export default function useTeamInfo(teamId, isModified = false) {
     );
 
     if (cachedData && !isModified) {
-      console.log("Loaded data from cache");
       setTeamInfo(JSON.parse(cachedData));
       clearCache();
     } else {
-      console.log("Fetching fresh data");
       if (isModified) {
         clearCache(); // 캐시 무효화 필요 시 제거
       }

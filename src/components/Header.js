@@ -230,7 +230,6 @@ const Header = () => {
                     activeSportTab === "soccer" ? index + 1 : index + 25;
                   navigate(`/team/${calculatedTeamId}`); // 계산된 값 사용
                   setTeamId(calculatedTeamId); // 상태 업데이트
-                  console.log(calculatedTeamId); // 정확한 값 로그 출력
                 }}
                 className="flex items-center justify-center flex-shrink-0"
               >

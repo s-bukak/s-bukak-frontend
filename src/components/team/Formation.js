@@ -138,15 +138,12 @@ const Formation = ({ owner }) => {
     if (isEditing) {
       try {
         const result = await postPlayers(owner.teamId, players); // POST 요청
-        console.log("API 응답:", result);
         alert("선수 정보가 성공적으로 업데이트되었습니다.");
       } catch (err) {
         console.error("POST 요청 실패:", err);
         alert("선수 정보를 업데이트하는 동안 오류가 발생했습니다.");
       }
     }
-
-    console.log("현재 players 상태:", players);
     setIsEditing(!isEditing); // 편집 모드 토글
   };
 

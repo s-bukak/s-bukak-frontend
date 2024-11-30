@@ -21,11 +21,8 @@ const Team = () => {
     }
   }, [teamId, setTeamId]);
 
-  console.log(teamId);
   const [isModified, setIsModified] = useState(false); // 수정 상태 관리
   const { teamInfo, isLoading } = useTeamInfo(teamId, isModified);
-
-  console.log(teamInfo);
 
   if (!teamInfo) {
     return <div>팀 정보가 없습니다...</div>;
