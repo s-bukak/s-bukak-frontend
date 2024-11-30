@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { useRecoilState } from "recoil";
 import { activeSportTabState, teamIdState } from "../state/sportTabState";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 // 팀명 배열
 const soccerTeams = [
@@ -71,6 +71,7 @@ const Header = () => {
   const [activeSportTab, setActiveSportTab] =
     useRecoilState(activeSportTabState);
   const [teamId, setTeamId] = useRecoilState(teamIdState);
+  const location = useLocation();
   const [activeMenuTab, setActiveMenuTab] = useState("home");
   const [showTeamLogos, setShowTeamLogos] = useState(false);
   const navigate = useNavigate();
@@ -81,6 +82,21 @@ const Header = () => {
     setActiveMenuTab("team");
     navigate("/team");
   };
+
+  // 새로고침시 헤더 선택값으로 현재 페이지 유지
+  useEffect(() => {
+    const path = location.pathname.split("/")[1];
+    setActiveMenuTab(path || "home");
+  }, [location]);
+
+  // 팀페이지 새로고침시 팀 로고 헤더 표시 유지
+  useEffect(() => {
+    if (location.pathname.includes("/team")) {
+      setShowTeamLogos(true);
+    } else {
+      setShowTeamLogos(false);
+    }
+  }, [location.pathname]);
 
   const handleTabClick = (tab) => {
     if (tab !== "team") {
@@ -212,8 +228,8 @@ const Header = () => {
                 onClick={() => {
                   const calculatedTeamId =
                     activeSportTab === "soccer" ? index + 1 : index + 25;
-                  setTeamId(calculatedTeamId); // 상태 업데이트
                   navigate(`/team/${calculatedTeamId}`); // 계산된 값 사용
+                  setTeamId(calculatedTeamId); // 상태 업데이트
                   console.log(calculatedTeamId); // 정확한 값 로그 출력
                 }}
                 className="flex items-center justify-center flex-shrink-0"

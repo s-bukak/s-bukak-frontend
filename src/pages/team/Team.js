@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { teamIdState } from "../../state/sportTabState";
@@ -12,10 +12,15 @@ import Cheering from "../../components/team/Cheering";
 import useTeamInfo from "../../hooks/useTeamInfo";
 
 const Team = () => {
-  const [teamId, setTeamId] = useRecoilState(teamIdState);
-  if (!teamId) {
-    setTeamId(useParams);
-  }
+  const { teamId } = useParams();
+  const [_, setTeamId] = useRecoilState(teamIdState);
+
+  useEffect(() => {
+    if (teamId) {
+      setTeamId(Number(teamId)); // teamId 상태 업데이트
+    }
+  }, [teamId, setTeamId]);
+
   console.log(teamId);
   const [isModified, setIsModified] = useState(false); // 수정 상태 관리
   const { teamInfo, isLoading } = useTeamInfo(teamId, isModified);
