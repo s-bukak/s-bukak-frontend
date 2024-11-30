@@ -5,6 +5,7 @@ import {
   homePlaceHolder,
 } from "../../utils/MessageUtils";
 import { IoIosSend } from "react-icons/io";
+import { FaRegTrashAlt } from "react-icons/fa";
 import useTeamMsg from "../../hooks/useTeamMsg";
 import { useRecoilState } from "recoil";
 import { teamIdState } from "../../state/sportTabState";
@@ -13,6 +14,7 @@ import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import { TOKEN_NAME } from "../../App";
+import useDeleteMsg from "../../hooks/useDeleteMsg";
 
 const MessageList = ({ style }) => {
   const [input, setInput] = useState("");
@@ -133,6 +135,27 @@ const MessageList = ({ style }) => {
     window.scrollTo(0, 0);
   }, []);
 
+  const { deleteMessage, isLoading, error } = useDeleteMsg();
+
+  const handleDelete = async (messageId) => {
+    if (!messageId) return;
+
+    const confirmDelete = window.confirm("이 메시지를 삭제하시겠습니까?");
+    if (confirmDelete) {
+      try {
+        await deleteMessage(messageId);
+
+        // Remove the message from the chat list
+        setMessages((prevMessages) =>
+          prevMessages.filter((message) => message.id !== messageId),
+        );
+        console.log("Message deleted successfully");
+      } catch (error) {
+        console.error("Failed to delete the message:", error);
+      }
+    }
+  };
+
   return (
     <div className="flex flex-col items-center w-full h-full mt-2">
       <div className="flex flex-col justify-between w-full h-full bg-white rounded-2xl border border-gray-400 p-4">
@@ -194,9 +217,21 @@ const MessageList = ({ style }) => {
                               {comment.isAnonymous ? "익명" : comment.username}
                             </span>
                           </div>
-                          <div className="bg-gray-100 text-gray-700 p-2.5 rounded-lg text-sm break-words">
-                            {comment.content}
+                          <div className="flex flex-row">
+                            <div className="bg-gray-100 text-gray-700 p-2.5 rounded-lg text-sm break-words">
+                              {comment.content}
+                            </div>
+                            {teamInfo?.canUpdatePlayers &&
+                              !comment.isHidden && (
+                                <div className="p-1.5">
+                                  <FaRegTrashAlt
+                                    className=" flex justify-center  h-full w-3 text-red-500"
+                                    onClick={() => handleDelete(comment.id)}
+                                  />
+                                </div>
+                              )}
                           </div>
+
                           <span className="text-xs text-gray-500 mt-1">
                             {comment.createdAt}
                           </span>
