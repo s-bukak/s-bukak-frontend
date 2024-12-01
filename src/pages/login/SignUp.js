@@ -41,6 +41,10 @@ export default function SignUp() {
                     email: decodedData.email || "",
                     name: decodedData.name || "",
                 }));
+
+                // URL에서 "data" 파라미터 제거
+                queryParams.delete("data");
+                window.history.replaceState({}, document.title, `${window.location.pathname}?${queryParams}`);
             } catch (error) {
                 console.error("Base64 디코딩 오류:", error);
                 setErrorMessage("초기 데이터 로드 중 오류가 발생했습니다. 다시 시도해주세요.");
