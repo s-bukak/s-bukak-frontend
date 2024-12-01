@@ -5,7 +5,8 @@ import { activeSportTabState, teamIdState } from "../state/sportTabState";
 import { useNavigate, useLocation } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import UpdateInfoModal from './login/UpdateInfoModal'; // 정보 수정 모달 컴포넌트
-import DeleteAccountModal from './login/DeleteAccountModal'; // 회원 탈퇴 모달 컴포넌트
+import DeleteAccountModal from './login/DeleteAccountModal';
+import {getToken, removeToken} from "../utils/token"; // 회원 탈퇴 모달 컴포넌트
 
 // 팀명 배열
 const soccerTeams = [
@@ -99,22 +100,22 @@ const Header = () => {
     }, [location]);
 
     useEffect(() => {
-        const token = localStorage.getItem('access_token');
+        const token = getToken();
         if (token) {
             try {
                 const decoded = jwtDecode(token);
-                setUserName(decoded.name || 'Guest');
-                setUserEmail(decoded.email || 'Guest@kookmin.ac.kr');
-                setUserSport(decoded.sport || '');
-                setUserCollege(decoded.college || '');
-                setUserTeam(decoded.team || '');
+                setUserName(decoded.name || "Guest");
+                setUserEmail(decoded.email || "Guest@kookmin.ac.kr");
+                setUserSport(decoded.sport || "");
+                setUserCollege(decoded.college || "");
+                setUserTeam(decoded.team || "");
                 setIsTeamLeader(decoded.isTeamLeader || false);
             } catch (error) {
-                console.error('JWT 디코딩 오류:', error);
-                localStorage.removeItem('access_token');
+                console.error("JWT 디코딩 오류:", error);
+                removeToken();
             }
         }
-    }, []);
+    }, [isUpdateModalOpen]); // `isUpdateModalOpen` 상태 변화 감지
 
     const handleLogout = () => {
         localStorage.removeItem('access_token');
@@ -289,7 +290,6 @@ const Header = () => {
                     activeSportTab === "soccer" ? index + 1 : index + 25;
                   setTeamId(calculatedTeamId); // 상태 업데이트
                   navigate(`/team/${calculatedTeamId}`); // 계산된 값 사용
-                  console.log(calculatedTeamId); // 정확한 값 로그 출력
                 }}
                 className="flex items-center justify-center flex-shrink-0"
               >
@@ -313,8 +313,9 @@ const Header = () => {
                     isTeamLeader={isTeamLeader}
                     teamInfo={userCollege + ' ' + userTeam + ' (' + userSport + ')'}
                     onClose={() => setIsUpdateModalOpen(false)}
-                    onUpdate={(newName) => {
+                    onUpdateSuccess={(newName) => {
                         setUserName(newName);
+                        alert("프로필이 성공적으로 수정되었습니다.");
                     }}
                 />
             )}
@@ -323,8 +324,9 @@ const Header = () => {
                 <DeleteAccountModal
                     email={userEmail}
                     onClose={() => setIsDeleteModalOpen(false)}
-                    onDelete={() => {
-                        console.log('회원 탈퇴 실행');
+                    onDeleteSuccess={() => {
+                        alert("회원 탈퇴가 완료되었습니다.");
+                        navigate("/signin");
                     }}
                 />
             )}
