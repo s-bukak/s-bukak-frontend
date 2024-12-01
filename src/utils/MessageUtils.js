@@ -1,3 +1,5 @@
+import cleanbot from "../assets/images/cleanbot.svg";
+
 export const user = {
   userId: 5,
   userName: "정찬우(학부생-소프트웨어학부 소프트웨어전공)",
@@ -6,7 +8,7 @@ export const user = {
 export const cleanbotMessage = {
   userId: 0,
   username: "클린봇",
-  userImage: "../assets/images/cleanbot.svg",
+  userImage: cleanbot,
   content:
     "해당 커뮤니티는 건전한 소통 환경을 유지하기 위해 비속어 필터링 시스템이 작동 중입니다. 부적절한 표현이 포함된 댓글은 자동으로 필터링되어 표시되지 않을 수 있습니다. 여러분의 이해와 협조에 감사드립니다.",
 };

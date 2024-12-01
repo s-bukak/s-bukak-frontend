@@ -254,6 +254,25 @@ const MessageList = ({ style }) => {
                       </>
                     )}
                   </div>
+                  {comment.isHidden && (
+                    <div className="flex justify-start mb-3 w-full">
+                      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 mr-3">
+                        <img src={cleanbotMessage.userImage} alt="cleanbot" />
+                      </div>
+                      <div className="flex flex-col items-start max-w-xs">
+                        <div className="flex items-center mb-1">
+                          <span className="text-sm font-semibold">
+                            {cleanbotMessage.username}
+                          </span>
+                        </div>
+                        <div className="flex flex-row">
+                          <div className="bg-gray-100 text-gray-700 p-2.5 rounded-lg text-sm break-words">
+                            {cleanbotMessage.content}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))
             ) : (
