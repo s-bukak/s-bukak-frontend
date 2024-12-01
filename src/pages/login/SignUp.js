@@ -43,6 +43,7 @@ export default function SignUp() {
                 }));
             } catch (error) {
                 console.error("Base64 디코딩 오류:", error);
+                setErrorMessage("초기 데이터 로드 중 오류가 발생했습니다. 다시 시도해주세요.");
             }
         }
     }, []);
@@ -78,6 +79,7 @@ export default function SignUp() {
         const { email, name, isTeamLeader, leagueField, teamInfo, teamDivision } = formData;
 
         try {
+            setErrorMessage(""); // 이전 에러 메시지 초기화
             const response = await axiosInstance.post("/register", {
                 email,
                 name,
@@ -87,17 +89,33 @@ export default function SignUp() {
                 team: isTeamLeader ? teamDivision : "",
             });
 
-            const token = response.headers["authorization"]?.split(" ")[1];
-            if (token) {
-                setToken(token);
-                console.log("회원가입 성공");
-                window.location.href = "/";
-            } else {
-                console.error("토큰 없음");
+            // Authorization 헤더에서 토큰 추출
+            const authorizationHeader = response.headers['authorization'];
+            if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
+                throw new Error("Invalid token received from server headers");
             }
+
+            const token = authorizationHeader.split(' ')[1]; // 'Bearer ' 뒤의 토큰 추출
+            if (!token || typeof token !== "string") {
+                throw new Error("Invalid token format");
+            }
+
+            setToken(token); // 토큰 저장
+
+            // 회원가입 성공 후 이동
+            window.location.href = "/";
         } catch (error) {
-            console.error("회원가입 중 오류 발생:", error.response?.data || error);
-            setErrorMessage("회원가입 중 문제가 발생했습니다. 다시 시도해주세요.");
+            if (error.response) {
+                setErrorMessage(
+                    error.response.data?.message ||
+                    "회원가입 중 서버에서 문제가 발생했습니다. 다시 시도해주세요."
+                );
+            } else if (error.request) {
+                setErrorMessage("서버와의 통신 중 문제가 발생했습니다. 네트워크를 확인해주세요.");
+            } else {
+                setErrorMessage("알 수 없는 오류가 발생했습니다. 다시 시도해주세요.");
+            }
+            console.error("회원가입 중 오류 발생:", error);
         }
     };
 
@@ -123,7 +141,7 @@ export default function SignUp() {
                                     name="email"
                                     value={formData.email}
                                     disabled
-                                    className="flex-1 bg-transparent outline-none cursor-not-allowed text-gray-400"
+                                    className="flex-1 bg-transparent outline-none cursor-not-allowed text-gray-400 text-sm"
                                 />
                             </div>
                         </div>
@@ -138,7 +156,7 @@ export default function SignUp() {
                                     name="name"
                                     value={formData.name}
                                     onChange={handleInputChange}
-                                    className="flex-1 bg-transparent outline-none"
+                                    className="flex-1 bg-transparent outline-none text-sm"
                                 />
                             </div>
                         </div>
@@ -161,9 +179,13 @@ export default function SignUp() {
                         {formData.isTeamLeader && (
                             <>
                                 <div className="text-xs my-3 text-gray-400">
-                                    팀 대표자 계정으로 가입 시 권한 부여에 1~3일 소요됩니다.
-                                    <br />
-                                    정보를 정확히 입력해주세요.
+                                    팀 대표자 계정으로 가입하는 경우,
+                                    <br/>
+                                    팀 대표자 권한 부여에 약 1~3일 정도 소요됩니다.
+                                    <br/>
+                                    팀 대표자 계정 중복 신청, 소속 정보 불일치 등의 사유 발생 시 무통보 반려됩니다.
+                                    <br/>
+                                    신중하게 선택하고 검토하신 후 회원가입을 진행해 주세요.
                                 </div>
                                 <div className="flex justify-between mb-2 space-x-2">
                                     {/* 리그 필드 */}
@@ -222,10 +244,9 @@ export default function SignUp() {
                                         ))}
                                     </select>
                                 </div>
+                                <hr className="my-2 border-gray-300"/>
                             </>
                         )}
-
-                        <hr className="my-2 border-gray-300" />
 
                         {/* 동의 체크박스 */}
                         <div className="mb-2">
@@ -249,7 +270,7 @@ export default function SignUp() {
                                 <a href="/terms" className="text-sky-600 underline">
                                     이용약관
                                 </a>
-                                에 동의
+                                <span> 동의 </span> <span className="text-red-700"> * </span>
                             </label>
                         </div>
 
@@ -264,7 +285,7 @@ export default function SignUp() {
                                 <a href="/privacy-policy" className="text-sky-600 underline">
                                     개인정보 수집 및 이용
                                 </a>
-                                에 동의
+                                <span> 동의 </span> <span className="text-red-700"> * </span>
                             </label>
                         </div>
 
