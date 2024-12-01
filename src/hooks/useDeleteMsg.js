@@ -11,7 +11,7 @@ const useDeleteMsg = () => {
 
     try {
       const response = await axiosInstance.delete(`/message/${messageId}`);
-      return response.data; // 필요시 데이터 반환
+      return response.data;
     } catch (err) {
       setError(err.message || "알 수 없는 오류가 발생했습니다.");
       console.error("Error deleting message:", err);

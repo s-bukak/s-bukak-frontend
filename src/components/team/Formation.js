@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { activeSportTabState } from "../../state/sportTabState";
 import formationSC from "../../assets/images/formationSC.svg";
@@ -23,7 +23,7 @@ const PlayerManagementPanel = ({
     setPlayers((prevPlayers) => [
       ...prevPlayers,
       {
-        id: String(Date.now()), // 고유 ID 생성
+        id: String(Date.now()),
         name: "",
         number: String(prevPlayers.length + 1),
         position: randomPosition,
@@ -31,7 +31,6 @@ const PlayerManagementPanel = ({
       },
     ]);
 
-    // 새로운 선수가 추가된 후 스크롤 이동
     setTimeout(() => {
       if (scrollContainerRef.current) {
         scrollContainerRef.current.scrollLeft =
@@ -125,7 +124,7 @@ const PlayerManagementPanel = ({
 
 const Formation = ({ owner }) => {
   const activeSportTab = useRecoilValue(activeSportTabState);
-  const { postPlayers, isLoading, error } = usePostPlayers(); // 최상위에서 훅 호출
+  const { postPlayers, isLoading, error } = usePostPlayers();
   const [isEditing, setIsEditing] = useState(false);
 
   const containerRef = useRef(null);
@@ -137,14 +136,14 @@ const Formation = ({ owner }) => {
   const handleEditClick = async () => {
     if (isEditing) {
       try {
-        const result = await postPlayers(owner.teamId, players); // POST 요청
+        await postPlayers(owner.teamId, players);
         alert("선수 정보가 성공적으로 업데이트되었습니다.");
       } catch (err) {
         console.error("POST 요청 실패:", err);
         alert("선수 정보를 업데이트하는 동안 오류가 발생했습니다.");
       }
     }
-    setIsEditing(!isEditing); // 편집 모드 토글
+    setIsEditing(!isEditing);
   };
 
   const handleMouseDown = (e, id) => {

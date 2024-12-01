@@ -1,10 +1,5 @@
 import cleanbot from "../assets/images/cleanbot.svg";
 
-export const user = {
-  userId: 5,
-  userName: "정찬우(학부생-소프트웨어학부 소프트웨어전공)",
-  userImage: "../assets/test/userImage.jpg",
-};
 export const cleanbotMessage = {
   userId: 0,
   username: "클린봇",

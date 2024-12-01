@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 
 const TeamSchedule = ({ owner, schedules = [] }) => {
-  // 연도 필터를 위한 상태 관리
   const [selectedYear, setSelectedYear] = useState("2024"); // 기본값은 2024
 
-  // 연도 필터링 함수
   const filteredSchedules = schedules.filter((match) =>
     match.date.startsWith(selectedYear),
   );
@@ -18,7 +16,7 @@ const TeamSchedule = ({ owner, schedules = [] }) => {
           {["2024", "2023", "2022", "2021", "2020"].map((year) => (
             <li
               key={year}
-              onClick={() => setSelectedYear(year)} // 연도를 클릭하면 상태 업데이트
+              onClick={() => setSelectedYear(year)}
               className={`cursor-pointer px-4 ${
                 selectedYear === year
                   ? "font-bold border-b-4 border-gray-700 text-gray-700"
@@ -36,11 +34,10 @@ const TeamSchedule = ({ owner, schedules = [] }) => {
             <div
               key={index}
               className={`flex items-center justify-between px-6 py-3 rounded-lg ${
-                index % 2 === 0 ? "bg-white" : "bg-transparent" // 짝수 타일은 흰색 배경, 홀수 타일은 배경색 제거
+                index % 2 === 0 ? "bg-white" : "bg-transparent"
               }`}
             >
               <div className="w-28 flex items-center text-left space-x-2">
-                {/* 팀 로고 */}
                 <img
                   src={owner.logoUrl}
                   alt={owner.name}
@@ -50,13 +47,11 @@ const TeamSchedule = ({ owner, schedules = [] }) => {
                   <span className="text-sm">{owner.name}</span>
                 </div>
               </div>
-              {/* 경기 결과 */}
               <div className="text-center w-28">
                 <span className="px-3 py-1 bg-gray-200 text-gray-700 rounded-full">
                   {match.result || "-"}
                 </span>
               </div>
-              {/* 상대 팀 정보 */}
               <div className="w-28 flex items-center text-right space-x-2 justify-end">
                 <div
                   className="text-end
@@ -64,14 +59,12 @@ const TeamSchedule = ({ owner, schedules = [] }) => {
                 >
                   <span className="text-sm">{match.opponent}</span>
                 </div>
-                {/* 상대 팀 로고 */}
                 <img
                   src={match.opponentName}
                   alt={match.opponent}
                   className="w-7 h-7 object-cover rounded-full text-right right-0"
                 />
               </div>
-              {/* 경기 날짜 */}
               <div className="px-4 text-right">
                 <span className="text-sm text-gray-700 font-light">
                   {match.date}

@@ -11,7 +11,6 @@ export default function usePostPlayers() {
 
     try {
       await axiosInstance.post(`/team/${teamId}/players`, { players });
-      // 데이터가 필요 없으면 여기서 함수 종료
     } catch (err) {
       console.error("POST 요청 실패:", err);
       setError(err.message || "알 수 없는 오류가 발생했습니다.");

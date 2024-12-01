@@ -28,9 +28,6 @@ const MessageList = ({ style }) => {
 
   // console.log 오버라이드 (모든 stomp.js 관련 로그 숨기기)
   useEffect(() => {
-    const originalLog = console.log;
-
-    // 모든 로그를 막고 싶다면, 아래처럼 빈 함수로 덮어 씌운다
     console.log = (...args) => {
       if (
         args[0] &&
@@ -53,7 +50,7 @@ const MessageList = ({ style }) => {
   const handleInputClick = (event) => {
     if (!isTokenValid()) {
       window.confirm("로그인이 필요한 기능입니다.");
-      event.preventDefault(); // 클릭 이벤트가 발생하지 않도록 방지
+      event.preventDefault();
     }
   };
 
@@ -183,7 +180,6 @@ const MessageList = ({ style }) => {
       try {
         await deleteMessage(messageId);
 
-        // Remove the message from the chat list
         setMessages((prevMessages) =>
           prevMessages.filter((message) => message.id !== messageId),
         );
