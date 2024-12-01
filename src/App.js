@@ -8,7 +8,6 @@ import {
 import { RecoilRoot } from "recoil";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import MainTest from "./pages/team/MainTest";
 
 // 페이지 컴포넌트 동적 임포트
 const SignIn = React.lazy(() => import("./pages/login/SignIn"));
@@ -44,8 +43,8 @@ function App() {
         <Suspense fallback={<div>Loading...</div>}>
           <Layout>
             <Routes>
-              <Route path="/" element={<MainTest />} />
-              <Route path="/home" element={<MainTest />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
               <Route path="/community" element={<Community />} />
               <Route path="/schedule" element={<Schedule />} />
               <Route path="/ranking" element={<Ranking />} />
