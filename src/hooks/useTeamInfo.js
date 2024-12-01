@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { activeSportTabState } from "../state/sportTabState";
-import { DOMAIN_NAME, TOKEN_NAME } from "../App";
+import axiosInstance from "../utils/axiosInstance";
 
 export default function useTeamInfo(teamId, isModified = false) {
   const [teamInfo, setTeamInfo] = useState(null);
@@ -20,26 +20,8 @@ export default function useTeamInfo(teamId, isModified = false) {
     const fetchTeamInfo = async () => {
       setIsLoading(true);
       try {
-        if (!TOKEN_NAME) {
-          console.error(
-            "Authorization token is missing. Check your .env file.",
-          );
-          return;
-        }
-
-        const response = await fetch(`${DOMAIN_NAME}/team/${teamId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${TOKEN_NAME}`,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
+        const response = await axiosInstance.get(`/team/${teamId}`);
+        const data = response.data;
 
         setTeamInfo(data);
         localStorage.setItem(

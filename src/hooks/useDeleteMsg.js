@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DOMAIN_NAME, TOKEN_NAME } from "../App";
+import axiosInstance from "../utils/axiosInstance";
 
 const useDeleteMsg = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -8,18 +8,14 @@ const useDeleteMsg = () => {
   const deleteMessage = async (messageId) => {
     setIsLoading(true);
     setError(null);
+
     try {
-      const response = await fetch(`${DOMAIN_NAME}/message/${messageId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${TOKEN_NAME}`,
-        },
-      });
-      return response.data;
+      const response = await axiosInstance.delete(`/message/${messageId}`);
+      return response.data; // 필요시 데이터 반환
     } catch (err) {
-      setError(err);
+      setError(err.message || "알 수 없는 오류가 발생했습니다.");
       console.error("Error deleting message:", err);
+      throw err;
     } finally {
       setIsLoading(false);
     }

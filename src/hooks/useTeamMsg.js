@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { teamIdState } from "../state/sportTabState";
-import { DOMAIN_NAME, TOKEN_NAME } from "../App";
+import axiosInstance from "../utils/axiosInstance";
 
 export default function useTeamMsg() {
   const teamId = useRecoilValue(teamIdState); // Recoil에서 teamId 가져오기
@@ -13,33 +13,21 @@ export default function useTeamMsg() {
     setIsLoading(true);
     setError(null);
     try {
-      if (!TOKEN_NAME) {
-        console.error("Authorization token is missing. Check your .env file.");
-        return;
-      }
-
-      const response = await fetch(`${DOMAIN_NAME}/message/${teamId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${TOKEN_NAME}`,
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`Failed to fetch messages: ${response.statusText}`);
-      }
-      const data = await response.json();
+      const response = await axiosInstance.get(`/message/${teamId}`);
+      const data = response.data;
 
       setMessages(data); // 가져온 데이터를 상태에 저장
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Failed to fetch messages");
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchMessages();
+    if (teamId) {
+      fetchMessages();
+    }
   }, [teamId]); // teamId가 변경될 때마다 실행
 
   return { messages, isLoading, error, setMessages, fetchMessages };

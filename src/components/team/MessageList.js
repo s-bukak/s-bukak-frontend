@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  user,
-  cleanbotMessage,
-  homePlaceHolder,
-} from "../../utils/MessageUtils";
+import { cleanbotMessage, homePlaceHolder } from "../../utils/MessageUtils";
+import anonymous from "../../assets/images/anonymous.svg";
 import { IoIosSend } from "react-icons/io";
 import { FaRegTrashAlt } from "react-icons/fa";
 import useTeamMsg from "../../hooks/useTeamMsg";
@@ -12,8 +9,10 @@ import { teamIdState } from "../../state/sportTabState";
 import useTeamInfo from "../../hooks/useTeamInfo";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import { DOMAIN_NAME, TOKEN_NAME } from "../../App";
+import { DOMAIN_NAME } from "../../App";
 import useDeleteMsg from "../../hooks/useDeleteMsg";
+import { decodeUserInfo } from "../../utils/userUtils";
+import { getToken, isTokenValid } from "../../utils/token";
 
 const MessageList = ({ style }) => {
   const [input, setInput] = useState("");
@@ -24,6 +23,8 @@ const MessageList = ({ style }) => {
   const { teamInfo } = useTeamInfo(teamId);
   const stompClient = useRef(null);
   const subscriptionRef = useRef(null); // 구독 ID를 추적
+
+  const user = decodeUserInfo();
 
   // console.log 오버라이드 (모든 stomp.js 관련 로그 숨기기)
   useEffect(() => {
@@ -38,7 +39,7 @@ const MessageList = ({ style }) => {
           args[0].includes("DISCONNECT") ||
           args[0].includes("UNSUBSCRIBE"))
       ) {
-        return; // WebSocket 관련 로그는 무시
+        // WebSocket 관련 로그는 무시
       }
     };
   }, []);
@@ -49,17 +50,32 @@ const MessageList = ({ style }) => {
     if (event.key === "Enter") submitComment();
   };
 
+  const handleInputClick = (event) => {
+    if (!isTokenValid()) {
+      window.confirm("로그인이 필요한 기능입니다.");
+      event.preventDefault(); // 클릭 이벤트가 발생하지 않도록 방지
+    }
+  };
+
   const handleCheckboxChange = (event) => {
     setIsAnonymous(event.target.checked);
   };
 
   const connectWebSocket = () => {
+    const token = getToken();
+    if (!token) {
+      console.error("No token found");
+      return;
+    }
     const socket = new SockJS(`${DOMAIN_NAME}/ws-chat`);
     stompClient.current = over(socket, { debug: false });
     stompClient.debug = null;
 
     stompClient.current.connect(
-      { Authorization: `Bearer ${TOKEN_NAME}`, debug: (msg) => {} },
+      {
+        Authorization: `Bearer ${token}`,
+        debug: (msg) => {},
+      },
       () => {
         subscribeToTeam(teamId); // WebSocket 연결 후 팀 메시지 구독
       },
@@ -104,10 +120,16 @@ const MessageList = ({ style }) => {
   };
 
   const submitComment = () => {
+    if (!isTokenValid()) {
+      window.confirm("로그인이 필요한 기능입니다.");
+      setInput("");
+      return;
+    }
+
     if (!input.trim()) return;
 
     const newComment = {
-      userId: 1, // 예시 User ID
+      userId: user?.userId,
       content: input,
       teamId: teamId,
       isAnonymous: isAnonymous,
@@ -190,17 +212,17 @@ const MessageList = ({ style }) => {
                 <div key={comment.id} className="w-full">
                   <div
                     className={`flex ${
-                      comment.userId === user.userId
+                      comment.userId === user?.userId
                         ? "justify-end"
                         : "justify-start"
                     } mb-1`}
                   >
-                    {comment.userId === user.userId ? (
+                    {comment.userId === user?.userId ? (
                       <>
                         <div className="flex flex-col items-end max-w-xs">
                           <div className="flex items-center mb-1">
                             <span className="text-sm font-semibold">
-                              {user.userName}
+                              {user?.userName}
                             </span>
                           </div>
                           <div className="bg-blue-100 text-gray-700 p-2.5 rounded-lg text-sm break-words">
@@ -220,7 +242,7 @@ const MessageList = ({ style }) => {
                           <img
                             src={
                               comment.isAnonymous
-                                ? "../../images/Anonymous.jpg"
+                                ? anonymous
                                 : comment.userImage
                             }
                             alt="user"
@@ -285,12 +307,13 @@ const MessageList = ({ style }) => {
         </div>
 
         <div className="flex items-center w-full p-1 pl-2.5 rounded-xl bg-gray-100 mt-4 border border-gray-400">
-          <div className="flex items-center">
+          <div className="flex items-center" onClick={handleInputClick}>
             <input
               id="checked-checkbox"
               type="checkbox"
               checked={isAnonymous}
               onChange={handleCheckboxChange}
+              disabled={!isTokenValid()}
               className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-400 rounded checked:bg-gray-500 focus:ring-0 dark:bg-gray-500 dark:border-gray-500"
             />
             <label
@@ -305,16 +328,19 @@ const MessageList = ({ style }) => {
             type="text"
             placeholder={
               teamInfo
-                ? `${teamInfo.name} 선수들에게 응원 메세지를 남겨보세요!`
+                ? isTokenValid()
+                  ? `${teamInfo.name} 선수들에게 응원 메세지를 남겨보세요!`
+                  : "로그인이 필요한 기능입니다."
                 : homePlaceHolder
             }
             value={input}
             onChange={handleInputChange}
             onKeyDown={handleKeyPress}
+            disabled={!isTokenValid()}
             className="flex-1 text-sm outline-none px-2 py-2 bg-gray-100"
           />
 
-          <button onClick={submitComment}>
+          <button onClick={submitComment} disabled={!isTokenValid()}>
             <IoIosSend color="gray-500" className="w-8 h-8" />
           </button>
         </div>
