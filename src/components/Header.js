@@ -90,6 +90,10 @@ const Header = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const location = useLocation(); // 현재 경로 가져오기
 
+    const handleLogoClick = () => {
+        navigate('/');
+    };
+
     // 현재 경로를 기반으로 activeMenuTab 업데이트
     useEffect(() => {
         const path = location.pathname.split('/')[1]; // 현재 경로의 첫 번째 부분 가져오기
@@ -149,7 +153,7 @@ const Header = () => {
 
     const teamNames = activeSportTab === "soccer" ? soccerTeams : basketballTeams;
 
-    const handleLogoClick = (team) => {
+    const handleTeamLogoClick = (team) => {
         setActiveMenuTab("team");
         const calculatedTeamId =
             activeSportTab === "soccer"
@@ -303,7 +307,7 @@ const Header = () => {
                         {teamNames.map((team, index) => (
                             <button
                                 key={index}
-                                onClick={() => handleLogoClick(team)}
+                                onClick={() => handleTeamLogoClick(team)}
                                 className="flex items-center justify-center flex-shrink-0"
                             >
                                 <img
