@@ -28,13 +28,11 @@ const AboutUs = React.lazy(() => import('./pages/home/AboutUs'));
 const ContactUs = React.lazy(() => import('./pages/home/ContactUs'));
 const Notice = React.lazy(() => import('./pages/home/Notice'));
 
-const Community = React.lazy(() => import('./pages/community/Community'));
 const Schedule = React.lazy(() => import('./pages/schedule/Schedule'));
 const Ranking = React.lazy(() => import('./pages/ranking/Ranking'));
 const Team = React.lazy(() => import('./pages/team/Team'));
 
 export const DOMAIN_NAME = process.env["REACT_APP_BASE_URL"];
-export const TOKEN_NAME = process.env["REACT_APP_TOKEN_TEMP_URL"];
 
 // Layout 컴포넌트: Header와 Footer를 조건부로 렌더링
 const Layout = ({ children }) => {
@@ -79,7 +77,6 @@ function AppRoutes() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/home" element={<Home />} />
-                <Route path="/community" element={<Community />} />
                 <Route path="/schedule" element={<Schedule />} />
                 <Route path="/free-community" element={<FreeCommunity />} />
                 <Route path="/practice-community" element={<PracticeCommunity />} />
