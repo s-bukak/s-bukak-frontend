@@ -50,17 +50,9 @@ const Home = () => {
                     <Ranking />
 
                     {/* 캘린더 Component */}
-                    {/*<div className="mt-20">*/}
-                    {/*    <div className="text-3xl font-bold mb-2 cursor-pointer" onClick={() => navigate('/schedule')}>캘린더</div>*/}
-                    {/*    <div className="text-gray-500 mb-10">*/}
-                    {/*        <p>북악리그 축구 및 농구 경기 일정을 한 데 모아 볼 수 있어요!</p>*/}
-                    {/*        <p>실제로 보면 더욱 재밌는 북악리그,</p>*/}
-                    {/*        <p>선후배 및 동기와 함께 직관하러 가볼까요?</p>*/}
-                    {/*        <br/>*/}
-                    {/*        <p>날짜를 클릭하면 하단에서 상세 일정을 볼 수 있어요.</p>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                  <Calendar/>
+                    <div className="mt-20">
+                      <Calendar/>
+                    </div>
                 </div>
             </div>
         </div>
