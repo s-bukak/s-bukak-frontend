@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos} from "react-icons/md";
+import axiosInstance from "../../utils/axiosInstance";
 
-import axios from "axios";
-import {DOMAIN_NAME, TOKEN_NAME} from "../../App";
 
 export default function Calendar() {
   const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
@@ -43,11 +42,7 @@ export default function Calendar() {
   // 백엔드에서 일정 데이터를 가져오고, 첫 번째 year 값을 calendarYear로 설정
   const fetchCalendarData = async () => {
     try {
-      const response = await axios.get(`${DOMAIN_NAME}/schedule`, {
-        headers: {
-          Authorization: `Bearer ${TOKEN_NAME}`,
-        },
-      });
+      const response = await axiosInstance.get(`schedule`);
 
       const schedulesYear = response.data.schedulesYear || [];
       const formattedData = schedulesYear.flatMap((yearData) =>
@@ -146,7 +141,7 @@ export default function Calendar() {
   return (
     <div className="w-full h-auto flex flex-col items-center rounded-2xl shadow-md p-4 bg-gray-100">
       {/* 월 변경 섹션 */}
-      <div className="w-full h-full flex items-center justify-between px-5">
+      <div className="w-full h-full flex items-center justify-between px-5 mb-4">
         <button onClick={handlePrevMonth} className="w-6 h-6">
           <MdOutlineArrowBackIosNew/>
         </button>
@@ -207,7 +202,15 @@ export default function Calendar() {
       {/* 선택된 날짜의 이벤트 */}
       <div className="w-full bg-gray-100 p-4 mt-4 rounded-lg">
         <div className="font-bold mb-2">
-          {months[currentMonth]} {selectedDate}일 일정
+          {months[currentMonth]} {selectedDate}{"일"}{" "}
+          {selectedDate !== null &&
+            ["(일)", "(월)", "(화)", "(수)", "(목)", "(금)", "(토)"][
+              new Date(
+                calendarYear || today.getFullYear(),
+                currentMonth,
+                selectedDate
+              ).getDay()
+              ]}
         </div>
         {filteredEvents.length > 0 ? (
           filteredEvents.map((event, index) => (

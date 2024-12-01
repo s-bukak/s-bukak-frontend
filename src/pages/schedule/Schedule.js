@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from "react";
-import {DOMAIN_NAME, TOKEN_NAME} from "../../App";
-import axios from "axios";
 import StatusIndicator from "../../components/StateIndecator"; // StatusIndicator 컴포넌트 임포트
 import {MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight} from "react-icons/md";
+import axiosInstance from "../../utils/axiosInstance";
 
 
 export default function Schedule() {
@@ -16,11 +15,7 @@ export default function Schedule() {
 
   const fetchSchedule = async () => {
     try {
-      const response = await axios.get(`${DOMAIN_NAME}/schedule`, {
-        headers: {
-          Authorization: `Bearer ${TOKEN_NAME}`,
-        },
-      });
+      const response = await axiosInstance.get(`schedule`);
 
       const schedulesYear = response.data.schedulesYear || [];
       const formattedData = schedulesYear.flatMap((yearData) =>
@@ -79,7 +74,7 @@ export default function Schedule() {
   };
 
   return (
-    <div className="w-full px-72 flex flex-col">
+    <div className="w-full px-36 flex flex-col">
       {/* 연도 표시 */}
       <div className="w-full font-bold text-gray-800 text-2xl flex justify-center my-8 gap-32">
         <div

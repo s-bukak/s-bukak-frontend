@@ -1,10 +1,9 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useNavigate} from 'react-router-dom';
-import axios from 'axios';
 import CommunityButton from "../../components/community/CommunityButton";
 import PageNumber from "../../components/PageNumber";
 import {FaMagnifyingGlass} from "react-icons/fa6";
-import {DOMAIN_NAME, TOKEN_NAME} from "../../App";
+import axiosInstance from "../../utils/axiosInstance";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -22,10 +21,7 @@ export default function PracticeCommunity() {
   // fetchBoards 함수를 useCallback으로 감싸기
   const fetchBoards = useCallback(async () => {
     try {
-      const response = await axios.get(`${DOMAIN_NAME}/boards`, {
-        headers: {
-          Authorization: `Bearer ${TOKEN_NAME}`
-        },
+      const response = await axiosInstance.get(`boards`, {
         params: {
           boardType: "PRACTICE",   // 게시판 타입을 PRACTICE로 고정
           query: searchTerm,   // 검색어를 API 요청의 파라미터로 전달
