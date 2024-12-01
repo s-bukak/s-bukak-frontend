@@ -130,13 +130,21 @@ const Header = () => {
     };
 
     const handleTabClick = (tab) => {
-        if (tab !== "team") {
+        if (tab === "team") {
+            // 팀 탭을 클릭하면 각 스포츠의 첫 번째 팀으로 이동
+            const initialTeamId = activeSportTab === "soccer" ? 1 : 25; // 축구는 1, 농구는 25부터 시작
+            setTeamId(initialTeamId);
+            setShowTeamLogos(true);
+            navigate(`/team/${initialTeamId}`);
+        } else {
+            // 다른 탭 클릭 시 로고 바 숨기기 및 초기화
             setShowTeamLogos(false);
-            setTeamId(0); // teamId를 0으로 초기화
+            setTeamId(0);
+            navigate(`/${tab}`);
         }
         setActiveMenuTab(tab);
-        navigate(`/${tab}`);
     };
+
 
     // showTeamLogos가 true로 설정될 때 스크롤을 중앙으로 이동
     useEffect(() => {
@@ -154,15 +162,27 @@ const Header = () => {
     const teamNames = activeSportTab === "soccer" ? soccerTeams : basketballTeams;
 
     const handleTeamLogoClick = (team) => {
-        setActiveMenuTab("team");
+        const teamIndex = teamNames.indexOf(team);
+
+        // 팀이 배열에 없는 경우 방어 코드 추가
+        if (teamIndex === -1) {
+            console.error(`팀 ${team}을 찾을 수 없습니다.`);
+            return;
+        }
+
+        // 팀 ID 계산
         const calculatedTeamId =
             activeSportTab === "soccer"
-                ? teamNames.indexOf(team) + 1
-                : teamNames.indexOf(team) + 25;
-        navigate(`/team/${calculatedTeamId}`);
+                ? teamIndex + 1 // 축구 팀 ID는 1부터 시작
+                : teamIndex + 25; // 농구 팀 ID는 25부터 시작
+
+        // 경로 이동 및 상태 업데이트
         setTeamId(calculatedTeamId);
+        setActiveMenuTab("team");
         setShowTeamLogos(true);
+        navigate(`/team/${calculatedTeamId}`);
     };
+
 
     return (
         <div>
@@ -248,46 +268,35 @@ const Header = () => {
                         <button
                             className={`${activeMenuTab === "home" ? "text-white" : ""} hover:text-white`}
                             onClick={() => handleTabClick("home")}
-                            onMouseEnter={() =>
-                                activeMenuTab !== "team" && setShowTeamLogos(false)
-                            }
                         >
                             홈
                         </button>
                         <button
                             className={`${activeMenuTab === "community" ? "text-white" : ""} hover:text-white`}
                             onClick={() => handleTabClick("community")}
-                            onMouseEnter={() =>
-                                activeMenuTab !== "team" && setShowTeamLogos(false)
-                            }
                         >
                             커뮤니티
                         </button>
                         <button
                             className={`${activeMenuTab === "schedule" ? "text-white" : ""} hover:text-white`}
                             onClick={() => handleTabClick("schedule")}
-                            onMouseEnter={() =>
-                                activeMenuTab !== "team" && setShowTeamLogos(false)
-                            }
                         >
                             일정
                         </button>
                         <button
                             className={`${activeMenuTab === "ranking" ? "text-white" : ""} hover:text-white`}
                             onClick={() => handleTabClick("ranking")}
-                            onMouseEnter={() =>
-                                activeMenuTab !== "team" && setShowTeamLogos(false)
-                            }
                         >
                             랭킹
                         </button>
                         <button
                             className={`${activeMenuTab === "team" ? "text-white" : ""} hover:text-white`}
-                            onMouseEnter={() => setShowTeamLogos(true)}
+                            onClick={() => handleTabClick("team")}
                         >
                             팀
                         </button>
                     </nav>
+
                 </div>
             </header>
 
@@ -295,10 +304,6 @@ const Header = () => {
                 <AnimatedContainer
                     className="bg-gray-200 flex overflow-x-auto min-w-0 py-4 scrollbar-hide items-center justify-center"
                     ref={scrollRef} // 스크롤 컨테이너 참조 연결
-                    onMouseEnter={() => setShowTeamLogos(true)} // 팀 버튼 또는 로고 영역에 마우스를 올리면 로고 보이기
-                    onMouseLeave={() =>
-                        !location.pathname.includes("/team") && setShowTeamLogos(false)
-                    }
                 >
                     <div className="flex space-x-3">
                         {/* 왼쪽 여백 */}
@@ -318,6 +323,7 @@ const Header = () => {
                             </button>
                         ))}
 
+                        {/* 오른쪽 여백 */}
                         <div className="flex-shrink-0 w-10"></div>
                     </div>
                 </AnimatedContainer>
