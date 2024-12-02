@@ -1,15 +1,15 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import StatusIndicator from "../../components/StateIndecator"; // StatusIndicator 컴포넌트 임포트
-import {MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight} from "react-icons/md";
+import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import axiosInstance from "../../utils/axiosInstance";
-
 
 export default function Schedule() {
   const months = [
     "1월", "2월", "3월", "4월", "5월", "6월",
     "7월", "8월", "9월", "10월", "11월", "12월",
   ];
-  const [clickedMonth, setClickedMonth] = useState(null);
+  const currentMonth = new Date().getMonth(); // 현재 월
+  const [clickedMonth, setClickedMonth] = useState(currentMonth); // 초기값을 현재 월로 설정
   const [filteredData, setFilteredData] = useState([]);
   const [calendarYear, setCalendarYear] = useState(new Date().getFullYear()); // 현재 연도로 초기화
 
@@ -77,18 +77,12 @@ export default function Schedule() {
     <div className="w-full px-36 flex flex-col">
       {/* 연도 표시 */}
       <div className="w-full font-bold text-gray-800 text-2xl flex justify-center my-8 gap-32">
-        <div
-          onClick={handlePreviousYear}
-          className="cursor-pointer"
-        >
-          <MdOutlineKeyboardArrowLeft/>
+        <div onClick={handlePreviousYear} className="cursor-pointer">
+          <MdOutlineKeyboardArrowLeft />
         </div>
         {calendarYear || "연도 불러오는 중..."}
-        <div
-          onClick={handleNextYear}
-          className="cursor-pointer"
-        >
-          <MdOutlineKeyboardArrowRight/>
+        <div onClick={handleNextYear} className="cursor-pointer">
+          <MdOutlineKeyboardArrowRight />
         </div>
       </div>
 
@@ -129,7 +123,7 @@ export default function Schedule() {
                         [{match.sportType}]
                       </div>
                       <div className="ml-2">
-                        <StatusIndicator status={match.betTimeType || "예측종료"}/>
+                        <StatusIndicator status={match.betTimeType || "예측종료"} />
                       </div>
                     </div>
 
