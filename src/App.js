@@ -15,14 +15,8 @@ const Faq = React.lazy(() => import('./pages/login/Faq'));
 
 const Home = React.lazy(() => import('./pages/home/Home'));
 
-const FreeCommunity = React.lazy(() => import('./pages/community/FreeCommunity'));
-const PracticeCommunity = React.lazy(() => import('./pages/community/PracticeCommunity'));
 const WriteCommunity = React.lazy(() => import('./pages/community/writeCommunity/WriteCommunity'));
 const CommunityDetail = React.lazy(() => import('./pages/community/communityDetail/CommunityDetail'));
-
-const MyWrote = React.lazy(() => import('./pages/activity/MyWrote'));
-const MyComment = React.lazy(() => import('./pages/activity/MyComment'));
-
 
 const AboutUs = React.lazy(() => import('./pages/home/AboutUs'));
 const ContactUs = React.lazy(() => import('./pages/home/ContactUs'));
@@ -81,12 +75,8 @@ function AppRoutes() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/community" element={<Community />} />
                 <Route path="/schedule" element={<Schedule />} />
-                <Route path="/free-community" element={<FreeCommunity />} />
-                <Route path="/practice-community" element={<PracticeCommunity />} />
                 <Route path="/write-community" element={<WriteCommunity />} />
                 <Route path="/community-detail/:boardId" element={<CommunityDetail />} />
-                <Route path="/my-wrote" element={<MyWrote />} />
-                <Route path="/my-comment" element={<MyComment />} />
                 <Route path="/ranking" element={<Ranking />} />
                 <Route path="/team/:teamId" element={<Team />} />
                 <Route path="/schedule" element={<Schedule />} />
