@@ -183,12 +183,9 @@ export default function SignUp() {
                         {formData.isTeamLeader && (
                             <>
                                 <div className="text-xs my-3 text-gray-400">
-                                    팀 대표자 계정으로 가입하는 경우,
+                                    팀 대표자 계정은 팀 당 한 명만 생성 가능합니다.
                                     <br/>
-                                    팀 대표자 권한 부여에 약 1~3일 정도 소요됩니다.
-                                    <br/>
-                                    팀 대표자 계정 중복 신청, 소속 정보 불일치 등의 사유 발생 시 무통보 반려됩니다.
-                                    <br/>
+                                    관리자 검토 과정에서 중복 신청, 소속 정보 불일치 등의 사유 발생 시 신청이 반려될 수 있습니다.
                                     신중하게 선택하고 검토하신 후 회원가입을 진행해 주세요.
                                 </div>
                                 <div className="flex justify-between mb-2 space-x-2">
