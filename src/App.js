@@ -28,11 +28,10 @@ const AboutUs = React.lazy(() => import('./pages/home/AboutUs'));
 const ContactUs = React.lazy(() => import('./pages/home/ContactUs'));
 const Notice = React.lazy(() => import('./pages/home/Notice'));
 
+const Community = React.lazy(() => import('./pages/community/Community'));
 const Schedule = React.lazy(() => import('./pages/schedule/Schedule'));
 const Ranking = React.lazy(() => import('./pages/ranking/Ranking'));
 const Team = React.lazy(() => import('./pages/team/Team'));
-
-export const DOMAIN_NAME = process.env["REACT_APP_BASE_URL"];
 
 // Layout 컴포넌트: Header와 Footer를 조건부로 렌더링
 const Layout = ({ children }) => {
@@ -51,6 +50,9 @@ const Layout = ({ children }) => {
 };
 
 const ClientID = '876612813769-4lfsesru9gnomuu6am1udlnb1d47hjtq.apps.googleusercontent.com';
+
+export const DOMAIN_NAME = process.env.REACT_APP_BASE_URL;
+
 // Router 내부에서 동작하도록 별도 컴포넌트 작성
 function AppRoutes() {
     useEffect(() => {
@@ -77,6 +79,7 @@ function AppRoutes() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/home" element={<Home />} />
+                <Route path="/community" element={<Community />} />
                 <Route path="/schedule" element={<Schedule />} />
                 <Route path="/free-community" element={<FreeCommunity />} />
                 <Route path="/practice-community" element={<PracticeCommunity />} />
@@ -85,6 +88,7 @@ function AppRoutes() {
                 <Route path="/my-wrote" element={<MyWrote />} />
                 <Route path="/my-comment" element={<MyComment />} />
                 <Route path="/ranking" element={<Ranking />} />
+                <Route path="/team/:teamId" element={<Team />} />
                 <Route path="/schedule" element={<Schedule />} />
                 <Route path="/team" element={<Team />} />
                 <Route path="/signin" element={<SignIn />} />
