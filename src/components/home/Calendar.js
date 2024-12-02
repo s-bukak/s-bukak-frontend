@@ -139,9 +139,9 @@ export default function Calendar() {
   });
 
   return (
-    <div className="w-full h-auto flex flex-col items-center rounded-2xl shadow-md p-4 bg-gray-100">
+    <div className="w-full h-auto flex flex-col items-center rounded-xl shadow-md p-4 bg-gray-100">
       {/* 월 변경 섹션 */}
-      <div className="w-full h-full flex items-center justify-between px-12 mb-4">
+      <div className="w-full h-full flex items-center justify-between px-12 py-2 mb-4">
         <button onClick={handlePrevMonth} className="w-6 h-6">
           <MdOutlineArrowBackIosNew/>
         </button>
@@ -152,13 +152,13 @@ export default function Calendar() {
       </div>
 
       {/* 달력 섹션 */}
-      <div className="w-full grid grid-cols-7 gap-1 p-2 border border-y-gray-500 border-x-0">
+      <div className="w-full grid grid-cols-7 gap-1 p-2 py-4 mb-1 border border-y-gray-500 border-x-0">
         {/* 요일 헤더 */}
         {["일", "월", "화", "수", "목", "금", "토"].map((day, index) => (
           <div
             key={index}
             className={`text-center font-medium ${
-              index === 0 ? "text-red-500" : index === 6 ? "text-blue-500" : ""
+              index === 0 ? "text-red-700" : index === 6 ? "text-sky-600" : ""
             }`}
           >
             {day}
@@ -169,11 +169,11 @@ export default function Calendar() {
           week.map(({day, type, hasEvent}, dayIndex) => (
             <div className="flex flex-col items-center" key={`${weekIndex}-${dayIndex}`}>
               <div
-                className={`relative h-10 w-10 flex items-center justify-center cursor-pointer rounded-full ${
+                className={`relative mb-1 h-10 w-10 flex items-center justify-center cursor-pointer rounded-full ${
                   dayIndex === 0
-                    ? "text-red-500"
+                    ? "text-red-700"
                     : dayIndex === 6
-                      ? "text-blue-500"
+                      ? "text-sky-600"
                       : "text-gray-800"
                 } ${
                   type === "prev" || type === "next"
@@ -192,7 +192,7 @@ export default function Calendar() {
               </div>
               {/* 빨간 점 */}
               {hasEvent && (
-                <div className="mt-0.5 h-1 w-1 bg-red-500 rounded-full"></div>
+                <div className="mt-0.5 h-1 w-1 bg-red-700 rounded-full"></div>
               )}
             </div>
           ))
@@ -200,7 +200,7 @@ export default function Calendar() {
       </div>
 
       {/* 선택된 날짜의 이벤트 */}
-      <div className="w-full bg-gray-100 p-4 mt-4 rounded-lg">
+      <div className="w-full bg-gray-100 p-4 mt-2 rounded-lg">
         {selectedDate !== null ? (
           <>
             <div className="font-bold mb-2">

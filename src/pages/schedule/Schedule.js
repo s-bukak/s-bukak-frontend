@@ -74,7 +74,7 @@ export default function Schedule() {
   };
 
   return (
-    <div className="w-full px-36 flex flex-col">
+    <div className="w-full px-24 pb-20 flex flex-col">
       {/* 연도 표시 */}
       <div className="w-full font-bold text-gray-800 text-2xl flex justify-center my-8 gap-32">
         <div onClick={handlePreviousYear} className="cursor-pointer">
@@ -102,7 +102,7 @@ export default function Schedule() {
       </div>
 
       {/* 일정 표시 */}
-      <div className="w-full h-96 overflow-y-scroll">
+      <div className="w-full h-full">
         <div className="w-full ">
           {Object.keys(filteredSchedule).length > 0 ? (
             Object.entries(filteredSchedule).map(([date, matches], idx) => (
@@ -156,7 +156,7 @@ export default function Schedule() {
             ))
           ) : (
             <div className="flex justify-center mt-12">
-              해당 월에 경기가 없습니다.
+              진행된 경기 혹은 예정된 경기가 없습니다.
             </div>
           )}
         </div>
