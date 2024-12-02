@@ -1,23 +1,15 @@
-import React, {useState, useEffect} from 'react';
-import {useNavigate, useLocation} from 'react-router-dom';
-import {IoIosArrowForward} from "react-icons/io";
+import React from 'react';
+import { useRecoilState } from 'recoil';
+import { activeTabState, currentTabState } from '../../state/communityTabState';
+import {useNavigate} from "react-router-dom";
 
 function CommunityButton() {
+  const [activeButton, setActiveButton] = useRecoilState(activeTabState);
+  const [, setCurrentTab] = useRecoilState(currentTabState);
   const navigate = useNavigate();
-  const location = useLocation(); // 현재 경로를 가져오기
-  const [activeButton, setActiveButton] = useState(); // 초기 상태
-
-  // URL 경로에 따라 activeButton 상태 초기화
-  useEffect(() => {
-    if (location.pathname.includes('/my-wrote') || location.pathname.includes('/my-comment')) {
-      setActiveButton('나의활동');
-    } else {
-      setActiveButton('게시판 정보');
-    }
-  }, [location.pathname]);
-
-  const handleClick = (button) => {
+  const handleClick = (button, tab) => {
     setActiveButton(button);
+    setCurrentTab(tab); // 현재 탭 상태 업데이트
   };
 
   const getButtonClass = (button) => {
@@ -32,17 +24,15 @@ function CommunityButton() {
         <>
           <div
             className="flex justify-between items-center px-4 py-3 border-b border-gray-200 cursor-pointer"
-            onClick={() => navigate('/free-community')}
+            onClick={() => handleClick('게시판 정보', 'free-community')}
           >
             <span className="text-sm font-bold">자유 게시판</span>
-            <IoIosArrowForward/>
           </div>
           <div
             className="flex justify-between items-center px-4 py-3 cursor-pointer"
-            onClick={() => navigate('/practice-community')}
+            onClick={() => handleClick('게시판 정보', 'practice-community')}
           >
             <span className="text-sm font-bold">연습 상대 게시판</span>
-            <IoIosArrowForward/>
           </div>
         </>
       );
@@ -51,17 +41,15 @@ function CommunityButton() {
         <>
           <div
             className="flex justify-between items-center px-4 py-3 border-b border-gray-200 cursor-pointer"
-            onClick={() => navigate('/my-wrote')}
+            onClick={() => handleClick('나의활동', 'my-wrote')}
           >
             <span className="text-sm font-bold">내가 쓴 글</span>
-            <IoIosArrowForward/>
           </div>
           <div
             className="flex justify-between items-center px-4 py-3 cursor-pointer"
-            onClick={() => navigate('/my-comment')}
+            onClick={() => handleClick('나의활동', 'my-comment')}
           >
             <span className="text-sm font-bold">댓글 단 글</span>
-            <IoIosArrowForward/>
           </div>
         </>
       );
@@ -73,7 +61,7 @@ function CommunityButton() {
       {/* 글쓰기 버튼 */}
       <button
         className="w-full h-12 text-white font-bold bg-gray-800 rounded-lg mb-4"
-        onClick={() => navigate('/write-community')} // navigate 사용
+        onClick={() => navigate('/write-community')}
       >
         글쓰기
       </button>

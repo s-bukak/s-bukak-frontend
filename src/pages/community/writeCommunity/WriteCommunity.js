@@ -35,7 +35,7 @@ export default function WriteCommunity() {
       };
       await axiosInstance.post(`/board`, data);
       alert("등록 성공!");
-      navigate('/free-community'); // 게시판 페이지로 이동
+      navigate('/community'); // 게시판 페이지로 이동
     } catch (error) {
       console.error("등록 실패:", error);
       alert("등록에 실패했습니다. 다시 시도해주세요.");

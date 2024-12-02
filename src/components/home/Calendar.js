@@ -141,11 +141,11 @@ export default function Calendar() {
   return (
     <div className="w-full h-auto flex flex-col items-center rounded-2xl shadow-md p-4 bg-gray-100">
       {/* 월 변경 섹션 */}
-      <div className="w-full h-full flex items-center justify-between px-5 mb-4">
+      <div className="w-full h-full flex items-center justify-between px-12 mb-4">
         <button onClick={handlePrevMonth} className="w-6 h-6">
           <MdOutlineArrowBackIosNew/>
         </button>
-        <div className="text-gray-800 text-2xl font-bold">{calendarYear}년 {months[currentMonth]}</div>
+        <div className="text-gray-800 text-xl font-bold">{calendarYear}년 {months[currentMonth]}</div>
         <button onClick={handleNextMonth} className="w-6 h-6">
           <MdOutlineArrowForwardIos/>
         </button>
@@ -201,34 +201,39 @@ export default function Calendar() {
 
       {/* 선택된 날짜의 이벤트 */}
       <div className="w-full bg-gray-100 p-4 mt-4 rounded-lg">
-        <div className="font-bold mb-2">
-          {months[currentMonth]} {selectedDate}{"일"}{" "}
-          {selectedDate !== null &&
-            ["(일)", "(월)", "(화)", "(수)", "(목)", "(금)", "(토)"][
-              new Date(
-                calendarYear || today.getFullYear(),
-                currentMonth,
-                selectedDate
-              ).getDay()
-              ]}
-        </div>
-        {filteredEvents.length > 0 ? (
-          filteredEvents.map((event, index) => (
-            <div
-              key={index}
-              className="flex items-center gap-2 text-sm text-gray-500 mb-1"
-            >
-              <div className="h-1 w-1 bg-gray-500 rounded-full"></div>
-              <div>[{event.sportType}]</div>
-              <div>{event.startTime}</div>
-              <div>
-                {event.homeTeamName} vs {event.awayTeamName}
-              </div>
+        {selectedDate !== null ? (
+          <>
+            <div className="font-bold mb-2">
+              {months[currentMonth]} {selectedDate}
+              {["(일)", "(월)", "(화)", "(수)", "(목)", "(금)", "(토)"][
+                new Date(
+                  calendarYear || today.getFullYear(),
+                  currentMonth,
+                  selectedDate
+                ).getDay()
+                ]}
             </div>
-          ))
+            {filteredEvents.length > 0 ? (
+              filteredEvents.map((event, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-2 text-sm text-gray-500 mb-1"
+                >
+                  <div className="h-1 w-1 bg-gray-500 rounded-full"></div>
+                  <div>[{event.sportType}]</div>
+                  <div>{event.startTime}</div>
+                  <div>
+                    {event.homeTeamName} vs {event.awayTeamName}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="text-sm text-gray-500">일정이 없습니다.</div>
+            )}
+          </>
         ) : (
-          <div className="text-sm text-gray-500">일정이 없습니다.</div>
-        )}
+          <div className="text-sm text-gray-500">일정이 궁금한 날짜를 클릭해 주세요!</div>
+          )}
       </div>
     </div>
   );

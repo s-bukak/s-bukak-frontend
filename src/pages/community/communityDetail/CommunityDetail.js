@@ -1,13 +1,15 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import CommunityButton from "../../../components/community/CommunityButton";
-import {useParams} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 import {CgProfile} from "react-icons/cg";
+import {FaTrash} from "react-icons/fa6";
 import Send from "../../../assets/icons/send.svg";
 import axiosInstance from "../../../utils/axiosInstance";
 import {isTokenValid} from "../../../utils/token";
 
 export default function CommunityDetail() {
   const {boardId} = useParams();
+  const navigate = useNavigate();
   const [board, setBoard] = useState(null); // 게시글 데이터
   const [comments, setComments] = useState([]); // 댓글 데이터
   const [newComment, setNewComment] = useState(""); // 새로운 댓글 내용
@@ -27,6 +29,20 @@ export default function CommunityDetail() {
       console.error("Error fetching post detail:", error);
     }
   }, [boardId]);
+
+  // 게시글 삭제
+  const handleDeleteBoard = async () => {
+    const confirmDelete = window.confirm("정말로 이 게시글을 삭제하시겠습니까?");
+    if (!confirmDelete) return;
+    try {
+      await axiosInstance.delete(`board/${boardId}`);
+      alert("게시글이 삭제되었습니다.");
+      navigate("/community"); // 삭제 후 커뮤니티 메인으로 리다이렉트
+    } catch (error) {
+      console.error("Error deleting board:", error);
+      alert("내 게시글만 삭제 가능합니다!");
+    }
+  };
 
   // 컴포넌트가 처음 렌더링되거나 boardId가 변경될 때 fetchPostDetail을 호출함
   useEffect(() => {
@@ -75,7 +91,9 @@ export default function CommunityDetail() {
     }
   };
 
-  if (!board) return <div>Loading...</div>;
+  if (!board) {
+    return <div>Loading...</div>; // 데이터가 로드되지 않았을 때 로딩 상태 표시
+  }
 
   return (
     <div className="flex flex-row w-full gap-[75px]">
@@ -98,19 +116,22 @@ export default function CommunityDetail() {
                 />
                 <div className="font-semibold text-base">{board.username}</div>
               </div>
-              <div className="text-gray-600 text-sm">{board.createAt}</div>
+                <div className="text-gray-400 cursor-pointer" onClick={handleDeleteBoard}>
+                  <FaTrash />
+                </div>
             </div>
 
             {/* 게시글 제목 및 내용 */}
             <div className="font-bold text-2xl">{board.title}</div>
             <div className="font-regular text-base">{board.content}</div>
+            <div className="text-gray-600 text-sm text-end">{board.createAt}</div>
           </div>
 
           {/* 댓글 영역 */}
           {comments.length > 0 ? (
             <div
               ref={commentsRef}
-              className="flex flex-col gap-6 rounded-2xl h-96 p-4 border border-gray-300 overflow-y-auto"
+              className="flex flex-col gap-1 rounded-2xl h-96 p-4 border border-gray-300 overflow-y-auto "
             >
               {comments.map((comment, index) => (
                 <div
@@ -149,54 +170,52 @@ export default function CommunityDetail() {
             </div>
           ) : (
             <div className="rounded-2xl h-96 p-4 border border-gray-300 flex justify-center items-center text-gray-500">
-              아직 등록된 댓글이 없습니다. 첫 댓글을 남겨보세요!
+              댓글이 없습니다. 댓글을 남겨보세요!
             </div>
           )}
-
           {/* 댓글 작성 영역 */}
-          {isLoggedIn ? (
-            <div className="flex items-center w-full p-1 px-2.5 rounded-xl bg-gray-100 mt-4 border border-gray-400">
-              <div className="flex items-center">
-                <input
-                  id="checked-checkbox"
-                  type="checkbox"
-                  checked={isAnonymous}
-                  onChange={(e) => setIsAnonymous(e.target.checked)}
-                  className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-400 rounded checked:bg-gray-500 focus:ring-0 dark:bg-gray-500 dark:border-gray-500"
-                />
-                <label
-                  htmlFor="checked-checkbox"
-                  className="ms-2 text-sm font-medium text-gray-400"
-                >
-                  익명
-                </label>
-              </div>
-              <div className="ml-3 h-6 border-l-2 border-gray-300"></div>
+          <div className="flex items-center w-full p-1 px-2.5 rounded-xl bg-gray-100 mt-4 border border-gray-300">
+            <div className="flex items-center">
               <input
-                type="text"
-                placeholder="댓글을 입력하세요"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    handlePostComment();
-                  }
-                }}
-                className="flex-1 text-sm outline-none px-2 py-2 bg-gray-100"
+                id="checked-checkbox"
+                type="checkbox"
+                checked={isAnonymous}
+                onChange={(e) => setIsAnonymous(e.target.checked)}
+                disabled={!isLoggedIn} // 로그인하지 않은 경우 체크박스 비활성화
+                className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-400 rounded checked:bg-gray-500 focus:ring-0 dark:bg-gray-500 dark:border-gray-500"
               />
-              <button
-                onClick={handlePostComment}
-                className="flex items-center justify-center w-8 h-8"
+              <label
+                htmlFor="checked-checkbox"
+                className={`ms-2 text-sm font-medium ${isLoggedIn ? "text-gray-400" : "text-gray-400"}`}
               >
-                <img src={Send} alt="send"/>
-              </button>
+                익명
+              </label>
             </div>
-          ) : (
-            <div className="mt-4 text-gray-500 text-center">
-              댓글을 작성하려면 로그인이 필요합니다.
-            </div>
-          )}
+            <div className="ml-3 h-6 border-l-2 border-gray-300"></div>
+            <input
+              type="text"
+              placeholder={isLoggedIn ? "댓글을 입력하세요" : "로그인이 필요한 기능입니다."}
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && isLoggedIn) { // 로그인한 경우만 Enter로 댓글 작성 가능
+                  e.preventDefault();
+                  handlePostComment();
+                }
+              }}
+              disabled={!isLoggedIn} // 로그인하지 않은 경우 입력창 비활성화
+              className={`flex-1 text-sm outline-none px-2 py-2 ${
+                isLoggedIn ? "bg-gray-100" : "bg-gray-100"
+              }`}
+            />
+            <button
+              onClick={handlePostComment}
+              disabled={!isLoggedIn} // 로그인하지 않은 경우 버튼 비활성화
+              className="flex items-center justify-center w-8 h-8 disabled:opacity-50"
+            >
+              <img src={Send} alt="send"/>
+            </button>
+          </div>
         </div>
       </div>
     </div>
