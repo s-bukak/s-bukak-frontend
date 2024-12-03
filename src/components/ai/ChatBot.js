@@ -35,7 +35,10 @@ const ChatBot = () => {
           className="fixed bottom-28 right-10 w-full max-w-sm h-full max-h-[70%] bg-white rounded-lg z-50 flex flex-col"
           style={{ boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.25)' }}
         >
-          <div className="px-3 py-2 bg-gray-800 text-white flex justify-between items-center rounded-t-md">
+          <div
+            className="px-3 py-2 bg-gray-800 text-white flex justify-between items-center rounded-t-md "
+            style={{ boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.45)', zIndex: 60 }}
+          >
             <div className="flex flex-row">
               <img src={aiLogo} className="w-14 h-14" alt="AI Logo" />
               <div className="flex flex-col ml-0.5 pt-2">
@@ -48,8 +51,8 @@ const ChatBot = () => {
             </button>
           </div>
           {/* 내부 스크롤 */}
-          <div className="flex-1 h-full max-h-[83%] w-full">
-            <MessageList />
+          <div className="flex-1 h-full max-h-[83%] w-full z-50">
+            <MessageList isOpenModal={isOpen} />
           </div>
         </div>
       )}

@@ -8,8 +8,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52068881-f8d4-4534-96ae-49c05127104b" name="변경" comment="delete: 불필요한 코드 및 테스트용 코드 삭제">
+    <list default="true" id="52068881-f8d4-4534-96ae-49c05127104b" name="변경" comment="feat: 챗봇 서버와 연결 완료">
+      <change afterPath="$PROJECT_DIR$/src/assets/icons/send.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ai/ChatBot.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ai/ChatBot.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/ai/MessageList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ai/MessageList.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/ChatBotUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/ChatBotUtils.js" afterDir="false" />
     </list>
@@ -158,6 +161,7 @@
       <workItem from="1732256440127" duration="6976000" />
       <workItem from="1732680125052" duration="3489000" />
       <workItem from="1732697231516" duration="2326000" />
+      <workItem from="1733225097362" duration="4999000" />
     </task>
     <task id="LOCAL-00001" summary="[feat] 팀 페이지 레이아웃 구현 완료">
       <option name="closed" value="true" />
@@ -377,8 +381,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[feat] 팀 페이지 레이아웃 구현 완료" />
-    <MESSAGE value="[design] 팀 페이지 디자인 수정" />
     <MESSAGE value="[feat] 최근 경기 전적 컴포넌트 구현 완료" />
     <MESSAGE value="[design] 축구/농구팀 로고 svg 파일 크기 1:1비율 통일화 작업 완료" />
     <MESSAGE value="[feat] 축구/농구 팀페이지 최근 경기 전적 구현 및 코드 리팩토링 완료" />
@@ -402,6 +404,8 @@
     <MESSAGE value="design: 화면 크기 축소 시 컨텐츠 최소 크기 수정" />
     <MESSAGE value="delete: 불필요한 코드 및 테스트용 코드 삭제" />
     <MESSAGE value="feat: 팀 대표 권한의 전체 선수 명단 및 포메이션 편집 api 연결 완료" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 팀 대표 권한의 전체 선수 명단 및 포메이션 편집 api 연결 완료" />
+    <MESSAGE value="fix: 전체 응원메세지 렌더링 이슈 해결" />
+    <MESSAGE value="feat: 챗봇 서버와 연결 완료" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 챗봇 서버와 연결 완료" />
   </component>
 </project>
