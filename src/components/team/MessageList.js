@@ -19,6 +19,7 @@ const MessageList = ({style}) => {
     const [input, setInput] = useState("");
     const [isAnonymous, setIsAnonymous] = useState(false);
     const messageEndRef = useRef(null);
+    const chatContainerRef = useRef(null);  // 채팅창 컨테이너
     const {messages: chatList, setMessages, fetchMessages} = useTeamMsg();
     const [teamId, setTeamId] = useRecoilState(teamIdState);
     const {teamInfo} = useTeamInfo(teamId);
@@ -29,18 +30,19 @@ const MessageList = ({style}) => {
 
     // console.log 오버라이드 (모든 stomp.js 관련 로그 숨기기)
     useEffect(() => {
+        // console.log 오버라이드
+        const originalConsoleLog = console.log;
         console.log = (...args) => {
-            if (
-                args[0] &&
-                (args[0].includes("CONNECTED") ||
-                    args[0].includes("SUBSCRIBE") ||
-                    args[0].includes("DISCONNECT") ||
-                    args[0].includes("UNSUBSCRIBE"))
-            ) {
-                // WebSocket 관련 로그는 무시
+            if (args[0] && typeof args[0] === 'string' && args[0].includes("CONNECTED")) {
+                // 특정 조건일 때만 includes 사용
+
+            } else {
             }
         };
+
+        // 추가 로직...
     }, []);
+
 
     const handleInputChange = (event) => setInput(event.target.value);
 
@@ -118,6 +120,19 @@ const MessageList = ({style}) => {
         }
     };
 
+    useEffect(() => {
+        connectWebSocket();
+
+        return () => {
+            disconnectWebSocket();
+        };
+    }, []);
+
+    useEffect(() => {
+        fetchMessages(); // teamId가 0일 때도 호출하도록 수정
+    }, [teamId]); // teamId가 변경될 때마다 실행
+
+
     const submitComment = () => {
         if (!isTokenValid()) {
             window.confirm("로그인이 필요한 기능입니다.");
@@ -165,12 +180,16 @@ const MessageList = ({style}) => {
     }, [teamId]);
 
     useEffect(() => {
-        messageEndRef.current?.scrollIntoView({block: "nearest"});
+        // 채팅 메시지가 추가될 때, 채팅창만 스크롤 내리기
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+
+        // 윈도우 상단으로 스크롤 이동 (0.1초 뒤)
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+        }, 100);
     }, [chatList]);
-    useEffect(() => {
-        messageEndRef.current?.scrollIntoView({block: "nearest"});
-        window.scrollTo(0, 0);
-    }, []);
 
     const {deleteMessage, isLoading, error} = useDeleteMsg();
 
@@ -198,6 +217,7 @@ const MessageList = ({style}) => {
                 <div
                     className="flex flex-col w-full overflow-y-auto flex-1 scrollbar-hide"
                     style={{...style}}
+                    ref={chatContainerRef}
                 >
                     <div
                         className={`flex flex-col flex-grow w-full ${
@@ -226,14 +246,14 @@ const MessageList = ({style}) => {
                                             <div className={`flex ${rowDirection} w-full`}>
                                                 <div
                                                     className={`w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 ${
-                                                        comment.isHidden ? "mr-2" : imageMargin
+                                                        imageMargin
                                                     }`}
                                                 >
                                                     <img src={userImage} alt="user"
                                                          className="w-full h-full object-contain"/>
                                                 </div>
                                                 <div
-                                                    className={`flex flex-col items-start bg-gray-100 p-2.5 px-3.5 rounded-2xl ${
+                                                    className={`flex flex-col flex-grow items-start bg-gray-100 p-2.5 px-3.5 rounded-2xl ${
                                                         comment.isHidden ? "mr-3" : imageMargin
                                                     } ${!comment.isHidden && !teamInfo?.canUpdatePlayers ? "flex-grow" : "w-4/5"}`}
                                                 >
