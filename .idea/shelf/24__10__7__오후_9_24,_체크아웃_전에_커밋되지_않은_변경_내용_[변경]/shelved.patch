@@ -1,0 +1,20 @@
+Index: src/components/team/Formation.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React from 'react';\nimport formationSC from '../../assets/images/formationSC.png';\n\nconst Formation = () => {\n    return (\n        <div className=\"w-56 mb-6\">\n            <h2 className=\"text-base font-bold\">포메이션</h2>\n            <div className=\"mt-2\">\n                <img src={formationSC} alt=\"Formation\" className=\"h-auto  rounded-md\" />\n            </div>\n        </div>\n    );\n};\n\nexport default Formation;\n
+===================================================================
+diff --git a/src/components/team/Formation.js b/src/components/team/Formation.js
+--- a/src/components/team/Formation.js	(revision da90cb6cc93cc20f509e2b23b45c9e58f7f3c21e)
++++ b/src/components/team/Formation.js	(date 1728223370353)
+@@ -3,9 +3,9 @@
+ 
+ const Formation = () => {
+     return (
+-        <div className="w-56 mb-6">
++        <div className="w-64 mb-6">
+             <h2 className="text-base font-bold">포메이션</h2>
+-            <div className="mt-2">
++            <div className="mt-4">
+                 <img src={formationSC} alt="Formation" className="h-auto  rounded-md" />
+             </div>
+         </div>

@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="52068881-f8d4-4534-96ae-49c05127104b" name="변경" comment="feat: 챗봇 서버와 연결 완료">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ai/MessageList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ai/MessageList.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="team" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;suwith&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/s-bukak/s-bukak-frontend.git&quot;,
+    &quot;accountId&quot;: &quot;c98ae216-e751-475d-b8e0-ab8c3b04e4f5&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/components/team/Formation.js" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="OptimizeOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2mn5Uw4PWxTguvR4NExZEu8mhc7" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;code.cleanup.on.save&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;chatbot&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/user/s-bukak/node_modules/prettier&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettier.import.notification.dismissed&quot;: &quot;true&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/user/s-bukak/node_modules/prettier&quot;,
+    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/snap/webstorm/420/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/assets/icons" />
+      <recent name="$PROJECT_DIR$/src/assets/images" />
+      <recent name="$PROJECT_DIR$/src/assets/test" />
+      <recent name="$PROJECT_DIR$/src/assets/icon" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/pages/team" />
+      <recent name="$PROJECT_DIR$/src/assets/images" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-WS-243.21565.180" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="디폴트 작업">
+      <changelist id="52068881-f8d4-4534-96ae-49c05127104b" name="변경" comment="" />
+      <created>1727699518928</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1727699518928</updated>
+      <workItem from="1727699519962" duration="4534000" />
+      <workItem from="1727769171336" duration="14301000" />
+      <workItem from="1728217810018" duration="3807000" />
+      <workItem from="1728221773563" duration="9780000" />
+      <workItem from="1728303436140" duration="301000" />
+      <workItem from="1728303751816" duration="1815000" />
+      <workItem from="1728305630483" duration="4625000" />
+      <workItem from="1728317926010" duration="840000" />
+      <workItem from="1728543569275" duration="607000" />
+      <workItem from="1728875799675" duration="613000" />
+      <workItem from="1728964124887" duration="3767000" />
+      <workItem from="1728990217148" duration="2976000" />
+      <workItem from="1729060437079" duration="6217000" />
+      <workItem from="1729140301894" duration="485000" />
+      <workItem from="1729160089025" duration="1920000" />
+      <workItem from="1729231180788" duration="3000" />
+      <workItem from="1729261259843" duration="2368000" />
+      <workItem from="1730352114093" duration="1004000" />
+      <workItem from="1730371177917" duration="12727000" />
+      <workItem from="1730822161882" duration="1843000" />
+      <workItem from="1730890791598" duration="4176000" />
+      <workItem from="1730896327644" duration="144000" />
+      <workItem from="1731384403204" duration="2235000" />
+      <workItem from="1731387097932" duration="4502000" />
+      <workItem from="1731467671733" duration="4972000" />
+      <workItem from="1731485302329" duration="15164000" />
+      <workItem from="1731575669526" duration="3746000" />
+      <workItem from="1731654802691" duration="7037000" />
+      <workItem from="1731998315588" duration="2730000" />
+      <workItem from="1732073612972" duration="7161000" />
+      <workItem from="1732088165260" duration="4680000" />
+      <workItem from="1732166354311" duration="1571000" />
+      <workItem from="1732176708978" duration="13287000" />
+      <workItem from="1732194057947" duration="1901000" />
+      <workItem from="1732195973139" duration="2306000" />
+      <workItem from="1732250866160" duration="3568000" />
+      <workItem from="1732254917401" duration="1512000" />
+      <workItem from="1732256440127" duration="6976000" />
+      <workItem from="1732680125052" duration="3489000" />
+      <workItem from="1732697231516" duration="2326000" />
+      <workItem from="1733225097362" duration="6272000" />
+    </task>
+    <task id="LOCAL-00001" summary="[feat] 팀 페이지 레이아웃 구현 완료">
+      <option name="closed" value="true" />
+      <created>1727779460442</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1727779460442</updated>
+    </task>
+    <task id="LOCAL-00002" summary="[design] 팀 페이지 디자인 수정">
+      <option name="closed" value="true" />
+      <created>1727785869269</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1727785869269</updated>
+    </task>
+    <task id="LOCAL-00003" summary="[feat] 최근 경기 전적 컴포넌트 구현 완료">
+      <option name="closed" value="true" />
+      <created>1728223009533</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1728223009533</updated>
+    </task>
+    <task id="LOCAL-00004" summary="[design] 축구/농구팀 로고 svg 파일 크기 1:1비율 통일화 작업 완료">
+      <option name="closed" value="true" />
+      <created>1728303667250</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1728303667250</updated>
+    </task>
+    <task id="LOCAL-00005" summary="[design] 축구/농구팀 로고 svg 파일 크기 1:1비율 통일화 작업 완료">
+      <option name="closed" value="true" />
+      <created>1728304314850</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1728304314850</updated>
+    </task>
+    <task id="LOCAL-00006" summary="[feat] 축구/농구 팀페이지 최근 경기 전적 구현 및 코드 리팩토링 완료">
+      <option name="closed" value="true" />
+      <created>1728993158241</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1728993158241</updated>
+    </task>
+    <task id="LOCAL-00007" summary="[feat] 팀 페이지 축구/농구 경기 일정 구현 완료">
+      <option name="closed" value="true" />
+      <created>1729160604847</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1729160604847</updated>
+    </task>
+    <task id="LOCAL-00008" summary="feat: 메인페이지에 응원메세지 컴포넌트  플로팅 테스트">
+      <option name="closed" value="true" />
+      <created>1731384491078</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1731384491078</updated>
+    </task>
+    <task id="LOCAL-00009" summary="design: 응원메세지 UI 수정">
+      <option name="closed" value="true" />
+      <created>1731391578741</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1731391578741</updated>
+    </task>
+    <task id="LOCAL-00010" summary="feat: 전체 선수 명단 추가로 인한 최근 경기 전적 데이터 하나 더 추가">
+      <option name="closed" value="true" />
+      <created>1731491195219</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1731491195219</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fix: 메세지 창 하단 스크롤 고정으로 인한 팀페이지 하단 스크롤 이슈 고침">
+      <option name="closed" value="true" />
+      <created>1731491242007</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1731491242007</updated>
+    </task>
+    <task id="LOCAL-00012" summary="feat: 선수 추가, 삭제, 선택에 따른 포메이션 반영 구현 완료">
+      <option name="closed" value="true" />
+      <created>1731502093896</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1731502093896</updated>
+    </task>
+    <task id="LOCAL-00013" summary="design: 배경색, 글자색, 선 색 변경">
+      <option name="closed" value="true" />
+      <created>1731502141485</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1731502141485</updated>
+    </task>
+    <task id="LOCAL-00014" summary="fix: 업데이트되는 선수 명단 데이터 구조 변경">
+      <option name="closed" value="true" />
+      <created>1731658560694</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1731658560694</updated>
+    </task>
+    <task id="LOCAL-00015" summary="feat: .env 파일 생성후 서버 및 API 키 저장">
+      <option name="closed" value="true" />
+      <created>1731659061096</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1731659061096</updated>
+    </task>
+    <task id="LOCAL-00016" summary="merge: .env 파일 업데이트 및 변수명 통일">
+      <option name="closed" value="true" />
+      <created>1731668477639</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1731668477639</updated>
+    </task>
+    <task id="LOCAL-00017" summary="feat: API 반영하여 teamId 로직 및 팀명 배열 변경">
+      <option name="closed" value="true" />
+      <created>1732082106910</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1732082106911</updated>
+    </task>
+    <task id="LOCAL-00018" summary="fix: .env 파일 수정">
+      <option name="closed" value="true" />
+      <created>1732089830358</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1732089830358</updated>
+    </task>
+    <task id="LOCAL-00019" summary="fix: 팀 정보, 최근 경기 전적, 경기 일정 api 연결 완료">
+      <option name="closed" value="true" />
+      <created>1732181556216</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1732181556216</updated>
+    </task>
+    <task id="LOCAL-00020" summary="delete: 테스트용 로컬 더미데이터 삭제">
+      <option name="closed" value="true" />
+      <created>1732187476780</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1732187476780</updated>
+    </task>
+    <task id="LOCAL-00021" summary="rename: 훅 파일명 변경">
+      <option name="closed" value="true" />
+      <created>1732187548266</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1732187548266</updated>
+    </task>
+    <task id="LOCAL-00022" summary="fix: 선수 고유식별자 id 추가">
+      <option name="closed" value="true" />
+      <created>1732187586424</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1732187586424</updated>
+    </task>
+    <task id="LOCAL-00023" summary="feat: 전체 선수 명단 get api 연결 완료">
+      <option name="closed" value="true" />
+      <created>1732188169037</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1732188169037</updated>
+    </task>
+    <task id="LOCAL-00024" summary="design: 화면 크기 축소 시 컨텐츠 최소 크기 수정">
+      <option name="closed" value="true" />
+      <created>1732192570227</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1732192570227</updated>
+    </task>
+    <task id="LOCAL-00025" summary="delete: 불필요한 코드 및 테스트용 코드 삭제">
+      <option name="closed" value="true" />
+      <created>1732195747476</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1732195747476</updated>
+    </task>
+    <task id="LOCAL-00026" summary="feat: 챗봇 서버와 연결 완료">
+      <option name="closed" value="true" />
+      <created>1733230222884</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1733230222884</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="[feat] 최근 경기 전적 컴포넌트 구현 완료" />
+    <MESSAGE value="[design] 축구/농구팀 로고 svg 파일 크기 1:1비율 통일화 작업 완료" />
+    <MESSAGE value="[feat] 축구/농구 팀페이지 최근 경기 전적 구현 및 코드 리팩토링 완료" />
+    <MESSAGE value="[feat] 팀 페이지 축구/농구 경기 일정 구현 완료" />
+    <MESSAGE value="feat: 메인페이지에 응원메세지 컴포넌트  플로팅 테스트" />
+    <MESSAGE value="design: 응원메세지 UI 수정" />
+    <MESSAGE value="feat: 전체 선수 명단 추가로 인한 최근 경기 전적 데이터 하나 더 추가" />
+    <MESSAGE value="fix: 메세지 창 하단 스크롤 고정으로 인한 팀페이지 하단 스크롤 이슈 고침" />
+    <MESSAGE value="feat: 선수 추가, 삭제, 선택에 따른 포메이션 반영 구현 완료" />
+    <MESSAGE value="design: 배경색, 글자색, 선 색 변경" />
+    <MESSAGE value="fix: 업데이트되는 선수 명단 데이터 구조 변경" />
+    <MESSAGE value="feat: .env 파일 생성후 서버 및 API 키 저장" />
+    <MESSAGE value="merge: .env 파일 업데이트 및 변수명 통일" />
+    <MESSAGE value="feat: API 반영하여 teamId 로직 및 팀명 배열 변경" />
+    <MESSAGE value="fix: .env 파일 수정" />
+    <MESSAGE value="fix: 팀 정보, 최근 경기 전적, 경기 일정 api 연결 완료" />
+    <MESSAGE value="delete: 테스트용 로컬 더미데이터 삭제" />
+    <MESSAGE value="rename: 훅 파일명 변경" />
+    <MESSAGE value="fix: 선수 고유식별자 id 추가" />
+    <MESSAGE value="feat: 전체 선수 명단 get api 연결 완료" />
+    <MESSAGE value="design: 화면 크기 축소 시 컨텐츠 최소 크기 수정" />
+    <MESSAGE value="delete: 불필요한 코드 및 테스트용 코드 삭제" />
+    <MESSAGE value="feat: 팀 대표 권한의 전체 선수 명단 및 포메이션 편집 api 연결 완료" />
+    <MESSAGE value="fix: 전체 응원메세지 렌더링 이슈 해결" />
+    <MESSAGE value="feat: 챗봇 서버와 연결 완료" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 챗봇 서버와 연결 완료" />
+  </component>
+</project>

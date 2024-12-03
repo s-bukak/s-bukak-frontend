@@ -4,6 +4,7 @@ import { RecoilRoot } from 'recoil';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ChatBot from "./components/ai/ChatBot";
 
 // 페이지 컴포넌트 동적 임포트
 const SignIn = React.lazy(() => import('./pages/login/SignIn'));
@@ -82,6 +83,7 @@ function AppRoutes() {
                 <Route path="/notice" element={<Notice />} />
                 <Route path="/faq" element={<Faq />} />
             </Routes>
+            <ChatBot />
         </Layout>
     );
 }
