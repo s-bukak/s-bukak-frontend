@@ -7,6 +7,7 @@ const MessageList = ({ isOpenModal = false }) => {
   const [input, setInput] = useState('');
   const [chatList, setChatList] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isTypingNotificationVisible, setIsTypingNotificationVisible] = useState(false);
   const messageEndRef = useRef(null);
 
   const getCurrentTime = () => {
@@ -23,7 +24,7 @@ const MessageList = ({ isOpenModal = false }) => {
             userId: 'bot',
             username: 'AI Chatbot',
             userImage: aiLogo,
-            content: greeting || 'Hello! How can I assist you today?',
+            content: greeting,
             createdAt: getCurrentTime(),
           },
         ]);
@@ -40,10 +41,21 @@ const MessageList = ({ isOpenModal = false }) => {
   }, [chatList]);
 
   const handleInputChange = e => setInput(e.target.value);
-  const handleKeyPress = e => e.key === 'Enter' && submitComment();
+
+  const handleKeyPress = e => {
+    if (e.key === 'Enter' && !isSubmitting) {
+      submitComment();
+    }
+  };
 
   const submitComment = async () => {
-    if (!input.trim() || isSubmitting) return;
+    if (!input.trim()) return;
+
+    // Show typing notification when user sends message
+    if (isSubmitting) {
+      setIsTypingNotificationVisible(true);
+    }
+
     setIsSubmitting(true);
 
     const newUserMessage = {
@@ -64,6 +76,9 @@ const MessageList = ({ isOpenModal = false }) => {
       });
       const data = await response.json();
 
+      // Hide typing notification after bot responds
+      setIsTypingNotificationVisible(false);
+
       const newBotMessage = {
         id: chatList.length + 2,
         userId: 'bot',
@@ -74,7 +89,6 @@ const MessageList = ({ isOpenModal = false }) => {
       };
       setChatList(prev => [...prev, newBotMessage]);
     } catch {
-      // Handle error here if needed
     } finally {
       setIsSubmitting(false);
     }
@@ -125,6 +139,16 @@ const MessageList = ({ isOpenModal = false }) => {
                 </div>
               </div>
             ))}
+            {isSubmitting && (
+              <div className="flex justify-start items-center mt-2 px-4">
+                <div className="text-sm text-gray-500 animate-pulse">메시지 입력 중...</div>
+              </div>
+            )}
+            {isTypingNotificationVisible && (
+              <div className="flex justify-center items-center text-sm text-gray-500 mt-2 px-4 opacity-100 transition-opacity duration-300 ease-out">
+                메세지 입력중입니다. 조금만 기다려주세요
+              </div>
+            )}
             {chatList.length > 0 && <div ref={messageEndRef}></div>}
           </div>
         </div>
@@ -137,7 +161,6 @@ const MessageList = ({ isOpenModal = false }) => {
             onChange={handleInputChange}
             onKeyDown={handleKeyPress}
             className="flex-1 text-sm outline-none px-2 py-2 bg-gray-100"
-            disabled={isSubmitting}
           />
           <button onClick={submitComment} disabled={isSubmitting}>
             <img src={sendIcon} className="w-5 h-5 mr-2" />
