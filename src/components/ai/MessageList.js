@@ -51,7 +51,6 @@ const MessageList = ({ isOpenModal = false }) => {
   const submitComment = async () => {
     if (!input.trim()) return;
 
-    // Show typing notification when user sends message
     if (isSubmitting) {
       setIsTypingNotificationVisible(true);
     }
@@ -76,7 +75,6 @@ const MessageList = ({ isOpenModal = false }) => {
       });
       const data = await response.json();
 
-      // Hide typing notification after bot responds
       setIsTypingNotificationVisible(false);
 
       const newBotMessage = {

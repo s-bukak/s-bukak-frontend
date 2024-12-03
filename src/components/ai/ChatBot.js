@@ -50,7 +50,6 @@ const ChatBot = () => {
               <CiCircleMinus className="text-white" size={22} />
             </button>
           </div>
-          {/* 내부 스크롤 */}
           <div className="flex-1 h-full max-h-[83%] w-full z-50">
             <MessageList isOpenModal={isOpen} />
           </div>
