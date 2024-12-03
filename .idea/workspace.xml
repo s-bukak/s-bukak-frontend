@@ -8,9 +8,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52068881-f8d4-4534-96ae-49c05127104b" name="변경" comment="feat: 챗봇 서버와 연결 완료">
+    <list default="true" id="52068881-f8d4-4534-96ae-49c05127104b" name="변경" comment="config: 불필요한 주석 삭제">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ai/MessageList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ai/MessageList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/team/MessageList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/team/MessageList.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,30 +66,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;code.cleanup.on.save&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;chatbot&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/user/s-bukak/node_modules/prettier&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettier.import.notification.dismissed&quot;: &quot;true&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/user/s-bukak/node_modules/prettier&quot;,
-    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/snap/webstorm/420/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "code.cleanup.on.save": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/user/s-bukak/node_modules/prettier",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettier.import.notification.dismissed": "true",
+    "prettierjs.PrettierConfiguration.Package": "/home/user/s-bukak/node_modules/prettier",
+    "rearrange.code.on.save": "true",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "settings.javascript.prettier",
+    "ts.external.directory.path": "/snap/webstorm/420/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/assets/icons" />
@@ -385,7 +385,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[feat] 최근 경기 전적 컴포넌트 구현 완료" />
     <MESSAGE value="[design] 축구/농구팀 로고 svg 파일 크기 1:1비율 통일화 작업 완료" />
     <MESSAGE value="[feat] 축구/농구 팀페이지 최근 경기 전적 구현 및 코드 리팩토링 완료" />
     <MESSAGE value="[feat] 팀 페이지 축구/농구 경기 일정 구현 완료" />
@@ -410,6 +409,7 @@
     <MESSAGE value="feat: 팀 대표 권한의 전체 선수 명단 및 포메이션 편집 api 연결 완료" />
     <MESSAGE value="fix: 전체 응원메세지 렌더링 이슈 해결" />
     <MESSAGE value="feat: 챗봇 서버와 연결 완료" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 챗봇 서버와 연결 완료" />
+    <MESSAGE value="config: 불필요한 주석 삭제" />
+    <option name="LAST_COMMIT_MESSAGE" value="config: 불필요한 주석 삭제" />
   </component>
 </project>
