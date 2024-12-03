@@ -52,12 +52,30 @@ export default function SignUp() {
         }
     }, []);
 
-    // 전체 동의 체크박스 처리
+    // 각각의 개별 체크박스 상태 변경 처리
+    const handleTermsAcceptedChange = (e) => {
+        const isChecked = e.target.checked;
+        setIsTermsAccepted(isChecked);
+        updateAllAccepted(isChecked, isPrivacyPolicyAccepted);
+    };
+
+    const handlePrivacyPolicyAcceptedChange = (e) => {
+        const isChecked = e.target.checked;
+        setIsPrivacyPolicyAccepted(isChecked);
+        updateAllAccepted(isTermsAccepted, isChecked);
+    };
+
+    // 전체 동의 체크박스 상태 업데이트
     const handleAllAcceptedChange = (e) => {
         const isChecked = e.target.checked;
         setIsAllAccepted(isChecked);
         setIsTermsAccepted(isChecked);
         setIsPrivacyPolicyAccepted(isChecked);
+    };
+
+    // isAllAccepted 상태를 업데이트하는 함수
+    const updateAllAccepted = (termsAccepted, privacyPolicyAccepted) => {
+        setIsAllAccepted(termsAccepted && privacyPolicyAccepted);
     };
 
     // Form 데이터 업데이트 핸들러
@@ -264,7 +282,7 @@ export default function SignUp() {
                             <input
                                 type="checkbox"
                                 checked={isTermsAccepted}
-                                onChange={(e) => setIsTermsAccepted(e.target.checked)}
+                                onChange={handleTermsAcceptedChange}
                                 className="mr-2"
                             />
                             <label className="text-sm text-gray-700">
@@ -279,7 +297,7 @@ export default function SignUp() {
                             <input
                                 type="checkbox"
                                 checked={isPrivacyPolicyAccepted}
-                                onChange={(e) => setIsPrivacyPolicyAccepted(e.target.checked)}
+                                onChange={handlePrivacyPolicyAcceptedChange}
                                 className="mr-2"
                             />
                             <label className="text-sm text-gray-700">
