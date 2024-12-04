@@ -18,3 +18,18 @@ export const isTokenValid = () => {
         return false;
     }
 };
+
+export function getUserId() {
+    const token = getToken();
+    if (!token) return null; // 토큰이 없으면 null 반환
+
+    try {
+        const decoded = jwtDecode(token); // JWT 디코딩
+        return decoded.name; // 디코딩된 토큰에서 userId 반환
+    } catch (error) {
+        console.error('Error decoding token:', error);
+        return null; // 에러 발생 시 null 반환
+    }
+}
+
+

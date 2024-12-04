@@ -5,6 +5,7 @@ import MultiBanner from '../../components/home/MultiBanner';
 import Betting from "../../components/home/Betting";
 import Ranking from "../../components/home/Ranking";
 import {useNavigate} from "react-router-dom";
+import Calendar from '../../components/home/Calendar';
 import MessageList from "../../components/team/MessageList";
 
 const Home = () => {
@@ -70,6 +71,8 @@ const Home = () => {
                             <br/>
                             <p>날짜를 클릭하면 하단에서 상세 일정을 볼 수 있어요.</p>
                         </div>
+                      <Calendar/>
+
                     </div>
                 </div>
             </div>
