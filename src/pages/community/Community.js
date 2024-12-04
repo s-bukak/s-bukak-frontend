@@ -1,66 +1,47 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {useRecoilValue} from 'recoil';
-import CommunityButton from "../../components/community/CommunityButton";
-import PageNumber from "../../components/PageNumber";
-import {FaMagnifyingGlass} from "react-icons/fa6";
-import axiosInstance from "../../utils/axiosInstance";
-import {currentTabState} from '../../state/communityTabState'; // Recoil 상태 가져오기
+import React, { useState, useEffect, useCallback } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+import CommunityButton from '../../components/community/CommunityButton';
+import PageNumber from '../../components/PageNumber';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
+import axiosInstance from '../../utils/axiosInstance';
+import { currentTabState, activeTabState } from '../../state/communityTabState';
 
 const ITEMS_PER_PAGE = 10;
 
 export default function Community() {
   const [currentPage, setCurrentPage] = useState(1);
   const [startPage, setStartPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태
-  const [filteredData, setFilteredData] = useState([]); // API에서 받아온 데이터 상태
+  const [searchInput, setSearchInput] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
+  const [currentTab, setCurrentTab] = useRecoilState(currentTabState);
+  const activeTab = useRecoilValue(activeTabState);
   const navigate = useNavigate();
-
-  const currentTab = useRecoilValue(currentTabState); // 현재 활성화된 탭 가져오기
-
-  // 상세 페이지로 이동
-  const handleRowClick = (boardId) => {
-    navigate(`/community-detail/${boardId}`);
-  };
 
   // fetchBoards 함수
   const fetchBoards = useCallback(async () => {
+    console.log('Fetching boards with currentTab:', currentTab); // 확인용 로그
     try {
       let params = {};
-
       switch (currentTab) {
-        case 'free-community':
-          params = {
-            boardType: "FREE", // 자유 게시판 타입
-            query: searchTerm,
-            myBoardsOnly: false,
-          };
+        case '/free-community':
+          params = { boardType: 'FREE', query: searchTerm, myBoardsOnly: false };
           break;
-        case 'practice-community':
-          params = {
-            boardType: "PRACTICE", // 연습 상대 게시판 타입
-            query: searchTerm,
-            myBoardsOnly: false,
-          };
+        case '/practice-community':
+          params = { boardType: 'PRACTICE', query: searchTerm, myBoardsOnly: false };
           break;
-        case 'my-wrote':
-          params = {
-            boardType: "MY_POST", // 연습 상대 게시판 타입
-            query: searchTerm,
-          };
+        case '/my-wrote':
+          params = { boardType: 'MY_POST', query: searchTerm };
           break;
-        case 'my-comment':
-          params = {
-            boardType: "MY_COMMENT",   // 게시판 타입을 MY_COMMENT로 고정
-            query: searchTerm,
-          };
+        case '/my-comment':
+          params = { boardType: 'MY_COMMENT', query: searchTerm };
           break;
         default:
           return;
       }
 
-      const response = await axiosInstance.get(`boards`, {params});
-
+      const response = await axiosInstance.get('boards', { params });
       const formattedData = response.data.boards.map((board) => ({
         boardId: board.boardId,
         title: board.title,
@@ -70,139 +51,166 @@ export default function Community() {
       }));
       setFilteredData(formattedData);
     } catch (error) {
-      console.error("Error fetching boards:", error);
+      console.error('Error fetching boards:', error);
     }
-  }, [searchTerm, currentTab]); // searchTerm과 currentTab을 종속성 배열에 포함
+  }, [searchTerm, currentTab]);
 
-  // fetchBoards 호출
   useEffect(() => {
-    fetchBoards();
-  }, [fetchBoards]);
+    if (currentTab) {
+      fetchBoards();
+    }
+  }, [currentTab ,fetchBoards]);
+
+
+  // 상세 페이지로 이동
+  const handleRowClick = (boardId) => {
+    navigate(`/community/detail/${boardId}`); // 동적 라우팅으로 이동
+  };
+
+  // 글쓰기 페이지로 이동
+  const handleWriteClick = () => {
+    navigate('/community/write'); // 글쓰기 페이지로 이동
+  };
+
+
+  useEffect(() => {
+    console.log('현재 탭 상태:', currentTab);
+
+    if (activeTab === '게시판 정보') {
+      // activeTab이 '게시판 정보'일 때만 currentTab을 초기화할 수 있지만
+      // currentTab이 이미 설정되어 있으면 이 부분을 건너뛰도록
+      if (!currentTab) {
+        setCurrentTab('/free-community'); // 초기화 로직
+      }
+    } else if (activeTab === '나의활동') {
+      setCurrentTab('/my-wrote');
+    }
+  }, [activeTab, setCurrentTab, currentTab]);
+
 
   const handleSearch = () => {
     setCurrentPage(1);
-    setSearchTerm(searchTerm.trim());
+    setSearchTerm(searchInput.trim());
   };
 
   return (
-      <div className="flex flex-row w-full my-20 justify-center gap-8">
-        <CommunityButton/>
+    <div className="flex flex-row w-full my-20 justify-center gap-8">
+      <CommunityButton onWriteClick={handleWriteClick} />
 
-        {/* 메인 콘텐츠 */}
-        <div className="w-3/5 flex flex-col gap-4">
-          {/* 제목 */}
-          <div className="font-semibold border border-gray-300 rounded-lg flex items-center h-12 px-8">
-            {currentTab === 'free-community'
-                ? '자유 게시판'
-                : currentTab === 'practice-community'
-                    ? '연습 상대 게시판'
-                    : currentTab === 'my-wrote'
-                        ? '내가 쓴 글'
-                        : '댓글 단 글'}
-          </div>
-
-          {/* 데이터 테이블 */}
-          {filteredData.length > 0 ? (
-              <>
-                <div className="w-full border border-gray-300 rounded-lg px-4 py-2">
-                  <table className="table-fixed w-full text-center">
-                    <thead className="border-b-2 border-gray-400 font-bold">
-                    <tr>
-                      <th className="p-3 text-left w-[30%]">제목</th>
-                      <th className="p-3 text-center w-[30%]">작성자</th>
-                      <th className="p-3 text-center">작성일</th>
-                      <th className="p-3 text-center">댓글</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {filteredData
-                        .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
-                        .map((item, index, array) => (
-                            <tr
-                                key={index}
-                                className={`cursor-pointer hover:bg-gray-100 ${
-                                    index === array.length - 1 ? '' : 'border-b'
-                                }`}
-                                onClick={() => handleRowClick(item.boardId)}
-                            >
-                              <td className="p-3 text-left">
-                                {item.title.length > 10 ? `${item.title.slice(0, 10)}...` : item.title}
-                              </td>
-                              <td className="p-3 text-center">{item.author}</td>
-                              <td className="p-3 text-center">{item.createAt}</td>
-                              <td className="p-3 text-center">{item.comments}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* 검색 */}
-                <div className="justify-center flex">
-                  <div className="w-[30%] relative">
-                    <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="게시글 검색"
-                        className="border-b border-gray-300 p-2 w-full pl-4 pr-10 focus:outline-none"
-                    />
-                    <button
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-300"
-                        onClick={handleSearch}
-                    >
-                      <FaMagnifyingGlass/>
-                    </button>
-                  </div>
-                </div>
-
-                {/* 페이지 번호 */}
-                <PageNumber
-                    currentPage={currentPage}
-                    startPage={startPage}
-                    totalPages={Math.ceil(filteredData.length / ITEMS_PER_PAGE)}
-                    onPageChange={(page) => {
-                      setCurrentPage(page);
-                      setStartPage(Math.floor((page - 1) / 10) * 10 + 1); // 그룹 페이지 갱신
-                    }}
-                    onNextClick={() => {
-                      if (currentPage < Math.ceil(filteredData.length / ITEMS_PER_PAGE)) {
-                        setCurrentPage((prev) => prev + 1);
-                        if ((currentPage - startPage + 1) % 10 === 0) {
-                          setStartPage((prev) => prev + 10);
-                        }
-                      }
-                    }}
-                    onPrevClick={() => {
-                      if (currentPage > 1) {
-                        setCurrentPage((prev) => prev - 1);
-                        if ((currentPage - startPage) % 10 === 0) {
-                          setStartPage((prev) => (prev > 1 ? prev - 10 : 1));
-                        }
-                      }
-                    }}
-                    onNextGroupClick={() => {
-                      const nextStartPage = startPage + 10;
-                      if (nextStartPage <= Math.ceil(filteredData.length / ITEMS_PER_PAGE)) {
-                        setStartPage(nextStartPage);
-                        setCurrentPage(nextStartPage);
-                      }
-                    }}
-                    onPrevGroupClick={() => {
-                      const prevStartPage = startPage - 10;
-                      if (prevStartPage >= 1) {
-                        setStartPage(prevStartPage);
-                        setCurrentPage(prevStartPage);
-                      }
-                    }}
-                />
-              </>
-          ) : (
-              <div className="flex justify-center items-center h-64 text-gray-500">
-                등록된 게시글이 없습니다.
-              </div>
-          )}
+      <div className="w-3/5 flex flex-col gap-4">
+        {/* 제목 */}
+        <div className="font-semibold border border-gray-300 rounded-lg flex items-center h-12 px-8">
+          {currentTab === '/free-community'
+            ? '자유 게시판'
+            : currentTab === '/practice-community'
+              ? '연습 상대 게시판'
+              : currentTab === '/my-wrote'
+                ? '내가 쓴 글'
+                : '댓글 단 글'}
         </div>
+
+        {/* 데이터 테이블 */}
+        {filteredData.length > 0 ? (
+          <>
+            <div className="w-full border border-gray-300 rounded-lg px-4 py-2">
+              <table className="table-fixed w-full text-center">
+                <thead className="border-b-2 border-gray-400 font-bold">
+                <tr>
+                  <th className="p-3 text-left w-[30%]">제목</th>
+                  <th className="p-3 text-center w-[30%]">작성자</th>
+                  <th className="p-3 text-center">작성일</th>
+                  <th className="p-3 text-center">댓글</th>
+                </tr>
+                </thead>
+                <tbody>
+                {filteredData
+                  .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
+                  .map((item, index, array) => (
+                    <tr
+                      key={index}
+                      className={`cursor-pointer hover:bg-gray-100 ${
+                        index === array.length - 1 ? '' : 'border-b'
+                      }`}
+                      onClick={() => handleRowClick(item.boardId)}
+                    >
+                      <td className="p-3 text-left">
+                        {item.title.length > 10 ? `${item.title.slice(0, 10)}...` : item.title}
+                      </td>
+                      <td className="p-3 text-center">{item.author}</td>
+                      <td className="p-3 text-center">{item.createAt}</td>
+                      <td className="p-3 text-center">{item.comments}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* 검색 */}
+            <div className="justify-center flex">
+              <div className="w-[40%] relative">
+                <input
+                  type="text"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  placeholder="제목이나 본문 내용을 검색해보세요"
+                  className="border-b border-gray-300 p-2 w-full pl-4 pr-10 focus:outline-none"
+                />
+                <button
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-300"
+                  onClick={handleSearch}
+                >
+                  <FaMagnifyingGlass />
+                </button>
+              </div>
+            </div>
+
+            {/* 페이지 번호 */}
+            <PageNumber
+              currentPage={currentPage}
+              startPage={startPage}
+              totalPages={Math.ceil(filteredData.length / ITEMS_PER_PAGE)}
+              onPageChange={(page) => {
+                setCurrentPage(page);
+                setStartPage(Math.floor((page - 1) / 10) * 10 + 1); // 그룹 페이지 갱신
+              }}
+              onNextClick={() => {
+                if (currentPage < Math.ceil(filteredData.length / ITEMS_PER_PAGE)) {
+                  setCurrentPage((prev) => prev + 1);
+                  if ((currentPage - startPage + 1) % 10 === 0) {
+                    setStartPage((prev) => prev + 10);
+                  }
+                }
+              }}
+              onPrevClick={() => {
+                if (currentPage > 1) {
+                  setCurrentPage((prev) => prev - 1);
+                  if ((currentPage - startPage) % 10 === 0) {
+                    setStartPage((prev) => (prev > 1 ? prev - 10 : 1));
+                  }
+                }
+              }}
+              onNextGroupClick={() => {
+                const nextStartPage = startPage + 10;
+                if (nextStartPage <= Math.ceil(filteredData.length / ITEMS_PER_PAGE)) {
+                  setStartPage(nextStartPage);
+                  setCurrentPage(nextStartPage);
+                }
+              }}
+              onPrevGroupClick={() => {
+                const prevStartPage = startPage - 10;
+                if (prevStartPage >= 1) {
+                  setStartPage(prevStartPage);
+                  setCurrentPage(prevStartPage);
+                }
+              }}
+            />
+          </>
+        ) : (
+          <div className="flex justify-center items-center h-64 text-gray-500">
+            등록된 게시글이 없습니다.
+          </div>
+        )}
       </div>
+    </div>
   );
 }

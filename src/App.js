@@ -5,6 +5,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
+
 // 페이지 컴포넌트 동적 임포트
 const SignIn = React.lazy(() => import('./pages/login/SignIn'));
 const SignUp = React.lazy(() => import('./pages/login/SignUp'));
@@ -12,17 +13,15 @@ const Terms = React.lazy(() => import('./pages/login/Terms'));
 const PrivacyPolicy = React.lazy(() => import('./pages/login/PrivacyPolicy'));
 const Faq = React.lazy(() => import('./pages/login/Faq'));
 
-
 const Home = React.lazy(() => import('./pages/home/Home'));
-
-const WriteCommunity = React.lazy(() => import('./pages/community/writeCommunity/WriteCommunity'));
-const CommunityDetail = React.lazy(() => import('./pages/community/communityDetail/CommunityDetail'));
 
 const AboutUs = React.lazy(() => import('./pages/home/AboutUs'));
 const ContactUs = React.lazy(() => import('./pages/home/ContactUs'));
 const Notice = React.lazy(() => import('./pages/home/Notice'));
 
 const Community = React.lazy(() => import('./pages/community/Community'));
+const WriteCommunity = React.lazy(() => import('./pages/community/WriteCommunity'));
+const CommunityDetail = React.lazy(() => import('./pages/community/CommunityDetail'));
 const Schedule = React.lazy(() => import('./pages/schedule/Schedule'));
 const Ranking = React.lazy(() => import('./pages/ranking/Ranking'));
 const Team = React.lazy(() => import('./pages/team/Team'));
@@ -74,9 +73,9 @@ function AppRoutes() {
                 <Route path="/" element={<Home />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/community" element={<Community />} />
+                <Route path="/community/write" element={<WriteCommunity />} />
+                <Route path="/community/detail/:boardId" element={<CommunityDetail />} />
                 <Route path="/schedule" element={<Schedule />} />
-                <Route path="/write-community" element={<WriteCommunity />} />
-                <Route path="/community-detail/:boardId" element={<CommunityDetail />} />
                 <Route path="/ranking" element={<Ranking />} />
                 <Route path="/team/:teamId" element={<Team />} />
                 <Route path="/schedule" element={<Schedule />} />
