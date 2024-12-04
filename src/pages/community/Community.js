@@ -19,9 +19,19 @@ export default function Community() {
   const activeTab = useRecoilValue(activeTabState);
   const navigate = useNavigate();
 
+
+  useEffect(() => {
+    console.log(activeTab);
+    console.log(currentTab);
+    if (activeTab === '게시판 정보') {
+        setCurrentTab('/free-community'); // 초기화 로직
+    } else if (activeTab === '나의활동') {
+      setCurrentTab('/my-wrote');
+    }
+  }, [activeTab, setCurrentTab]);
+
   // fetchBoards 함수
   const fetchBoards = useCallback(async () => {
-    console.log('Fetching boards with currentTab:', currentTab); // 확인용 로그
     try {
       let params = {};
       switch (currentTab) {
@@ -72,20 +82,6 @@ export default function Community() {
     navigate('/community/write'); // 글쓰기 페이지로 이동
   };
 
-
-  useEffect(() => {
-    console.log('현재 탭 상태:', currentTab);
-
-    if (activeTab === '게시판 정보') {
-      // activeTab이 '게시판 정보'일 때만 currentTab을 초기화할 수 있지만
-      // currentTab이 이미 설정되어 있으면 이 부분을 건너뛰도록
-      if (!currentTab) {
-        setCurrentTab('/free-community'); // 초기화 로직
-      }
-    } else if (activeTab === '나의활동') {
-      setCurrentTab('/my-wrote');
-    }
-  }, [activeTab, setCurrentTab, currentTab]);
 
 
   const handleSearch = () => {

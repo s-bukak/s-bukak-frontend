@@ -11,6 +11,7 @@ function CommunityButton() {
   const handleButtonClick = (button, tab) => {
     setActiveButton(button); // 활성 탭 상태 업데이트
     setCurrentTab(tab); // 현재 탭 상태 업데이트
+    navigate("/community"); // 페이지 이동
   };
 
   const handleWriteClick = () => {
