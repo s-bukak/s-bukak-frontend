@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from "react";
-import {MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos} from "react-icons/md";
-import axiosInstance from "../../utils/axiosInstance";
+import React, { useEffect, useState } from 'react';
+import { MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos } from 'react-icons/md';
+import axiosInstance from '../../utils/axiosInstance';
 
 
 export default function Calendar() {
-  const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+  const months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [selectedDate, setSelectedDate] = useState(today.getDate());
@@ -14,9 +14,9 @@ export default function Calendar() {
   // 날짜 파싱 함수
   // "11월 02일"과 같은 startDate 문자열을 실제 날짜 객체로 변환
   const parseDate = (startDate, year) => {
-    const [monthText, dayText] = startDate.split(" ");
-    const month = parseInt(monthText.replace("월", ""), 10) - 1;
-    const day = parseInt(dayText.replace("일", ""), 10);
+    const [monthText, dayText] = startDate.split(' ');
+    const month = parseInt(monthText.replace('월', ''), 10) - 1;
+    const day = parseInt(dayText.replace('일', ''), 10);
     return new Date(year, month, day);
   };
 
@@ -55,7 +55,7 @@ export default function Calendar() {
             startTime: schedule.startTime,
             sportType: schedule.sportType,
             homeTeamName: schedule.homeTeamName,
-            awayTeamName: schedule.awayTeamName,
+            awayTeamName: schedule.awayTeamName
           }))
         )
       );
@@ -67,7 +67,7 @@ export default function Calendar() {
 
       setCalendarData(formattedData); // 상태에 저장
     } catch (error) {
-      console.error("Failed to fetch calendar data:", error);
+      console.error('Failed to fetch calendar data:', error);
     }
   };
 
@@ -88,7 +88,7 @@ export default function Calendar() {
 
     // 해당 날짜에 이벤트가 있는지 확인하는 함수
     const checkHasEvent = (day, type) => {
-      if (type !== "current") return false; // 현재 월이 아닌 날짜는 이벤트 표시 안 함
+      if (type !== 'current') return false; // 현재 월이 아닌 날짜는 이벤트 표시 안 함
       return calendarData.some((event) => {
         const eventDate = parseDate(event.startDate, event.year);
         return (
@@ -101,12 +101,12 @@ export default function Calendar() {
 
     // 이전 월의 날짜 추가
     for (let i = firstDay - 1; i >= 0; i--) {
-      week.push({day: prevMonthDays - i, type: "prev", hasEvent: false});
+      week.push({ day: prevMonthDays - i, type: 'prev', hasEvent: false });
     }
 
     // 현재 월의 날짜 추가
     for (let day = 1; day <= daysInMonth; day++) {
-      week.push({day, type: "current", hasEvent: checkHasEvent(day, "current")});
+      week.push({ day, type: 'current', hasEvent: checkHasEvent(day, 'current') });
       if (week.length === 7) {
         calendar.push(week);
         week = [];
@@ -115,7 +115,7 @@ export default function Calendar() {
 
     // 다음 월의 날짜 추가
     for (let i = 1; i <= nextMonthDays; i++) {
-      week.push({day: i, type: "next", hasEvent: false});
+      week.push({ day: i, type: 'next', hasEvent: false });
       if (week.length === 7) {
         calendar.push(week);
         week = [];
@@ -143,22 +143,22 @@ export default function Calendar() {
       {/* 월 변경 섹션 */}
       <div className="w-full h-full flex items-center justify-between px-12 py-2 mb-4">
         <button onClick={handlePrevMonth} className="w-6 h-6">
-          <MdOutlineArrowBackIosNew/>
+          <MdOutlineArrowBackIosNew />
         </button>
         <div className="text-gray-800 text-xl font-bold">{calendarYear}년 {months[currentMonth]}</div>
         <button onClick={handleNextMonth} className="w-6 h-6">
-          <MdOutlineArrowForwardIos/>
+          <MdOutlineArrowForwardIos />
         </button>
       </div>
 
       {/* 달력 섹션 */}
       <div className="w-full grid grid-cols-7 gap-1 p-2 py-4 mb-1 border border-y-gray-500 border-x-0">
         {/* 요일 헤더 */}
-        {["일", "월", "화", "수", "목", "금", "토"].map((day, index) => (
+        {['일', '월', '화', '수', '목', '금', '토'].map((day, index) => (
           <div
             key={index}
             className={`text-center font-medium ${
-              index === 0 ? "text-red-700" : index === 6 ? "text-sky-600" : ""
+              index === 0 ? 'text-red-700' : index === 6 ? 'text-sky-600' : ''
             }`}
           >
             {day}
@@ -166,29 +166,29 @@ export default function Calendar() {
         ))}
         {/* 달력 날짜 */}
         {calendarViewData.map((week, weekIndex) =>
-          week.map(({day, type, hasEvent}, dayIndex) => (
+          week.map(({ day, type, hasEvent }, dayIndex) => (
             <div className="flex flex-col items-center" key={`${weekIndex}-${dayIndex}`}>
               <div
                 className={`relative mb-1 h-10 w-10 flex items-center justify-center cursor-pointer rounded-full ${
                   dayIndex === 0
-                    ? "text-red-700"
+                    ? 'text-red-700'
                     : dayIndex === 6
-                      ? "text-sky-600"
-                      : "text-gray-800"
+                      ? 'text-sky-600'
+                      : 'text-gray-800'
                 } ${
-                  type === "prev" || type === "next"
-                    ? "text-opacity-20"
+                  type === 'prev' || type === 'next'
+                    ? 'text-opacity-20'
                     : day === selectedDate
-                      ? "bg-gray-800 text-white"
+                      ? 'bg-gray-800 text-white'
                       : day === today.getDate() &&
                       currentMonth === today.getMonth() &&
                       calendarYear === today.getFullYear()
-                        ? "bg-gray-300"
-                        : "bg-gray-100"
+                        ? 'bg-gray-300'
+                        : 'bg-gray-100'
                 }`}
-                onClick={() => type === "current" && setSelectedDate(day)}
+                onClick={() => type === 'current' && setSelectedDate(day)}
               >
-                {day || ""}
+                {day || ''}
               </div>
               {/* 빨간 점 */}
               {hasEvent && (
@@ -205,7 +205,7 @@ export default function Calendar() {
           <>
             <div className="font-bold mb-2">
               {months[currentMonth]} {selectedDate}
-              {["(일)", "(월)", "(화)", "(수)", "(목)", "(금)", "(토)"][
+              {['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'][
                 new Date(
                   calendarYear || today.getFullYear(),
                   currentMonth,
@@ -232,8 +232,8 @@ export default function Calendar() {
             )}
           </>
         ) : (
-          <div className="text-sm text-gray-500">일정이 궁금한 날짜를 클릭해 주세요!</div>
-          )}
+          <div className="text-sm text-gray-500">날짜를 클릭하면 상세 일정을 볼 수 있어요!</div>
+        )}
       </div>
     </div>
   );
