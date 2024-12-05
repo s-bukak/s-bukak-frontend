@@ -39,19 +39,19 @@ export default function WriteCommunity() {
 
     const handleRegister = async () => {
         if (!isLoggedIn) {
-            setModalMessage("로그인이 필요한 서비스 입니다.");
+            setModalMessage("로그인이 필요합니다.");
             setIsModalOpen(true);
             return;
         }
 
         if (selectedBoard === '게시판 선택') {
-            setModalMessage("게시판을 선택해 주세요!");
+            setModalMessage("게시판을 선택해주세요.");
             setIsModalOpen(true);
             return;
         }
 
         if (!title.trim() || !content.trim()) {
-            setModalMessage("제목과 내용을 모두 입력해 주세요!");
+            setModalMessage("제목과 내용을 모두 입력해주세요.");
             setIsModalOpen(true);
             return;
         }
@@ -62,11 +62,11 @@ export default function WriteCommunity() {
                 title, content, boardType,
             };
             await axiosInstance.post(`/board`, data);
-            setModalMessage("게시글이 등록되었습니다!");
+            setModalMessage("등록 성공!");
             setIsModalOpen(true);
         } catch (error) {
             console.error("등록 실패:", error);
-            setModalMessage("게시글 등록에 실패했습니다. 다시 시도해 주세요.");
+            setModalMessage("등록에 실패했습니다. 다시 시도해주세요.");
             setIsModalOpen(true);
         }
     };
@@ -137,7 +137,7 @@ export default function WriteCommunity() {
                         <div className="flex flex-row gap-4 justify-end mt-6">
                             <button
                                 className="w-40 py-1 text-sm text-black font-bold bg-gray-300 rounded-lg"
-                                onClick={() => navigate('/community')}
+                                onClick={() => navigate(-1)} // 뒤로가기 동작
                             >
                                 취소
                             </button>
