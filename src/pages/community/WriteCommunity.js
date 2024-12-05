@@ -136,7 +136,7 @@ export default function WriteCommunity() {
             <div className="flex flex-row gap-4 justify-end mt-6">
               <button
                 className="w-40 py-1 text-sm text-black font-bold bg-gray-300 rounded-lg"
-                onClick={() => setCurrentTab('free-community')} // 기본 탭으로 돌아가기
+                onClick={() => navigate(-1)} // 뒤로가기 동작
               >
                 취소
               </button>
