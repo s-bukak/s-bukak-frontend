@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useRecoilValue } from "recoil";
+import React, {useEffect, useState} from "react";
+import {useRecoilValue} from "recoil";
 import axiosInstance from "../../utils/axiosInstance"; // Axios 인스턴스
-import { isTokenValid } from "../../utils/token"; // 토큰 유효성 검사
+import {isTokenValid} from "../../utils/token"; // 토큰 유효성 검사
 import StatusIndicator from "../../components/StateIndecator";
-import { activeSportTabState } from "../../state/sportTabState";
+import {activeSportTabState} from "../../state/sportTabState";
 
 function Betting() {
     const [bettingData, setBettingData] = useState([]);
@@ -15,10 +15,13 @@ function Betting() {
     const isLoggedIn = isTokenValid();
 
     // 데이터 요청
+    // 데이터 요청
     useEffect(() => {
         const fetchBettingData = async () => {
+            const sportType = activeSportTab === "soccer" ? "SOCCER" : "BASKETBALL";
+
             try {
-                const response = await axiosInstance.get("/schedule");
+                const response = await axiosInstance.get(`/schedule?sportType=${sportType}`);
                 const games = response.data.schedulesYear.flatMap((year) =>
                     year.schedulesMonth.flatMap((month) =>
                         month.schedules.map((schedule) => ({
@@ -57,7 +60,7 @@ function Betting() {
         };
 
         fetchBettingData();
-    }, [isLoggedIn, selectedBet]);
+    }, [activeSportTab, isLoggedIn, selectedBet]);
 
     // 현재 시간과 비교하여 과거 및 미래 경기 필터링
     const now = new Date();
@@ -83,8 +86,8 @@ function Betting() {
     // 베팅 처리
     const handleTeamClick = async (scheduleId, isBetHomeTeam) => {
         try {
-            await axiosInstance.post("/bet", { scheduleId, isBetHomeTeam });
-            setSelectedBet({ scheduleId, isBetHomeTeam }); // 선택 상태 갱신
+            await axiosInstance.post("/bet", {scheduleId, isBetHomeTeam});
+            setSelectedBet({scheduleId, isBetHomeTeam}); // 선택 상태 갱신
         } catch (error) {
             console.error("Betting error:", error);
             setErrorMessage("베팅 중 오류가 발생했습니다.");
@@ -160,7 +163,7 @@ function Betting() {
 
                                 <div
                                     className="mx-4 h-[50%] border-r border-gray-800"
-                                    style={{ minHeight: "70px" }}
+                                    style={{minHeight: "70px"}}
                                 ></div>
 
                                 <div className="text-xl font-bold text-center w-[250px]">
@@ -169,7 +172,7 @@ function Betting() {
 
                                 <div
                                     className="mx-4 h-[50%] border-l border-gray-800"
-                                    style={{ minHeight: "70px" }}
+                                    style={{minHeight: "70px"}}
                                 ></div>
 
                                 <div
