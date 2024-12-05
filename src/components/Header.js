@@ -247,7 +247,7 @@ const Header = () => {
                 </div>
 
                 <div className="container mx-auto mt-2 flex justify-center">
-                    <nav className="flex space-x-8 text-lg">
+                    <nav className="flex space-x-8 text-2xl">
                         {["soccer", "basketball"].map((tab) => (
                             <button
                                 key={tab}
