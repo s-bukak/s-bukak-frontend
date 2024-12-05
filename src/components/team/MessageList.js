@@ -274,12 +274,13 @@ const MessageList = ({ style }) => {
                                 {comment.createdAt}
                               </span>
                             </div>
-                            <div className="text-gray-700 text-sm break-words">
+                            <div
+                                className={`${comment.isHidden ? 'text-gray-400' : 'text-gray-700'} text-sm break-words`}>
                               {comment.content}
                             </div>
                           </div>
                           {!comment.isHidden && teamInfo?.canUpdatePlayers && (
-                            <div className="p-1.5">
+                              <div className="p-1.5">
                               <FaRegTrashAlt
                                 className="h-full w-3 text-red-500 cursor-pointer"
                                 onClick={() => handleDelete(comment.id)}
