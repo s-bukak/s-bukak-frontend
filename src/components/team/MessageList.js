@@ -3,6 +3,7 @@ import { cleanbotMessage, homePlaceHolder } from '../../utils/MessageUtils';
 import anonymous from '../../assets/images/anonymous.svg';
 import sendIcon from '../../assets/icons/send.svg';
 import userImage from '../../assets/images/userImage.jpg';
+import cleanbotImage from "../../assets/images/cleanbot.svg";
 import useTeamMsg from '../../hooks/useTeamMsg';
 import { useRecoilState } from 'recoil';
 import { teamIdState } from '../../state/sportTabState';
@@ -29,19 +30,19 @@ const MessageList = ({ style }) => {
   const user = decodeUserInfo();
 
   // console.log 오버라이드 (모든 stomp.js 관련 로그 숨기기)
-  useEffect(() => {
-    // console.log 오버라이드
-    const originalConsoleLog = console.log;
-    console.log = (...args) => {
-      if (args[0] && typeof args[0] === 'string' && args[0].includes('CONNECTED')) {
-        // 특정 조건일 때만 includes 사용
-
-      } else {
-      }
-    };
-
-    // 추가 로직...
-  }, []);
+  // useEffect(() => {
+  //   // console.log 오버라이드
+  //   const originalConsoleLog = console.log;
+  //   console.log = (...args) => {
+  //     if (args[0] && typeof args[0] === 'string' && args[0].includes('CONNECTED')) {
+  //       // 특정 조건일 때만 includes 사용
+  //
+  //     } else {
+  //     }
+  //   };
+  //
+  //   // 추가 로직...
+  // }, []);
 
 
   const handleInputChange = (event) => setInput(event.target.value);
@@ -265,6 +266,7 @@ const MessageList = ({ style }) => {
                             className={`flex flex-col flex-grow items-start bg-gray-100 p-2.5 px-3.5 rounded-2xl ${
                               imageMargin
                             }`}
+                            style={{ maxWidth: 'calc(100% - 58px)' }}
                           >
                             <div className="flex flex-row justify-between w-full">
                               <span className="text-sm font-semibold">
@@ -275,11 +277,11 @@ const MessageList = ({ style }) => {
                               </span>
                             </div>
                             <div
-                                className={`${comment.isHidden ? 'text-gray-400' : 'text-gray-700'} text-sm break-words`}>
+                                className={`${comment.isHidden ? 'text-gray-400' : 'text-gray-700'} text-sm break-words `}>
                               {comment.content}
                             </div>
                           </div>
-                          {!comment.isHidden && teamInfo?.canUpdatePlayers && (
+                          {teamInfo?.canUpdatePlayers && (
                               <div className="p-1.5">
                               <FaRegTrashAlt
                                 className="h-full w-3 text-red-500 cursor-pointer"
@@ -295,19 +297,19 @@ const MessageList = ({ style }) => {
                           <div className={`flex w-full ${alignment} mb-4`}>
                             <div className={`flex ${rowDirection} w-full`}>
                               <div
-                                  className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200"
+                                  className={`w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200  ${
+                              imageMargin
+                            }`}
                               >
-                                <div className="">
-                                  냥
-                                </div>
-                                {/*<img*/}
-                                {/*    src={cleanbotMessage.userImage}*/}
-                                {/*    alt="cleanbot"*/}
-                                {/*    className="w-10 h-10 object-contain"*/}
-                                {/*/>*/}
+                                <img
+                                    src={cleanbotImage}
+                                    alt="cleanbot"
+                                    className="w-full h-full object-contain"
+                                />
                               </div>
                               <div
                                   className={`flex flex-col flex-grow items-start bg-gray-100 p-2.5 px-3.5 rounded-2xl ${imageMargin}`}
+                                  style={{ maxWidth: 'calc(100% - 58px)' }}
                               >
                                 <div className="flex flex-row justify-between w-full">
                               <span className="text-sm font-semibold">
