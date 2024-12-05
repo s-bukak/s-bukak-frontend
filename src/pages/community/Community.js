@@ -15,7 +15,7 @@ export default function Community() {
     const [searchInput, setSearchInput] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredData, setFilteredData] = useState([]);
-    const [currentTab, setCurrentTab] = useRecoilState(currentTabState);
+    const [currentTab,] = useRecoilState(currentTabState);
     const activeTab = useRecoilValue(activeTabState);
     const navigate = useNavigate();
     const resetSearch = () => {
@@ -23,13 +23,10 @@ export default function Community() {
         setSearchTerm('');
     };
 
-    useEffect(() => {
-        if (activeTab === '게시판 정보') {
-            setCurrentTab('/free-community'); // 초기화 로직
-        } else if (activeTab === '나의활동') {
-            setCurrentTab('/my-wrote');
-        }
-    }, [activeTab, setCurrentTab]);
+    console.log(activeTab);
+    console.log(currentTab);
+    // if (activeTab === "게시판 정보")
+    //     setCurrentTab("free-community");
 
     useEffect(() => {
         if (currentTab) {
