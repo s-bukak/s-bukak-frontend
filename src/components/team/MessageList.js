@@ -30,19 +30,19 @@ const MessageList = ({ style }) => {
   const user = decodeUserInfo();
 
   // console.log 오버라이드 (모든 stomp.js 관련 로그 숨기기)
-  // useEffect(() => {
-  //   // console.log 오버라이드
-  //   const originalConsoleLog = console.log;
-  //   console.log = (...args) => {
-  //     if (args[0] && typeof args[0] === 'string' && args[0].includes('CONNECTED')) {
-  //       // 특정 조건일 때만 includes 사용
-  //
-  //     } else {
-  //     }
-  //   };
-  //
-  //   // 추가 로직...
-  // }, []);
+  useEffect(() => {
+    // console.log 오버라이드
+    const originalConsoleLog = console.log;
+    console.log = (...args) => {
+      if (args[0] && typeof args[0] === 'string' && args[0].includes('CONNECTED')) {
+        // 특정 조건일 때만 includes 사용
+
+      } else {
+      }
+    };
+
+    // 추가 로직...
+  }, []);
 
 
   const handleInputChange = (event) => setInput(event.target.value);
