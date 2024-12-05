@@ -3,15 +3,17 @@ import { useRecoilState } from 'recoil';
 import { activeTabState,currentTabState } from '../../state/communityTabState';
 import { useNavigate } from 'react-router-dom';
 
-function CommunityButton() {
+function CommunityButton({resetSearch}) {
   const [activeButton, setActiveButton] = useRecoilState(activeTabState);
   const [, setCurrentTab] = useRecoilState(currentTabState);
   const navigate = useNavigate();
+
 
   const handleButtonClick = (button, tab) => {
     setActiveButton(button); // 활성 탭 상태 업데이트
     setCurrentTab(tab); // 현재 탭 상태 업데이트
     navigate("/community"); // 페이지 이동
+    resetSearch(); // 검색 상태 초기화
   };
 
   const handleWriteClick = () => {

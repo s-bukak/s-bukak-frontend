@@ -18,7 +18,10 @@ export default function Community() {
     const [currentTab, setCurrentTab] = useRecoilState(currentTabState);
     const activeTab = useRecoilValue(activeTabState);
     const navigate = useNavigate();
-
+    const resetSearch = () => {
+        setSearchInput('');
+        setSearchTerm('');
+    };
 
     useEffect(() => {
         if (activeTab === '게시판 정보') {
@@ -95,7 +98,7 @@ export default function Community() {
 
     return (
         <div className="flex flex-row w-full my-20 justify-center gap-8">
-            <CommunityButton onWriteClick={handleWriteClick}/>
+            <CommunityButton resetSearch={resetSearch} onWriteClick={handleWriteClick}/>
 
             <div className="w-3/5 flex flex-col gap-4">
                 {/* 제목 */}
