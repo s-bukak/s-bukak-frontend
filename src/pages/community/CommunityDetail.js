@@ -137,7 +137,7 @@ export default function CommunityDetail() {
                     {comments.length > 0 ? (
                         <div
                             ref={commentsRef}
-                            className=" flex flex-col gap-4 rounded-lg h-96 px-6 border border-gray-300 overflow-y-auto"
+                            className=" flex flex-col gap-4 rounded-xl h-96 px-6 border border-gray-300 overflow-y-auto"
                         >
                             {comments.map((comment, index) => (
                                 <div
