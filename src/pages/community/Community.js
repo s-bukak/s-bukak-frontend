@@ -21,14 +21,19 @@ export default function Community() {
 
 
     useEffect(() => {
-        console.log(activeTab);
-        console.log(currentTab);
         if (activeTab === '게시판 정보') {
             setCurrentTab('/free-community'); // 초기화 로직
         } else if (activeTab === '나의활동') {
             setCurrentTab('/my-wrote');
         }
     }, [activeTab, setCurrentTab]);
+
+    useEffect(() => {
+        if (currentTab) {
+            setSearchInput('');
+            setSearchTerm('');
+        }
+    }, [currentTab]);
 
     // fetchBoards 함수
     const fetchBoards = useCallback(async () => {
