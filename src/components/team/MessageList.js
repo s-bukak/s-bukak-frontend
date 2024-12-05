@@ -234,64 +234,100 @@ const MessageList = ({ style }) => {
                 : 'justify-end'
             }`}
           >
-            {chatList.length > 0 ? (
+            {chatList.length >   0 ? (
               chatList.map((comment) => {
-                const isCurrentUser = comment.userId === user?.userId;
-                const alignment = isCurrentUser ? 'justify-end' : 'justify-start';
-                const rowDirection = isCurrentUser ? 'flex-row-reverse' : 'flex-row';
-                const imageMargin = isCurrentUser ? 'ml-2' : 'mr-2';
+                  const isCurrentUser = comment.userId === user?.userId;
+                  const alignment = isCurrentUser ? 'justify-end' : 'justify-start';
+                  const rowDirection = isCurrentUser ? 'flex-row-reverse' : 'flex-row';
+                  const imageMargin = isCurrentUser ? 'ml-2' : 'mr-2';
 
-                // Check if the comment is anonymous and use the anonymous image
-                const displayImage = comment.isAnonymous ? anonymous : comment.userImage;
-                const messageUsername = comment.isAnonymous ? '익명' : comment.username;
-                const messageContent = comment.isHidden ? cleanbotMessage.content : comment.content;
-                const userImage = comment.isHidden ? cleanbotMessage.userImage : displayImage;
-                const username = comment.isHidden ? cleanbotMessage.username : messageUsername;
+                  // Check if the comment is anonymous and use the anonymous image
+                  const displayImage = comment.isAnonymous ? anonymous : comment.userImage;
+                  const messageUsername = comment.isAnonymous ? '익명' : comment.username;
 
-                return (
-                  <div key={comment.id} className="w-full">
-                    <div className={`flex ${alignment} mb-4`}>
-                      <div className={`flex ${rowDirection} w-full`}>
-                        <div
-                          className={`w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 ${
-                            imageMargin
-                          }`}
-                        >
-                          <img src={userImage} alt="user"
-                               className="w-full h-full object-contain" />
-                        </div>
-                        <div
-                          className={`flex flex-col flex-grow items-start bg-gray-100 p-2.5 px-3.5 rounded-2xl ${
-                            comment.isHidden ? 'mr-3' : imageMargin
-                          } ${!comment.isHidden && !teamInfo?.canUpdatePlayers ? 'flex-grow' : 'w-4/5'}`}
-                        >
-                          <div className="flex flex-row justify-between w-full">
-                            <span className="text-sm font-semibold">{username}</span>
-                            {!comment.isHidden && (
-                              <span
-                                className="text-xs text-gray-500 mt-1">{comment.createdAt}</span>
-                            )}
-                          </div>
+                  return (
+                    <div key={comment.id} className="w-full">
+                      {/* 기존 메시지 렌더링 */}
+                      <div className={`flex ${alignment} mb-4`}>
+                        <div className={`flex ${rowDirection} w-full`}>
                           <div
-                            className="text-gray-700 text-sm break-words">{messageContent}</div>
-                        </div>
-                        {!comment.isHidden && teamInfo?.canUpdatePlayers && (
-                          <div className="p-1.5">
-                            <FaRegTrashAlt
-                              className="h-full w-3 text-red-500 cursor-pointer"
-                              onClick={() => handleDelete(comment.id)}
+                            className={`w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 ${
+                              imageMargin
+                            }`}
+                          >
+                            <img
+                              src={displayImage}
+                              alt="user"
+                              className="w-full h-full object-contain"
                             />
                           </div>
-                        )}
+                          <div
+                            className={`flex flex-col flex-grow items-start bg-gray-100 p-2.5 px-3.5 rounded-2xl ${
+                              imageMargin
+                            }`}
+                          >
+                            <div className="flex flex-row justify-between w-full">
+                              <span className="text-sm font-semibold">
+                                {messageUsername}
+                              </span>
+                              <span className="text-xs text-gray-500 mt-1">
+                                {comment.createdAt}
+                              </span>
+                            </div>
+                            <div className="text-gray-700 text-sm break-words">
+                              {comment.content}
+                            </div>
+                          </div>
+                          {!comment.isHidden && teamInfo?.canUpdatePlayers && (
+                            <div className="p-1.5">
+                              <FaRegTrashAlt
+                                className="h-full w-3 text-red-500 cursor-pointer"
+                                onClick={() => handleDelete(comment.id)}
+                              />
+                            </div>
+                          )}
+                        </div>
                       </div>
+
+                      {/* cleanbot 메시지 추가 */}
+                      {comment.isHidden && (
+                          <div className={`flex w-full ${alignment} mb-4`}>
+                            <div className={`flex ${rowDirection} w-full`}>
+                              <div
+                                  className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200"
+                              >
+                                <div className="">
+                                  냥
+                                </div>
+                                {/*<img*/}
+                                {/*    src={cleanbotMessage.userImage}*/}
+                                {/*    alt="cleanbot"*/}
+                                {/*    className="w-10 h-10 object-contain"*/}
+                                {/*/>*/}
+                              </div>
+                              <div
+                                  className={`flex flex-col flex-grow items-start bg-gray-100 p-2.5 px-3.5 rounded-2xl ${imageMargin}`}
+                              >
+                                <div className="flex flex-row justify-between w-full">
+                              <span className="text-sm font-semibold">
+                                {cleanbotMessage.username}
+                              </span>
+                                </div>
+                                <div className="text-gray-700 text-sm break-words">
+                                  {cleanbotMessage.content}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      )}
                     </div>
-                  </div>
-                );
+                  );
               })
+
             ) : (
-              <div className="flex justify-center items-center text-gray-400 text-center w-full h-full">
-                메시지가 없습니다. 응원 메시지를 남겨보세요!
-              </div>
+                <div className="flex justify-center items-center text-gray-400 text-center w-full h-full">
+                  메시지가 없습니다. 응원 메시지를 남겨보세요!
+                </div>
             )}
 
             {chatList.length > 0 && <div ref={messageEndRef}></div>}
@@ -300,38 +336,38 @@ const MessageList = ({ style }) => {
         <div className="flex flex-row w-full items-center justify-center mt-4">
           <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-gray-200 mr-2">
             <img src={user?.userImage || userImage} alt={user?.userName}
-                 className="w-full h-full object-contain" />
+                 className="w-full h-full object-contain"/>
           </div>
 
           <div
-            className="flex flex-grow items-center  p-1 pl-2.5 rounded-xl bg-gray-100 border border-gray-400">
+              className="flex flex-grow items-center  p-1 pl-2.5 rounded-xl bg-gray-100 border border-gray-400">
             <div className="flex items-center" onClick={handleInputClick}>
               <input
-                id="checked-checkbox"
-                type="checkbox"
-                checked={isAnonymous}
-                onChange={handleCheckboxChange}
-                disabled={!isTokenValid()}
-                className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-400 rounded checked:bg-gray-500 focus:ring-0 dark:bg-gray-500 dark:border-gray-500"
+                  id="checked-checkbox"
+                  type="checkbox"
+                  checked={isAnonymous}
+                  onChange={handleCheckboxChange}
+                  disabled={!isTokenValid()}
+                  className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-400 rounded checked:bg-gray-500 focus:ring-0 dark:bg-gray-500 dark:border-gray-500"
               />
               <label
-                htmlFor="checked-checkbox"
-                className="ms-2 text-sm font-medium text-gray-400"
+                  htmlFor="checked-checkbox"
+                  className="ms-2 text-sm font-medium text-gray-400"
               >
                 익명
               </label>
             </div>
             <div className="ml-3 h-6 border-l-2 border-gray-300"></div>
             <input
-              type="text"
-              placeholder={
-                isTokenValid()
-                  ? teamInfo
-                    ? `${teamInfo.name} 선수들에게 응원 메세지를 남겨보세요!`
-                    : homePlaceHolder
-                  : '로그인이 필요한 기능입니다.'
-              }
-              value={input}
+                type="text"
+                placeholder={
+                  isTokenValid()
+                      ? teamInfo
+                          ? `${teamInfo.name} 선수들에게 응원 메세지를 남겨보세요!`
+                          : homePlaceHolder
+                      : '로그인이 필요한 기능입니다.'
+                }
+                value={input}
               onChange={handleInputChange}
               onKeyDown={handleKeyPress}
               disabled={!isTokenValid()}
