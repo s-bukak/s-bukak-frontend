@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {CgProfile} from "react-icons/cg";
+import userImage from '../../assets/images/userImage.jpg';
 import {FaTrash} from "react-icons/fa6";
 import Send from "../../assets/icons/send.svg";
 import axiosInstance from "../../utils/axiosInstance";
@@ -61,15 +61,9 @@ export default function CommunityDetail() {
         fetchPostDetail();
     }, [fetchPostDetail]);
 
-    // 페이지 로드 후 최신 댓글로 스크롤
     useEffect(() => {
-        if (lastCommentRef.current) {
-            lastCommentRef.current.scrollIntoView({
-                behavior: "smooth", // 부드러운 스크롤
-                block: "end", // 최신 댓글이 화면 하단에 정렬
-            });
-        }
-    }, [comments]);
+        scrollToBottomSmooth();
+    }, [comments]); // 댓글 상태가 변경될 때 실행
 
     const handlePostComment = async () => {
         if (!isLoggedIn) {
@@ -99,7 +93,6 @@ export default function CommunityDetail() {
         if (commentsRef.current) {
             commentsRef.current.scrollTo({
                 top: commentsRef.current.scrollHeight,
-                behavior: "smooth",
             });
         }
     };
@@ -111,14 +104,14 @@ export default function CommunityDetail() {
     return (
         <div className="flex flex-row w-full my-20 justify-center gap-8">
             <CommunityButton/>
-            <div className="w-3/5 flex flex-col gap-4">
+            <div className="w-3/5 flex flex-col">
                 <div
-                    className="w-full border border-gray-300 rounded-lg overflow-hidden relative px-10 py-8 flex flex-col gap-4">
-                    <div className="h-100dvh flex justify-center flex-col gap-4">
+                    className="w-full border border-gray-300 rounded-lg overflow-hidden relative px-10 py-8 flex flex-col">
+                    <div className="h-100dvh flex justify-center flex-col gap-4 mb-4">
                         <div className="flex justify-between items-center">
                             <div className="flex flex-row items-center gap-2.5">
                                 <img
-                                    src={board.userProfileImageUrl || CgProfile}
+                                    src={board.userProfileImageUrl || userImage}
                                     alt="Profile"
                                     className="w-10 rounded-full"
                                 />
@@ -144,13 +137,13 @@ export default function CommunityDetail() {
                     {comments.length > 0 ? (
                         <div
                             ref={commentsRef}
-                            className="flex flex-col gap-1 rounded-lg h-96 p-4 border border-gray-300 overflow-y-auto "
+                            className=" flex flex-col gap-4 rounded-xl h-96 px-6 border border-gray-300 overflow-y-auto"
                         >
                             {comments.map((comment, index) => (
                                 <div
                                     key={index}
                                     ref={index === comments.length - 1 ? lastCommentRef : null}
-                                    className="flex gap-4 mb-4 p-2"
+                                    className="flex gap-4 py-2"
                                 >
                                     <div className="flex-shrink-0">
                                         <img
@@ -159,7 +152,7 @@ export default function CommunityDetail() {
                                             alt={`${comment.username}'s profile`}
                                         />
                                     </div>
-                                    <div className="flex-1 px-4 py-2 bg-gray-100 rounded-xl w-full">
+                                    <div className="flex-1 px-4 py-2 bg-gray-100 rounded-xl w-full ">
                                         <div className="flex justify-between items-center mb-1 ">
                                             <div className="font-bold text-sm text-gray-700">
                                                 {comment.username}
@@ -202,12 +195,20 @@ export default function CommunityDetail() {
                             댓글이 없습니다. 댓글을 남겨보세요!
                         </div>
                     )}
-                    <div className="flex flex-row gap-4 px-6">
-                        <img
+                    <div className="flex flex-row gap-4  mt-3">
+                        {user?.userImage ? (
+                          <img
                             src={user.userImage}
                             alt="User Profile"
-                            className="w-10 h-10 rounded-full"
-                        />
+                            className="h-10 w-10 rounded-full"
+                          />
+                        ) : (
+                          <img
+                              src={userImage}
+                              alt="userImage"
+                              className="h-10 w-10 rounded-full"
+                          />
+                        )}
                         <div
                             className="flex items-center w-full p-1 px-2.5 rounded-xl bg-gray-100 border border-gray-300 ">
                             <div className="flex items-center">

@@ -1,18 +1,21 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import { activeTabState,currentTabState } from '../../state/communityTabState';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-function CommunityButton() {
+function CommunityButton({resetSearch}) {
   const [activeButton, setActiveButton] = useRecoilState(activeTabState);
   const [, setCurrentTab] = useRecoilState(currentTabState);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleButtonClick = (button, tab) => {
     setActiveButton(button); // 활성 탭 상태 업데이트
     setCurrentTab(tab); // 현재 탭 상태 업데이트
     navigate("/community"); // 페이지 이동
-  };
+    if (location.pathname === "/community") {
+      resetSearch();
+    }  };
 
   const handleWriteClick = () => {
     navigate('/community/write'); // 글쓰기 페이지로 이동
@@ -78,13 +81,13 @@ function CommunityButton() {
         <div className="flex border-b border-gray-300 py-1 px-1">
           <button
             className={getButtonClass('게시판 정보')}
-            onClick={() => handleButtonClick('게시판 정보')}
+            onClick={() => handleButtonClick('게시판 정보','/free-community')}
           >
             게시판 정보
           </button>
           <button
             className={getButtonClass('나의활동')}
-            onClick={() => handleButtonClick('나의활동')}
+            onClick={() => handleButtonClick('나의활동','/my-wrote')}
           >
             나의활동
           </button>

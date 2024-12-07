@@ -15,20 +15,25 @@ export default function Community() {
     const [searchInput, setSearchInput] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredData, setFilteredData] = useState([]);
-    const [currentTab, setCurrentTab] = useRecoilState(currentTabState);
+    const [currentTab,] = useRecoilState(currentTabState);
     const activeTab = useRecoilValue(activeTabState);
     const navigate = useNavigate();
+    const resetSearch = () => {
+        setSearchInput('');
+        setSearchTerm('');
+    };
 
+    console.log(activeTab);
+    console.log(currentTab);
+    // if (activeTab === "게시판 정보")
+    //     setCurrentTab("free-community");
 
     useEffect(() => {
-        console.log(activeTab);
-        console.log(currentTab);
-        if (activeTab === '게시판 정보') {
-            setCurrentTab('/free-community'); // 초기화 로직
-        } else if (activeTab === '나의활동') {
-            setCurrentTab('/my-wrote');
+        if (currentTab) {
+            setSearchInput('');
+            setSearchTerm('');
         }
-    }, [activeTab, setCurrentTab]);
+    }, [currentTab]);
 
     // fetchBoards 함수
     const fetchBoards = useCallback(async () => {
@@ -90,7 +95,7 @@ export default function Community() {
 
     return (
         <div className="flex flex-row w-full my-20 justify-center gap-8">
-            <CommunityButton onWriteClick={handleWriteClick}/>
+            <CommunityButton resetSearch={resetSearch} onWriteClick={handleWriteClick}/>
 
             <div className="w-3/5 flex flex-col gap-4">
                 {/* 제목 */}

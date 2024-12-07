@@ -204,7 +204,7 @@ export default function Calendar() {
         {selectedDate !== null ? (
           <>
             <div className="font-bold mb-2">
-              {months[currentMonth]} {selectedDate}
+              {months[currentMonth]} {selectedDate}{"일"}
               {['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'][
                 new Date(
                   calendarYear || today.getFullYear(),
